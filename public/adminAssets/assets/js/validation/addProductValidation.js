@@ -135,9 +135,10 @@ function sizeLvalidate(){
 
 function imageValidate(){
     const images = image.files
-    if(images.length<2){
+    console.log('imgae is validating');
+    if(images.length<5 || images.length>5){
         imageErr.style.display= 'block'
-        imageErr.innerHTML = '*minimum 2 images should be added'
+        imageErr.innerHTML = '*Minimum and maximum 5 images should add'
     }else{
         imageErr.style.display= 'none'
         imageErr.innerHTML = ''
@@ -164,14 +165,14 @@ productForm.addEventListener('submit',(e)=>{
     sizeMvalidate()
     sizeLvalidate()
     imageValidate()
-    if(nameErr.innerHTML!==''||
-        catErr.innerHTML!==''||
-        desErr.innerHTML!==''||
-        regErr.innerHTML!==''||
-        offErr.innerHTML!==''||
-        smallErr.innerHTML!==''||
-        mediumErr.innerHTML!==''||
-        largeErr.innerHTML!==''){
+    if(nameErr.style.display =='none'||
+        catErr.style.display =='none'||
+        desErr.style.display =='none'||
+        regErr.style.display =='none'||
+        offErr.style.display =='none'||
+        smallErr.style.display =='none'||
+        mediumErr.style.display =='none'||
+        largeErr.style.display =='none'){
         e.preventDefault()
     }
 })

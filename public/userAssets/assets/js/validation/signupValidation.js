@@ -1,11 +1,13 @@
 const singupForm = document.getElementById('signup_form')
+
 const fname = document.getElementById('fname_id')
 const lname = document.getElementById('lname_id')
 const email = document.getElementById('email_id')
 const mobile = document.getElementById('mobile_id')
 const dob = document.getElementById('dob_id')
 const password = document.getElementById('password_id')
-const confirmPassword = document.getElementById('confimrPassword_id')
+const confirmPassword = document.getElementById('confirmPassword_id')
+
 const fnameError = document.getElementById('fname_error')
 const lnameError = document.getElementById('lname_error')
 const emailError = document.getElementById('email_error')
@@ -16,18 +18,16 @@ const confirmPasswordError = document.getElementById('confirmPassword_error')
 
 function fnameValidate(){
     fnameValue = fname.value
+    const pattern = /^[a-zA-Z\s\-',.]+$/
     if(fnameValue.trim()=='' ){
         fnameError.style.display = 'block'
         fnameError.innerHTML = '*Field must not be empty'
-        // setTimeout(()=>{
-        //     fnameError.style.display = 'none'
-        // },3000)
+    }else if(!pattern.test(fnameValue)){
+        fnameError.style.display = 'block'
+        fnameError.innerHTML = '*Type letters only'
     }else if(fnameValue.length<3 || fnameValue.length>9){
         fnameError.style.display = 'block'
         fnameError.innerHTML = '*Should contain min 3 or max 9 characters'
-        // setTimeout(()=>{
-        //     fnameError.style.display = 'none'
-        // },3000)
     }else{
         fnameError.style.display = 'none'
         fnameError.innerHTML = ''
@@ -36,9 +36,13 @@ function fnameValidate(){
 
 function lnameValidate(){
     lnameValue = lname.value
+    const pattern = /^[a-zA-Z\s\-',.]+$/
     if(lnameValue.trim()=='' ){
         lnameError.style.display = 'block'
         lnameError.innerHTML = '*Field must not be empty'
+    }else if(!pattern.test(lnameValue)){
+        lnameError.style.display = 'block'
+        lnameError.innerHTML = '*Type letters only'
     }else if(lnameValue.length>9){
         lnameError.style.display = 'block'
         lnameError.innerHTML = '*Should contain min 3 or max 9 characters'
@@ -127,7 +131,7 @@ function passwordValidate(){
 
 function confirmPasswordValidate(){
     const confimrPasswordValue = confirmPassword.value
-    if(confimrPasswordValue.trim()=''){
+    if(confimrPasswordValue.trim()==''){
         confirmPasswordError.style.display = 'block'
         confirmPasswordError.innerHTML = '*Field must not be empty'
     }else if(confimrPasswordValue !== password.value){
@@ -144,22 +148,25 @@ dob.addEventListener('blur',dobValidate)
 password.addEventListener('blur',passwordValidate)
 confirmPassword.addEventListener('blur',confirmPasswordValidate)
 
-singupForm.addEventListener('submit',(e)=>{
-    fnameValidate()
-    lnameValidate()
-    emailValidate()
-    mobileValidate()
-    dobValidate()
-    passwordValidate()
-    confirmPasswordValidate()
-    if(fnameError.innerHTML=='' || 
-        lnameError.innerHTML=='' || 
-        emailError.innerHTML=='' || 
-        mobileError.innerHTML=='' ||
-        dobError.innerHTML=='' ||
-        passwordError.innerHTML=='' ||
-        confirmPasswordError.innerHTML==''){
-            e.preventDefault()
-        }
+// singupForm.addEventListener('submit',(e)=>{
+//     console.log('singupForm')
+//     fnameValidate()
+//     lnameValidate()
+//     emailValidate()
+//     mobileValidate()
+//     dobValidate()
+//     passwordValidate()
+//     confirmPasswordValidate()
+//     if(fnameError.innerHTML=='' || 
+//         lnameError.innerHTML=='' || 
+//         emailError.innerHTML=='' || 
+//         mobileError.innerHTML=='' ||
+//         dobError.innerHTML=='' ||
+//         passwordError.innerHTML=='' ||
+//         confirmPasswordError.innerHTML==''){
+//             console.log('hello')
+//             e.preventDefault()
+//             return
+//         }
 
-})
+// })
