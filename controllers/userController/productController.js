@@ -18,6 +18,7 @@ const viewProductDetails = async (req, res) => {
     }
 }
 
+// Product page size select
 const sizeSelect = async (req, res) => {
     const size = req.query.size
     const productId = req.query.productId
@@ -49,27 +50,42 @@ const sizeSelect = async (req, res) => {
     }
 }
 
+// Product add to cart
 const addtocart = async (req, res) => {
     try {
         const { size, price, userId, productId } = req.query
         const productData = await products.findOne({ _id: productId })
-        let data = {
-            userId: userId,
-            items: [{
-                productId: productId,
-                size: size,
-                stock: productData.size[size].quantity,
-                price: price,
-            }],
-            totalPrice: price,
+        let items = {
+            productId: productId,
+            size: size,
+            stock: productData.size[size].quantity,
+            proPrice: productData.price.offerPrice,
+            subTotalPrice: productData.price.offerPrice,
         }
-        const checkProInCart = await cartModel.findOne({ 'items.0.productId': productId, 'items.0.size': size })
-        console.log(checkProInCart);
-        if (checkProInCart) {
-            res.json({ proInCart: true })
+
+        const checkCartExist = await cartModel.findOne({ userId: userId })
+
+        if (checkCartExist) {
+            const checkProInCart = checkCartExist.items.find((item) => {
+                return item.productId.toString() == productId && item.size == size
+            })
+            if (checkProInCart) {
+                res.json({ proInCart: true })
+            }
+            else {
+                checkCartExist.items.push(items)
+                checkCartExist.totalPrice += items.subTotalPrice
+                await checkCartExist.save()
+                res.json({ success: true })
+            }
         } else {
+            const data = {
+                userId: userId,
+                items: [items],
+                totalPrice: parseFloat(price)
+            }
             const cartData = new cartModel(data)
-            const saveToCart = await cartData.save({})
+            const saveToCart = await cartData.save()
             if (saveToCart) {
                 res.json({ success: true })
             }
@@ -79,13 +95,15 @@ const addtocart = async (req, res) => {
     }
 }
 
+// view cart page
 const viewCart = async (req, res) => {
     try {
         const user = req.session.user
-        const cartData = await cartModel.find({ userId: user._id }).populate('items.0.productId')
-        res.render('user/page_cart', { user, cartData })
+        const cartData = await cartModel.findOne({ userId: user._id }).populate('items.productId')
+        res.render('user/page_cart', { user, cartData})
     } catch (error) {
         console.log(error);
+        res.render('user/page_cart', {user, cartData: null });
     }
 }
 

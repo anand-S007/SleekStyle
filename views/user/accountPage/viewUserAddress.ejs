@@ -203,9 +203,9 @@
                             <div class="col-md-8 d-flex gap-4">
                                 <div class="tab-content dashboard-content">
                                     <div id="address" role="tabpanel" aria-labelledby="address-tab">
-                                        <div class="row row-cols-1 row-cols-md-2 g-4"> <!-- Utilize Bootstrap grid classes -->
+                                        <div class="row row-cols-1 row-cols-md-2 g-4" style="min-width: 400px;max-width: 500px;"> 
                                             <% if(address){ %>
-                                                <% address.forEach((data)=>{ %>
+                                                <% address.addresses.forEach((data)=>{ %>
                                                     <div class="col"> <!--Each address occupies one column-->
                                                         <div class="card h-100">
                                                             <div class="card-header d-flex justify-content-between">
@@ -251,12 +251,14 @@
     </main>
     
    <script>
+    
     async function deleteAddress(addressId){
-        fetch(`/user_account/address/delete/${addressId}`,{
+        fetch(`/user_account/address`,{
             method:'DELETE',
             headers:{
                 'Content-Type':'application/json'
             },
+            body: JSON.stringify({addressId})
         })
         .then((res)=>{
             return res.json()

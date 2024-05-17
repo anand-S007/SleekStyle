@@ -136,13 +136,13 @@ function sizeLvalidate(){
 function imageValidate(){
     const images = image.files
     console.log('imgae is validating');
-    if(images.length<5 || images.length>5){
-        imageErr.style.display= 'block'
-        imageErr.innerHTML = '*Minimum and maximum 5 images should add'
-    }else{
-        imageErr.style.display= 'none'
-        imageErr.innerHTML = ''
-    }
+    // if(images.length<5 || images.length>5){
+    //     imageErr.style.display= 'block'
+    //     imageErr.innerHTML = '*Minimum and maximum 5 images should add'
+    // }else{
+    //     imageErr.style.display= 'none'
+    //     imageErr.innerHTML = ''
+    // }
 }
 
 productName.addEventListener('blur',nameValidate);

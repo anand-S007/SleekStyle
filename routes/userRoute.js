@@ -40,12 +40,12 @@ routes.get('/user_account/dashboard', isLogin, isBlocked, userController.viewUse
 
 // view user address route
 routes.get('/user_account/address', isLogin, isBlocked, userAddressController.viewAddress)
+// user delete address route
+routes.delete('/user_account/address', isLogin, isBlocked, userAddressController.deleteAddress)
 
 // view and add user address route
 routes.get('/user_account/add_address', isLogin, isBlocked, userAddressController.viewAddAddress)
 routes.post('/user_account/add_address', isLogin, isBlocked, userAddressController.addAddress)
-// user delete address route
-routes.delete('/user_account/address/delete/:id', isLogin, isBlocked, userAddressController.deleteAddress)
 
 // view and edit user address
 routes.get('/user_account/address/edit/:id', isLogin, isBlocked, userAddressController.viewEditAddress)
@@ -71,8 +71,13 @@ routes.get('/viewcart', isLogin, isBlocked, productController.viewCart)
 routes.get('/addToCart', productController.addtocart)
 // cart qty Inc or Dec
 routes.post('/viewcart/qtyInc', isLogin, isBlocked, cartController.cartQtyInc)
-routes.post('/viewcart/qtyDec',isLogin,isBlocked,cartController.cartQtyDec)
+routes.post('/viewcart/qtyDec', isLogin, isBlocked, cartController.cartQtyDec)
 // cart product delete
-routes.delete('/viewcart/productDelete',isLogin,isBlocked, cartController.productDelete)
+routes.delete('/viewcart/productDelete', isLogin, isBlocked, cartController.productDelete)
 
+// view checkout page
+routes.get('/checkout', isLogin, isBlocked, cartController.viewCheckout)
+
+// Edit user address in checkout page
+routes.get('/checkout/edit_address', isLogin, isBlocked)
 module.exports = routes
