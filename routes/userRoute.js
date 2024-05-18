@@ -9,6 +9,7 @@ const userAddressController = require('../controllers/userController/addressCont
 const userAccDetailsController = require('../controllers/userController/accountDetailsController')
 const cartController = require('../controllers/userController/cartController')
 const productController = require('../controllers/userController/productController')
+const orderController = require('../controllers/userController/userOrderController')
 
 
 // Home page route
@@ -77,7 +78,11 @@ routes.delete('/viewcart/productDelete', isLogin, isBlocked, cartController.prod
 
 // view checkout page
 routes.get('/checkout', isLogin, isBlocked, cartController.viewCheckout)
-
 // Edit user address in checkout page
-routes.get('/checkout/edit_address', isLogin, isBlocked)
+routes.get('/checkout/edit_address', isLogin, isBlocked,orderController.viewEditAddress)
+routes.put('/checkout/edit_address',isLogin,isBlocked,orderController.editAddress)
+// add user address in checkout page
+routes.get('/checkout/add_address',isLogin,isBlocked,orderController.viewAddAddress)
+routes.post('/checkout/add_address',isLogin,isBlocked,orderController.addAddress)
+
 module.exports = routes

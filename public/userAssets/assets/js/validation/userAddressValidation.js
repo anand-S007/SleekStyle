@@ -26,9 +26,9 @@ function nameValidate(e){
     }else if(!pattern.test(nameVal)){
         nameErr.style.display = 'block'
         nameErr.innerHTML = '*Type letters only'
-    }else if(nameVal.length<3 || nameVal.length>9){
+    }else if(nameVal.length<3 || nameVal.length>13){
         nameErr.style.display = 'block'
-        nameErr.innerHTML = '*Should contain min 3 or max 9 characters'
+        nameErr.innerHTML = '*Should contain min 3 or max 13 characters'
     }else{
         nameErr.style.display = 'none'
         nameErr.innerHTML = ''

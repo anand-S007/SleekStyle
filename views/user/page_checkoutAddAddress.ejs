@@ -1,6 +1,6 @@
-<%-include('../head')-%>
+<%-include('head')-%>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <%-include('../header')-%>
+    <%-include('header')-%>
         <div class="mobile-header-active mobile-header-wrapper-style">
             <div class="mobile-header-wrapper-inner">
                 <div class="mobile-header-top">
@@ -146,15 +146,6 @@
                                         <li><a href="page-404.html">404 Page</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="#">Language</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">French</a></li>
-                                        <li><a href="#">German</a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                    </ul>
-                                </li>
                             </ul>
                         </nav>
                         <!-- mobile menu end -->
@@ -164,7 +155,7 @@
                             <a href="page-contact.html"> Our location </a>
                         </div>
                         <div class="single-mobile-header-info">
-                            <a href="page-login-register.html">Log In / Sign Up </a>
+                            <a href="/login">Log In / Sign Up </a>
                         </div>
                         <div class="single-mobile-header-info">
                             <a href="#">(+01) - 2345 - 6789 </a>
@@ -195,55 +186,19 @@
                     <div class="row">
                         <div class="col-lg-10 m-auto">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="dashboard-menu">
-                                        <ul class="nav flex-column" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link " href="/user_account/dashboard"><i
-                                                        class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link " id="orders-tab" data-bs-toggle="tab"
-                                                    href="/user_account/orders" role="tab" aria-controls="orders"
-                                                    aria-selected="false"><i
-                                                        class="fi-rs-shopping-bag mr-10"></i>Orders</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
-                                                    href="/user_account/track_orders" role="tab"
-                                                    aria-controls="track-orders" aria-selected="false"><i
-                                                        class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link  active" href="/user_account/address"><i
-                                                        class="fi-rs-marker mr-10"></i>My Address</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
-                                                    href="user_account/user_details" role="tab"
-                                                    aria-controls="account-detail" aria-selected="true"><i
-                                                        class="fi-rs-user mr-10"></i>Account details</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="/logout"><i
-                                                        class="fi-rs-sign-out mr-10"></i>Logout</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
+                                <div class="col-md-8" style="display: contents;">
                                     <div id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Add user address</h5>
+                                                <h5>Add new address</h5>
                                             </div>
                                             <div class="card-body">
                                                 <form id="formData">
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
                                                             <label>Name <span class="required">*</span></label>
-                                                            <input id="nameId" class="form-control square" name="name"
-                                                                type="text">
+                                                            <input id="nameId" class="form-control square" value="%>"
+                                                                name="name" type="text">
                                                             <p>
                                                             <div id="name_error" style="display: none;"
                                                                 class="text-danger"></div>
@@ -253,7 +208,7 @@
                                                             <label>10 digit phone number <span
                                                                     class="required">*</span></label>
                                                             <input id="mobileId" class="form-control square"
-                                                                name="phone" type="number">
+                                                                value="' %>" name="phone" type="number">
                                                             <p>
                                                             <div id="phone_error" style="display: none;"
                                                                 class="text-danger"></div>
@@ -261,8 +216,8 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Pincode <span class="required">*</span></label>
-                                                            <input id="pincodeId" class="form-control square"
-                                                                name="pincode" type="number">
+                                                            <input id="pincodeId" class="form-control square" value=""
+                                                                %>" name="pincode" type="number">
                                                             <p>
                                                             <div id="pincode_error" style="display: none;"
                                                                 class="text-danger"></div>
@@ -270,7 +225,7 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Locality <span class="required">*</span></label>
-                                                            <input id="localityId" class="form-control square"
+                                                            <input id="localityId" class="form-control square" value=""
                                                                 name="locality" type="text">
                                                             <p>
                                                             <div id="locality_error" style="display: none;"
@@ -278,7 +233,7 @@
                                                             </p>
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Address(Area and Locality) <span
+                                                            <label>address(Area and Locality) <span
                                                                     class="required">*</span></label>
                                                             <textarea id="addressId" class="square" name="address"
                                                                 type="text"></textarea>
@@ -289,7 +244,7 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>District <span class="required">*</span></label>
-                                                            <input id="districtId" class="form-control square"
+                                                            <input id="districtId" class="form-control square" value=""
                                                                 name="district" type="text">
                                                             <p>
                                                             <div id="district_error" style="display: none;"
@@ -298,8 +253,8 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>State <span class="required">*</span></label>
-                                                            <input id="stateId" class="form-control square" name="state"
-                                                                type="text">
+                                                            <input id="stateId" class="form-control square" value=" "
+                                                                name="state" type="text">
                                                             <p>
                                                             <div id="state_error" style="display: none;"
                                                                 class="text-danger"></div>
@@ -322,9 +277,12 @@
             </section>
         </main>
 
-        <script src="../../../public/userAssets/assets/js/validation/userAddressValidation.js"></script>
+        <script src="/public/userAssets/assets/js/validation/userAddressValidation.js"></script>
+
+        <!----- fetch script tag-------->
         <script>
             document.getElementById('formData').addEventListener('submit', async (e) => {
+                console.log('entry');
                 e.preventDefault()
                 nameValidate()
                 mobileValidate()
@@ -354,7 +312,7 @@
                     state: formData.get('state')
                 };
                 console.log('asdfasdfsa', data);
-                await fetch('/user_account/add_address', {
+                await fetch('/checkout/add_address', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -383,7 +341,7 @@
                                     })
                                         .then((result) => {
                                             if (result.isConfirmed) {
-                                                window.location.href = '/user_account/address'
+                                                window.location.href = '/checkout'
                                             }
                                         })
                                 }
@@ -402,4 +360,5 @@
             })
         </script>
 
-        <%-include('../foot') %>
+
+        <%-include('foot') %>

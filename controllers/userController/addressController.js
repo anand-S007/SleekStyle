@@ -9,7 +9,7 @@ const viewAddress = async (req, res) => {
             let count = 1
             res.render('user/accountPage/viewUserAddress', { user, address: address, count })
         } else {
-            res.render('user/accountPage/viewUserAddress', { user, address: null, count })
+            res.render('user/accountPage/viewUserAddress', { user, address: null, count:null })
         }
     } catch (error) {
         console.log('error found while viewing user address', error);
@@ -37,7 +37,6 @@ const addAddress = async (req, res) => {
                 res.json({ addressExistError: 'Address already exists' })
             } else {
                 checkUserExist.addresses.push({ name, mobile: phone, pincode, locality, address, district, state })
-                // const user_address = new userAddress({ name, mobile: phone, pincode, locality, address, district, state })
                 const saveAddress = await checkUserExist.save()
                 if (saveAddress) {
                     res.json({ success: true })
@@ -106,7 +105,6 @@ const editAddress = async (req, res) => {
     try {
         const addressId = req.params.id
         const { name, phone, pincode, locality, address, district, state } = req.body
-        console.log(req.body);
         const newAddress = { name, mobile: phone, pincode, locality, address, district, state }
         const userAddresses = await userAddress.findOne({ userId: req.session.user._id })
         const addressIndex = userAddresses.addresses.findIndex((data) => data._id == addressId)
@@ -114,9 +112,10 @@ const editAddress = async (req, res) => {
         const updatedAddress = await userAddresses.save()
         if (updatedAddress) {
             res.status(200).json({ success: true, message: "Address updated successfully" });
-        } else {
-            res.status(404).json({ success: false, message: "Address not found" });
         }
+        // else {
+        //     res.status(404).json({ success: false, message: "Address not found" });
+        // }
     } catch (error) {
         console.log(error);
     }
