@@ -1,4 +1,9 @@
 const userAddress = require('../../models/user/userAddressModel')
+const cartModel = require('../../models/user/cartSchema')
+const productModel = require('../../models/admin/productSchema')
+const orderModel = require('../../models/user/orderModel')
+const { v4: uuidv4 } = require('uuid')
+const uuid = uuidv4()
 
 const viewEditAddress = async (req, res) => {
     const addressId = req.query.addressId
@@ -28,21 +33,21 @@ const editAddress = async (req, res) => {
     }
 }
 
-const viewAddAddress = async(req,res)=>{
+const viewAddAddress = async (req, res) => {
     try {
         const userId = req.query.userId
         const user = req.session.user
-        if(userId == user._id){
-            res.render('user/page_checkoutAddAddress',{user,userId})
-        }else{
+        if (userId == user._id) {
+            res.render('user/page_checkoutAddAddress', { user, userId })
+        } else {
             res.render('user/404_page')
         }
     } catch (error) {
-        
+
     }
 }
 
-const addAddress = async(req,res)=>{
+const addAddress = async (req, res) => {
     try {
         const { name, phone, pincode, locality, address, district, state } = req.body
         console.log(req.body);
@@ -88,9 +93,81 @@ const addAddress = async(req,res)=>{
     }
 }
 
+const placeOrder = async (req, res) => {
+    try {
+        const user = req.session.user
+        const { cartId, selectedAddressId, paymentMethod } = req.body
+        if (!cartId == '') {
+            const cartData = await cartModel.findOne({ _id: cartId }).populate('items.productId')
+            if (paymentMethod == 'cod') {
+                const addressData = await userAddress.findOne({ userId: req.session.user._id })
+                const deliveryAddress = addressData.addresses.find((data) => {
+                    return data._id == selectedAddressId
+                })
+                const userOrder = await orderModel.findOne({ userId: user._id })
+
+                const orderItems = cartData.items.map((item) => {
+                    return {
+                        productId: item._id,
+                        name: item.productId.title,
+                        description: item.productId.description,
+                        size: item.size,
+                        quantity: item.quantity,
+                        proPrice: item.proPrice,
+                    }
+                })
+                const newOrder = {
+                    products: orderItems,
+                    address: {
+                        name: deliveryAddress.name,
+                        mobile: deliveryAddress.mobile,
+                        pincode: deliveryAddress.pincode,
+                        locality: deliveryAddress.locality,
+                        address: deliveryAddress.address,
+                        district: deliveryAddress.district,
+                        state: deliveryAddress.state
+                    },
+                    paymentMethod: 'cod',
+                    totalPrice: cartData.totalPrice,
+                    status: 'successfull',
+                    orderId: uuid
+                }
+
+                if (userOrder) {
+                    userOrder.orders.push(newOrder)
+                    await userOrder.save()
+                }
+                else {
+                    const newOrderDocument = new orderModel({
+                        userId: user._id,
+                        userEmail: user.email,
+                        orders: [newOrder],
+                    })
+                    await newOrderDocument.save();
+                }
+                let stockUpdate
+                for (const item of cartData.items) {
+                    const sizeField = `size.${item.size}.quantity`
+                    stockUpdate = await productModel.updateOne(
+                        { _id: item.productId._id },
+                        { $inc: { [sizeField]: -item.quantity } }
+                    )
+                }
+                await cartModel.deleteOne({ userId: user._id })
+
+                res.json({ success: true, message: 'Order is successfully placed' })
+            }
+        } else {
+            res.json({ message: 'no products' })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {
     viewEditAddress,
     editAddress,
     viewAddAddress,
     addAddress,
+    placeOrder,
 }

@@ -75,9 +75,12 @@ routes.post('/viewcart/qtyInc', isLogin, isBlocked, cartController.cartQtyInc)
 routes.post('/viewcart/qtyDec', isLogin, isBlocked, cartController.cartQtyDec)
 // cart product delete
 routes.delete('/viewcart/productDelete', isLogin, isBlocked, cartController.productDelete)
+routes.get('/check_dataInCart',isLogin,isBlocked,cartController.checkDataInCart)
 
 // view checkout page
 routes.get('/checkout', isLogin, isBlocked, cartController.viewCheckout)
+
+routes.post('/checkout',isLogin,isBlocked,orderController.placeOrder)
 // Edit user address in checkout page
 routes.get('/checkout/edit_address', isLogin, isBlocked,orderController.viewEditAddress)
 routes.put('/checkout/edit_address',isLogin,isBlocked,orderController.editAddress)

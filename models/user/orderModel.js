@@ -6,73 +6,77 @@ const orderSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
-    products: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'product'
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            reqiured: true
-        },
-        category: {
-            type: String,
-            reqiured: true
-        },
-        size: {
-            type: String,
-            reqiured: true
-        },
-        quantity: {
-            type: Number,
-            required: true,
-        },
-        proPrice: {
-            type: Number,
-            required: true
-        },
-    }],
-    address: {
-        name: {
-            type: String,
-            required: true
-        },
-        mobile: {
-            type: Number,
-            required: true
-        },
-        pincode: {
-            type: Number,
-            required: true
-        },
-        locality: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String,
-            required: true
-        },
-        district: {
-            type: String,
-            required: true
-        },
-        state: {
-            type: String,
-            required: true,
-        }
+    userEmail: {
+        type: String,
+        required: true,
     },
-    order: {
+    orders: [{
+        products: [{
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'product'
+            },
+            name: {
+                type: String,
+                required: true,
+            },
+            description: {
+                type: String,
+                reqiured: true
+            },
+            size: {
+                type: String,
+                reqiured: true
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            proPrice: {
+                type: Number,
+                required: true
+            },
+        }],
+        address: {
+            name: {
+                type: String,
+                required: true
+            },
+            mobile: {
+                type: Number,
+                required: true
+            },
+            pincode: {
+                type: Number,
+                required: true
+            },
+            locality: {
+                type: String,
+                required: true
+            },
+            address: {
+                type: String,
+                required: true
+            },
+            district: {
+                type: String,
+                required: true
+            },
+            state: {
+                type: String,
+                required: true,
+            }
+        },
         paymentMethod: {
             type: String,
             required: true,
         },
+        totalPrice: {
+            
+        },
         status: {
             type: String,
+            default: 'processing',
             required: true,
         },
         orderId: {
@@ -83,7 +87,8 @@ const orderSchema = new mongoose.Schema({
             type: Date,
             default: Date.now()
         }
-    }
+    }]
 });
 
 const orderModel = new mongoose.model('order', orderSchema)
+module.exports = orderModel

@@ -84,7 +84,7 @@ const productDelete = async (req, res) => {
         const itemToRemove = cartData.items.id(cartProId)
         const itemSubtotalPrice = itemToRemove.subTotalPrice
         cartData.totalPrice -= itemSubtotalPrice
-        cartData.items.pull({_id:cartProId})
+        cartData.items.pull({ _id: cartProId })
         await cartData.save()
 
         console.log(cartData);
@@ -95,18 +95,28 @@ const productDelete = async (req, res) => {
     }
 }
 
+// checking product in cart
+const checkDataInCart = async (req, res) => {
+    const cartData = await cartModel.findOne({ userId: req.session.user._id })
+    if (cartData && cartData.items.length > 0) {
+        res.json({ success: true })
+    } else {
+        res.json({ success: false, message: 'Cart is empty!Add product to cart ' })
+    }
+}
+
 // view checkout page
-const viewCheckout = async(req,res)=>{
+const viewCheckout = async (req, res) => {
     const user = req.session.user
-    const cartData = await cartModel.findOne({userId:req.session.user._id}).populate('items.productId')
-    console.log(cartData.items[0].productId.image);
-    const user_address = await userAddress.findOne({userId:user._id})
-    res.render('user/page_checkout',{user,cartData,user_address})
+    const cartData = await cartModel.findOne({ userId: req.session.user._id }).populate('items.productId')
+    const user_address = await userAddress.findOne({ userId: user._id })
+    res.render('user/page_checkout', { user, cartData, user_address })
 }
 
 module.exports = {
     cartQtyInc,
     cartQtyDec,
     productDelete,
-    viewCheckout
+    viewCheckout,
+    checkDataInCart,
 }
