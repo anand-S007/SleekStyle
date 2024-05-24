@@ -1,7 +1,7 @@
 const express = require('express')
 const routes = express.Router()
 
-const { isLogout, isLogin } = require('../middlewares/users/userSession')
+const { isLogout, isLogin, checkCartData } = require('../middlewares/users/userSession')
 const isBlocked = require('../middlewares/users/isBlock')
 const userAuthController = require('../controllers/userController/userAuthController')
 const userController = require('../controllers/userController/userController')
@@ -20,7 +20,10 @@ routes.get('/login', userAuthController.viewUserLogin)
 routes.post('/login', isLogout, userAuthController.userLogin)
 
 // Forgot password route
-routes.get('/login/forgot_password', isLogout, userAuthController.viewForgotPass)
+routes.get('/forgot_password', isLogout, userAuthController.viewForgotPass)
+routes.post('/forgot_password', isLogout, userAuthController.forgotPass)
+routes.get('/forgot_password/otpVerify', isLogout, userAuthController.viewForgPassOtpVerify)
+routes.post('/forgot_password/otpVerify', isLogout)
 
 // Signup route
 routes.get('/signup', isLogout, userAuthController.viewUserSignup)
@@ -59,6 +62,12 @@ routes.get('/user_account/user_details', isLogin, isBlocked, userAccDetailsContr
 routes.get('/user_account/user_details/edit', isLogin, isBlocked, userAccDetailsController.viewEditUserAccDetails)
 routes.put('/user_account/user_details/edit', isLogin, isBlocked, userAccDetailsController.editUserAccDetails)
 
+// view order details in user account
+routes.get('/user_account/orderList', isLogin, isBlocked, orderController.viewOrderList)
+routes.get('/user_account/orderDetails', isLogin, isBlocked ,orderController.viewOrderDetails)
+
+routes.put('/user_account/orderDetails/cancelOrder', isLogin,isBlocked ,orderController.cancelOrder)
+
 // view shop page route
 routes.get('/shop', userController.viewShopPage)
 routes.get('/shop/category', userController.viewCategoryPage)
@@ -75,17 +84,16 @@ routes.post('/viewcart/qtyInc', isLogin, isBlocked, cartController.cartQtyInc)
 routes.post('/viewcart/qtyDec', isLogin, isBlocked, cartController.cartQtyDec)
 // cart product delete
 routes.delete('/viewcart/productDelete', isLogin, isBlocked, cartController.productDelete)
-routes.get('/check_dataInCart',isLogin,isBlocked,cartController.checkDataInCart)
+routes.get('/check_dataInCart', isLogin, isBlocked, cartController.checkDataInCart)
 
 // view checkout page
-routes.get('/checkout', isLogin, isBlocked, cartController.viewCheckout)
-
-routes.post('/checkout',isLogin,isBlocked,orderController.placeOrder)
+routes.get('/checkout', isLogin, isBlocked, checkCartData, cartController.viewCheckout)
+routes.post('/checkout', isLogin, isBlocked, checkCartData, orderController.placeOrder)
 // Edit user address in checkout page
-routes.get('/checkout/edit_address', isLogin, isBlocked,orderController.viewEditAddress)
-routes.put('/checkout/edit_address',isLogin,isBlocked,orderController.editAddress)
+routes.get('/checkout/edit_address', isLogin, isBlocked, orderController.viewEditAddress)
+routes.put('/checkout/edit_address', isLogin, isBlocked, orderController.editAddress)
 // add user address in checkout page
-routes.get('/checkout/add_address',isLogin,isBlocked,orderController.viewAddAddress)
-routes.post('/checkout/add_address',isLogin,isBlocked,orderController.addAddress)
-
+routes.get('/checkout/add_address', isLogin, isBlocked, orderController.viewAddAddress)
+routes.post('/checkout/add_address', isLogin, isBlocked, orderController.addAddress)
+routes.get('/checkout/orderSuccess', isLogin, isBlocked, orderController.orderSuccess)
 module.exports = routes

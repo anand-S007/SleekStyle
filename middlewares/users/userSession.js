@@ -18,6 +18,14 @@ const isLogin = (req,res,next)=>{
     }
 }
 
+const checkCartData = (req,res,next)=>{
+    if(req.session.cartData){
+        next()
+    }else{
+        res.redirect('/viewcart')
+    }
+}
 
 
-module.exports = {isLogout,isLogin}
+
+module.exports = {isLogout,isLogin,checkCartData}

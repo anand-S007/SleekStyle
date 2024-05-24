@@ -3,7 +3,8 @@ const cartModel = require('../../models/user/cartSchema')
 const productModel = require('../../models/admin/productSchema')
 const orderModel = require('../../models/user/orderModel')
 const { v4: uuidv4 } = require('uuid')
-const uuid = uuidv4()
+const { populate } = require('dotenv')
+
 
 const viewEditAddress = async (req, res) => {
     const addressId = req.query.addressId
@@ -93,27 +94,42 @@ const addAddress = async (req, res) => {
     }
 }
 
+// place order
 const placeOrder = async (req, res) => {
     try {
         const user = req.session.user
         const { cartId, selectedAddressId, paymentMethod } = req.body
+        const uuid = uuidv4()
+        const truncateUuid = uuid.substring(0, 6)
+
         if (!cartId == '') {
-            const cartData = await cartModel.findOne({ _id: cartId }).populate('items.productId')
+            // const cartData = await cartModel.findOne({ _id: cartId }).populate('items.productId')
+            const cartData = await cartModel.findOne({ _id: cartId })
+                .populate({
+                    path: 'items.productId',
+                    populate: {
+                        path: 'category',
+                        model: 'category'
+                    }
+                })
+                .exec();
             if (paymentMethod == 'cod') {
                 const addressData = await userAddress.findOne({ userId: req.session.user._id })
                 const deliveryAddress = addressData.addresses.find((data) => {
                     return data._id == selectedAddressId
                 })
                 const userOrder = await orderModel.findOne({ userId: user._id })
-
                 const orderItems = cartData.items.map((item) => {
                     return {
                         productId: item._id,
                         name: item.productId.title,
                         description: item.productId.description,
+                        category: item.productId.category.name,
+                        image: item.productId.image[0],
                         size: item.size,
                         quantity: item.quantity,
                         proPrice: item.proPrice,
+                        subTotalPrice: item.subTotalPrice
                     }
                 })
                 const newOrder = {
@@ -129,8 +145,8 @@ const placeOrder = async (req, res) => {
                     },
                     paymentMethod: 'cod',
                     totalPrice: cartData.totalPrice,
-                    status: 'successfull',
-                    orderId: uuid
+                    status: 'processing',
+                    orderId: `ORD${truncateUuid}`
                 }
 
                 if (userOrder) {
@@ -145,10 +161,9 @@ const placeOrder = async (req, res) => {
                     })
                     await newOrderDocument.save();
                 }
-                let stockUpdate
                 for (const item of cartData.items) {
                     const sizeField = `size.${item.size}.quantity`
-                    stockUpdate = await productModel.updateOne(
+                    await productModel.updateOne(
                         { _id: item.productId._id },
                         { $inc: { [sizeField]: -item.quantity } }
                     )
@@ -156,6 +171,7 @@ const placeOrder = async (req, res) => {
                 await cartModel.deleteOne({ userId: user._id })
 
                 res.json({ success: true, message: 'Order is successfully placed' })
+                delete req.session.cartData
             }
         } else {
             res.json({ message: 'no products' })
@@ -164,10 +180,68 @@ const placeOrder = async (req, res) => {
         console.log(error);
     }
 }
+
+const orderSuccess = async (req, res) => {
+    try {
+        res.render('user/orderSuccess')
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// view order details
+const viewOrderList = async (req, res) => {
+    try {
+        user = req.session.user
+        const orderData = await orderModel.findOne({ userId: user._id }).sort({ "orders._id": -1 })
+        console.log('orderData', orderData);
+        if (orderData) {
+            res.render('user/accountPage/page_ordersList', { user, orderData })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const viewOrderDetails = async (req, res) => {
+    try {
+        const user = req.session.user
+        const  orderId  = req.query.orderId
+        console.log(orderId);
+        const orders = await orderModel.findOne({ userId: user._id }).populate('userId')
+        const orderDetails = orders.orders.find(data => data._id == orderId)
+        if (orderDetails) {
+            res.render('user/accountPage/page_orderDetails', { user, orderDetails, orderId })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const cancelOrder = async(req,res) =>{
+    try {
+        const orderId = req.body.orderId
+        const user = req.session.user
+        const userOrderData = await orderModel.findOne({userId:user._id})
+        const orders = userOrderData.orders.find(data=>data._id == orderId)
+        if(orders){
+            orders.status = 'Cancel'
+            await userOrderData.save()
+            res.json({success:true})
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     viewEditAddress,
     editAddress,
     viewAddAddress,
     addAddress,
     placeOrder,
+    viewOrderList,
+    orderSuccess,
+    viewOrderDetails,
+    cancelOrder
 }

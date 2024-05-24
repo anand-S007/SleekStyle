@@ -1,5 +1,5 @@
 <%-include('../head')-%>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <%-include('../header')-%>
         <div class="mobile-header-active mobile-header-wrapper-style">
             <div class="mobile-header-wrapper-inner">
@@ -199,28 +199,25 @@
                                     <div class="dashboard-menu">
                                         <ul class="nav flex-column" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link " href="/user_account/dashboard"><i
+                                                <a class="nav-link" href="/user_account/dashboard"><i
                                                         class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link " id="orders-tab" data-bs-toggle="tab"
-                                                    href="/user_account/orderList" role="tab" aria-controls="orders"
-                                                    aria-selected="false"><i
+                                                <a class="nav-link active" href="/user_account/orderList" role="tab"
+                                                    aria-controls="orders" aria-selected="false"><i
                                                         class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
-                                                    href="/user_account/track_orders" role="tab"
+                                                <a class="nav-link" href="/user_account/track_orders" role="tab"
                                                     aria-controls="track-orders" aria-selected="false"><i
                                                         class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link  active" href="/user_account/address"><i
+                                                <a class="nav-link " href="/user_account/address"><i
                                                         class="fi-rs-marker mr-10"></i>My Address</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
-                                                    href="user_account/user_details" role="tab"
+                                                <a class="nav-link" href="/user_account/user_details" role="tab"
                                                     aria-controls="account-detail" aria-selected="true"><i
                                                         class="fi-rs-user mr-10"></i>Account details</a>
                                             </li>
@@ -232,85 +229,54 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Add user address</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <form id="formData">
-                                                    <div class="row">
-                                                        <div class="form-group col-md-6">
-                                                            <label>Name <span class="required">*</span></label>
-                                                            <input id="nameId" class="form-control square" name="name"
-                                                                type="text">
-                                                            <p>
-                                                            <div id="name_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>10 digit phone number <span
-                                                                    class="required">*</span></label>
-                                                            <input id="mobileId" class="form-control square"
-                                                                name="phone" type="number">
-                                                            <p>
-                                                            <div id="phone_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>Pincode <span class="required">*</span></label>
-                                                            <input id="pincodeId" class="form-control square"
-                                                                name="pincode" type="number">
-                                                            <p>
-                                                            <div id="pincode_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>Locality <span class="required">*</span></label>
-                                                            <input id="localityId" class="form-control square"
-                                                                name="locality" type="text">
-                                                            <p>
-                                                            <div id="locality_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Address(Area and Locality) <span
-                                                                    class="required">*</span></label>
-                                                            <textarea id="addressId" class="square" name="address"
-                                                                type="text"></textarea>
-                                                            <p>
-                                                            <div id="address_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>District <span class="required">*</span></label>
-                                                            <input id="districtId" class="form-control square"
-                                                                name="district" type="text">
-                                                            <p>
-                                                            <div id="district_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>State <span class="required">*</span></label>
-                                                            <input id="stateId" class="form-control square" name="state"
-                                                                type="text">
-                                                            <p>
-                                                            <div id="state_error" style="display: none;"
-                                                                class="text-danger"></div>
-                                                            </p>
-                                                        </div>
+                                    <div class="tab-content dashboard-content">
+                                        <div class="tab-pane fade active show" id="orders" role="tabpanel"
+                                            aria-labelledby="orders-tab">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">Your Orders</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Order</th>
+                                                                    <th>Order Date</th>
+                                                                    <th>Status</th>
+                                                                    <th>Total</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <%if(orderData){ %>
+                                                                    <!-- <% orderData.orders.forEach((item)=>{ %> -->
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%=item.orderId %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%=new
+                                                                                Date(item.createdAt).toLocaleDateString()
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%=item.status %>
+                                                                        </td>
+                                                                        <td>Rs <%=item.totalPrice %>
+                                                                        </td>
+                                                                        <td class="d-flex gap-3 justify-content-center">
+                                                                            <a href="/user_account/orderDetails?orderId=<%=item._id %>">View</a>
+                                                                            <a href="#" class="text-danger">Cancel</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <!-- <% }) %> -->
+                                                                    <% } %>
+
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <button type="submit" class="btn btn-fill-out submit"
-                                                            name="submit" value="Submit">Save</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -322,84 +288,5 @@
             </section>
         </main>
 
-        <script src="../../../public/userAssets/assets/js/validation/userAddressValidation.js"></script>
-        <script>
-            document.getElementById('formData').addEventListener('submit', async (e) => {
-                e.preventDefault()
-                nameValidate()
-                mobileValidate()
-                pincodeValidate()
-                localityValidate()
-                addressValidate()
-                districtValidate()
-                stateValidate()
-                if (nameErr.style.display == 'block' ||
-                    mobileErr.style.display == 'block' ||
-                    pincodeErr.style.display == 'block' ||
-                    localityErr.style.display == 'block' ||
-                    addressErr.style.display == 'block' ||
-                    districtErr.style.display == 'block' ||
-                    stateErr.style.display == 'block') {
-                    console.log('entered default');
-                    return
-                }
-                const formData = new FormData(e.target);
-                const data = {
-                    name: formData.get('name'),
-                    phone: formData.get('phone'),
-                    pincode: formData.get('pincode'),
-                    locality: formData.get('locality'),
-                    address: formData.get('address'),
-                    district: formData.get('district'),
-                    state: formData.get('state')
-                };
-                console.log('asdfasdfsa', data);
-                await fetch('/user_account/add_address', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then((res) => {
-                        return res.json()
-                    })
-                    .then((res) => {
-                        if (res.success) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, Save it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                        title: "Saved!",
-                                        text: "Address has been saved.",
-                                        icon: "success",
-                                        showConfirmButton: true,
-                                    })
-                                        .then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.href = '/user_account/address'
-                                            }
-                                        })
-                                }
-                            })
-                        } else if (res.addressExistError) {
-                            const addressError = document.getElementById('address_error')
-                            addressError.style.display = 'block'
-                            addressError.innerHTML = res.addressExistError
-                        } else {
-                            console.log('error while saving user delivery address');
-                        }
-                    })  
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            })
-        </script>
 
         <%-include('../foot') %>

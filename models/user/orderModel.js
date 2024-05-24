@@ -24,6 +24,13 @@ const orderSchema = new mongoose.Schema({
                 type: String,
                 reqiured: true
             },
+            category: {
+                type: String,
+            },
+            image: {
+                type: String,
+                required: true,
+            },
             size: {
                 type: String,
                 reqiured: true
@@ -36,6 +43,10 @@ const orderSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             },
+            subTotalPrice: {
+                type: Number,
+                required: true
+            }
         }],
         address: {
             name: {
@@ -72,12 +83,11 @@ const orderSchema = new mongoose.Schema({
             required: true,
         },
         totalPrice: {
-            
+
         },
         status: {
             type: String,
-            default: 'processing',
-            required: true,
+            default: 'proccessing',
         },
         orderId: {
             type: String,

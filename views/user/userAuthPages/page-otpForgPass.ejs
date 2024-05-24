@@ -131,8 +131,7 @@
 
                                     <div></div>
                                     <div class="form-group">
-                                        <input required="" type="number" name="otp_verify" placeholder="otp verify"
-                                            id="otpId">
+                                        <input required="" type="number" name="otp_verify" placeholder="otp verify" id="otpId">
                                     </div>
                                     <div class="login_footer form-group">
                                         <div>
@@ -144,7 +143,6 @@
                                             <p id="timer" style="display: block;"><span id="countdown">60</span> seconds
                                             </p>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
                                         <button type="button" class="btn btn-fill-out btn-block hover-up" name="login"
@@ -224,14 +222,14 @@
 
     <script>
         const verifyBtn = document.getElementById('verify_btn');
-
         const otpError = document.getElementById('otp_error')
+
         verifyBtn.addEventListener('click', async (event) => {
             try {
                 const verifyOtp = document.getElementById('otpId').value
                 event.preventDefault()
                 console.log('otpVerify', verifyOtp);
-                await fetch('/otp-verify', {
+                await fetch('/forgot_password/otpVerify', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

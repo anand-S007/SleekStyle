@@ -137,6 +137,9 @@ function confirmPasswordValidate(){
     }else if(confimrPasswordValue !== password.value){
         confirmPasswordError.style.display = 'block'
         confirmPasswordError.innerHTML = '*password not match'
+    }else{
+        confirmPasswordError.innerHTML = ''
+        confirmPasswordError.style.display = 'none'
     }
 }
 

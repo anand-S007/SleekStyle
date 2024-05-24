@@ -243,14 +243,6 @@
             try {
                 e.preventDefault()
 
-                const fnameError = document.getElementById('fname_error')
-                const lnameError = document.getElementById('lname_error')
-                const emailError = document.getElementById('email_error')
-                const mobileError = document.getElementById('mobile_error')
-                const dobError = document.getElementById('dob_error')
-                const confirmPasswordError = document.getElementById('confirmPassword_error')
-                const passwordError = document.getElementById('password_error')
-
                 fnameValidate()
                 lnameValidate()
                 emailValidate()
@@ -269,7 +261,6 @@
                 }
 
                 const formData = new FormData(event.target)
-                // const email = formData.get('email')
                 const response = await fetch('/signup', {
                     method: 'POST',
                     headers: {
@@ -277,11 +268,7 @@
                     },
                     body: JSON.stringify(Object.fromEntries(formData))
                 })
-                console.log('hello baby');
                 const data = await response.json()
-                console.log(data);
-                // const emailError = document.getElementById('email_error')
-                // const confirmPasswordError = document.getElementById('confirmPassword_error')                
                 if (response.status == 400) {
                     emailError.style.display = 'block'
                     emailError.textContent = data.error;

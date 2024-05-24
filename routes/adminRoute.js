@@ -7,6 +7,7 @@ const adminAuthController = require('../controllers/adminController/adminAuthCon
 const adminUserController = require('../controllers/adminController/adminUserController')
 const adminProductController = require('../controllers/adminController/adminProductController')
 const adminCategoreyController = require('../controllers/adminController/adminCategoryController')
+const adminOrderController = require('../controllers/adminController/adminOrderController')
 
 routes.get('/', sessionMiddlewares.isLogin, dashboardController.viewDashBoard)
 
@@ -39,5 +40,9 @@ routes.post('/productsList/editProduct/deleteImage', sessionMiddlewares.isLogin,
 routes.get('/productsList/editProduct/:id', sessionMiddlewares.isLogin, adminProductController.viewEditProduct)
 routes.post('/productsList/editProduct/:id', sessionMiddlewares.isLogin, uploads.array('image'), adminProductController.editProduct)
 
-
+// view order List
+routes.get('/orderList',sessionMiddlewares.isLogin,adminOrderController.viewOrderList)
+//order detals page
+routes.get('/orderList/orderDetail',sessionMiddlewares.isLogin,adminOrderController.viewOrderDetail)
+routes.put('/orderList/orderDetail',sessionMiddlewares.isLogin,adminOrderController.changeStatus)
 module.exports = routes
