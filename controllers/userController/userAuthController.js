@@ -67,7 +67,9 @@ const forgotPassOtpVerify = async (req, res) => {
         const otp = req.body.otp
         const forgPassOtp = req.session.forgPassOtp
         if (otp == forgPassOtp) {
-            
+            res.json({success:true,message:'Verified successfully!'})
+        }else{
+            res.json({error:true,message:'Otp is not valid/expired!'})
         }
     } catch (error) {
         console.log(error);
@@ -207,6 +209,13 @@ const viewOtpVarify = async (req, res) => {
     }
 }
 
+const viewForgConfirmPass = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // user otp verification
 const otpVerification = async (req, res) => {
@@ -269,4 +278,5 @@ module.exports = {
     resendOtp,
     forgotPass,
     viewForgPassOtpVerify,
+    forgotPassOtpVerify,
 }

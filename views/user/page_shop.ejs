@@ -662,6 +662,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        async function searchBtn(){
+            const searchId = document.getElementById('searchId')
+            const searchVal = searchId.value
+            await fetch(`/shop?search=${searchVal}`)
+        }
+    </script>
+
     <!-- Vendor JS-->
     <script src="/public/userAssets/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/public/userAssets/assets/js/vendor/jquery-3.6.0.min.js"></script>

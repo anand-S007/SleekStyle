@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Sleek Style coupons</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+
+    <!-----Side menu bar included -->
+    <%-include('../sideMenubar')-%>
+
+        <main class="main-wrap">
+
+            <!-----Nav bar included----- -->
+            <%-include('../navbar')-%>
+
+                <section class="content-main">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="content-header">
+                                <h2 class="content-title">Create coupon</h2>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4>Details</h4>
+                                </div>
+                                <form method="post" action="/admin/createCoupon" id="productForm">
+                                <div class="card-body">
+                                    
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Coupon Code</label>
+                                        <input type="text" placeholder="Type here" class="form-control"
+                                            id="product_name" name="productName">
+                                        <p>
+                                        <div style="display: none;" id="nameError" class="text-danger"></div>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Expriy Date</label>
+                                            <input id="expiryDateId" name="expiryDate" type="date" class="form-control">
+                                            <p>
+                                            <div style="display: none;" id="expiryDateErr" class="text-danger"></div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Discount percentage</label>
+                                        <input type="number" placeholder="Type here" class="form-control w-50"
+                                            oninput="digitLimit(this)" max="3">
+                                        <p>
+                                        <div style="display: none;" id="discountErr" class="text-danger"></div>
+                                        </p>
+                                    </div>
+
+                                    <div class="mb-4 d-flex">
+                                        <div>
+                                            <label class="form-label">Min purchase amount</label>
+                                            <input type="number" name="minPurchase" class="form-control w-75"
+                                                id="minPurchaseId">
+                                            <p>
+                                            <div style="display: none;" id="minPurchaseErr" class="text-danger"></div>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Max discount amount</label>
+                                            <input type="number" name="maxDiscount" class="form-control w-75"
+                                                id="maxDiscountId">
+                                            <p>
+                                            <div style="display: none;" id="maxDiscountErr" class="text-danger"></div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+
+                        <!-- </form>end -->
+                    </div>
+                </section> <!-- content-main end// -->
+                <footer class="main-footer font-xs">
+                    <div class="row pb-30 pt-15">
+                        <div class="col-sm-6">
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> ©, Sleek Style Men's Fashion Store .
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end">
+                                All rights reserved
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+        </main>
+
+        <script>
+            // discount percentage limit
+            async function digitLimit(element) {
+                try {
+                    if (element.value.length > 3) {
+                        element.value = element.value.slice(0, 3)
+                    }
+                    if (parseInt(element.value) > 100) {
+                        element.value = 100
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        </script>
+
+        <!-- -----------add product validation -->
+        <script src="../../../public/adminAssets/assets/js/validation/addProductValidation.js"></script>
+
+        <script src="/public/adminAssets/assets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/select2.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/public/adminAssets/assets/js/main.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+
+</html>

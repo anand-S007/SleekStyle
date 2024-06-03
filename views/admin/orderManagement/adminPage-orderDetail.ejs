@@ -43,26 +43,33 @@
                                         </b>
                                     </span> <br>
                                     <small class="text-muted">Order ID: <%= orderDetails?orderDetails.orderId:'' %>
-                                            </small>
+                                    </small>
                                 </div>
                                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                                    <%if(orderDetails.status !='Cancelled' ){ %>
+                                    <% const status = ['Returned','Cancelled','Delivered']
+                                        if(!status.includes(orderDetails.status)){ %>
                                         <select id="statSelectId"
                                             onchange="changeStatus(this,'<%=orderId%>','<%=userData._id%>')"
                                             class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                                             <option>Change status</option>
-                                            <option value="Confirmed">Confirmed</option>
-                                            <option value="Cancelled">Cancelled</option>
-                                            <option value="Confirmed">Confirmed</option>
-                                            <option value="Shipped">Shipped</option>
-                                            <option value="Delivered">Delivered</option>
-                                            <option value="Returned">Returned</option>
+                                            <option value="Confirmed" <%=orderDetails.status==='Confirmed' ? 'selected'
+                                                : '' %>>Confirmed</option>
+                                            <option value="Cancelled" <%=orderDetails.status==='Cancelled' ? 'selected'
+                                                : '' %>>Cancelled</option>
+                                            <option value="Shipped" <%=orderDetails.status==='Shipped' ? 'selected' : ''
+                                                %>>Shipped</option>
+                                            <option value="Delivered" <%=orderDetails.status==='Delivered' ? 'selected'
+                                                : '' %>>Delivered</option>
+                                            <option value="Returned" <%=orderDetails.status==='Returned' ? 'selected'
+                                                : '' %>>Returned</option>
                                         </select>
-                                        <h3 id="statusMsgId" style="display: none;color: red !important;"><span >Order
-                                                <%=orderDetails.status %></span></h3>
+
+                                        <h3 id="statusMsgId" style="display: none;color: red !important;"><span>Order
+                                                <%=orderDetails.status %>
+                                            </span></h3>
                                         <% }else{ %>
-                                            <h3 id="statusMsgId" style="display: inline;color: red !important;"><span
-                                                    >Order <%=orderDetails.status %></span></h3>
+                                            <h3 id="statusMsgId" style="display: inline;color: red !important;">
+                                                <span>Order <%=orderDetails.status %></span></h3>
                                             <% } %>
 
                                                 <!-- <a class="btn btn-primary" href="#">Save</a> -->
@@ -182,7 +189,8 @@
                                                                                 <dt>Grand total:</dt>
                                                                                 <dd> <b class="h5">Rs
                                                                                         <%=orderDetails?orderDetails.totalPrice:0
-                                                                                            %></b> </dd>
+                                                                                            %>
+                                                                                    </b> </dd>
                                                                             </dl>
                                                                             <dl class="dlist">
                                                                                 <dt class="text-muted">Status:</dt>
@@ -259,10 +267,11 @@
                             const statusSelectId = document.getElementById('statSelectId')
                             const statusMessageId = document.getElementById('statusMsgId')
                             if (res.success) {
-                                if (res.status == 'Cancelled') {
+                                const status = ['Cancelled','Returned','Delivered']
+                                if (status.includes(res.status)) {
                                     statusSelectId.classList.add('hidden')
                                     statusMessageId.style.display = 'inline'
-                                    statusMessageId.innerText = 'Order Cancelled'
+                                    statusMessageId.innerText = `Order ${res.status}`
                                 }
                                 const statusId = document.getElementById('statusId')
                                 statusId.innerText = res.status

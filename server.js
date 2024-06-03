@@ -27,7 +27,6 @@ app.use(session({
 
 app.use(nocache())
 
-
 app.use('/admin', adminRoute)
 app.use('/', userRoute)
 

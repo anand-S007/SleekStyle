@@ -3,7 +3,9 @@ const cartModel = require('../../models/user/cartSchema')
 const productModel = require('../../models/admin/productSchema')
 const orderModel = require('../../models/user/orderModel')
 const { v4: uuidv4 } = require('uuid')
-const { populate } = require('dotenv')
+const { default: mongoose } = require('mongoose')
+const Razorpay = require('razorpay')
+const instance = new Razorpay({key_id:process.env.keyId, key_secret:process.env.secret_key})
 
 
 const viewEditAddress = async (req, res) => {
@@ -121,7 +123,7 @@ const placeOrder = async (req, res) => {
                 const userOrder = await orderModel.findOne({ userId: user._id })
                 const orderItems = cartData.items.map((item) => {
                     return {
-                        productId: item._id,
+                        productId: item.productId._id,
                         name: item.productId.title,
                         description: item.productId.description,
                         category: item.productId.category.name,
@@ -173,8 +175,12 @@ const placeOrder = async (req, res) => {
                 res.json({ success: true, message: 'Order is successfully placed' })
                 delete req.session.cartData
             }
+            else{
+                
+            }
         } else {
             res.json({ message: 'no products' })
+            console.log('no products');
         }
     } catch (error) {
         console.log(error);
@@ -189,12 +195,29 @@ const orderSuccess = async (req, res) => {
     }
 }
 
-// view order details
+// view order list page
 const viewOrderList = async (req, res) => {
     try {
-        user = req.session.user
-        const orderData = await orderModel.findOne({ userId: user._id }).sort({ "orders._id": -1 })
-        console.log('orderData', orderData);
+        const user = req.session.user
+        const userId = new mongoose.Types.ObjectId(user._id)
+        const page = req.query.page || 0
+        const skip = page * 5
+        console.log('page=',page ,'', 'skip=',skip);
+        // const orderData = await orderModel.findOne({ userId: user._id }).sort({ 'orders._id': 1 })
+        const orderData = await orderModel.aggregate([
+            { $match: { userId: userId } },
+            { $unwind: '$orders' },
+            { $sort: { 'orders._id': -1 } },
+            {$limit:5},
+            {$skip:skip},
+            {
+                $group: {
+                  _id: '$_id',
+                  userId: { $first: '$userId' },
+                  orders: { $push: '$orders' },
+                },
+              },
+        ])
         if (orderData) {
             res.render('user/accountPage/page_ordersList', { user, orderData })
         }
@@ -203,31 +226,87 @@ const viewOrderList = async (req, res) => {
     }
 }
 
+// view order details page
 const viewOrderDetails = async (req, res) => {
     try {
         const user = req.session.user
-        const  orderId  = req.query.orderId
+        const orderId = req.query.orderId
         console.log(orderId);
         const orders = await orderModel.findOne({ userId: user._id }).populate('userId')
         const orderDetails = orders.orders.find(data => data._id == orderId)
         if (orderDetails) {
             res.render('user/accountPage/page_orderDetails', { user, orderDetails, orderId })
+        } else {
+            res.render('user/404_page')
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-const cancelOrder = async(req,res) =>{
+// cancel order
+const cancelOrder = async (req, res) => {
     try {
         const orderId = req.body.orderId
         const user = req.session.user
-        const userOrderData = await orderModel.findOne({userId:user._id})
-        const orders = userOrderData.orders.find(data=>data._id == orderId)
-        if(orders){
-            orders.status = 'Cancel'
+        const userOrderData = await orderModel.findOne({ userId: user._id })
+        const orders = userOrderData.orders.find(data => data._id == orderId)
+        if (orders) {
+            // update the stock in product db
+            for (const product of orders.products) {
+                const productId = product.productId
+                const size = product.size;
+                const quantity = product.quantity;
+                const dbProduct = await productModel.findById(productId);
+                if (!dbProduct) {
+                    throw new Error("Product not found");
+                }
+                if (size === 'small') {
+                    dbProduct.size.small.quantity += quantity;
+                } else if (size === 'medium') {
+                    dbProduct.size.medium.quantity += quantity;
+                } else if (size === 'large') {
+                    dbProduct.size.large.quantity += quantity;
+                }
+                await dbProduct.save();
+            }
+            orders.status = 'Cancelled'
             await userOrderData.save()
-            res.json({success:true})
+            res.json({ success: true })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const returnOrder = async (req, res) => {
+    try {
+        const orderId = req.body.orderId
+        const userOrderData = await orderModel.findOne({ userId: user._id })
+        const orders = userOrderData.orders.find(data => data._id == orderId)
+        if (orders) {
+            // update the stock in product db
+            for (const product of orders.products) {
+                const productId = product.productId
+                const size = product.size;
+                const quantity = product.quantity;
+                console.log('productId:', productId);
+                const dbProduct = await productModel.findById(productId);
+                if (!dbProduct) {
+                    throw new Error("Product not found");
+                }
+                if (size === 'small') {
+                    dbProduct.size.small.quantity += quantity;
+                } else if (size === 'medium') {
+                    dbProduct.size.medium.quantity += quantity;
+                } else if (size === 'large') {
+                    dbProduct.size.large.quantity += quantity;
+                }
+                await dbProduct.save();
+            }
+            orders.status = 'Returned'
+            await userOrderData.save()
+            res.json({ success: true })
         }
     } catch (error) {
         console.log(error);
@@ -243,5 +322,6 @@ module.exports = {
     viewOrderList,
     orderSuccess,
     viewOrderDetails,
-    cancelOrder
+    cancelOrder,
+    returnOrder,
 }

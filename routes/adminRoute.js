@@ -8,6 +8,7 @@ const adminUserController = require('../controllers/adminController/adminUserCon
 const adminProductController = require('../controllers/adminController/adminProductController')
 const adminCategoreyController = require('../controllers/adminController/adminCategoryController')
 const adminOrderController = require('../controllers/adminController/adminOrderController')
+const adminCouponController = require('../controllers/adminController/adminCouponController')
 
 routes.get('/', sessionMiddlewares.isLogin, dashboardController.viewDashBoard)
 
@@ -41,8 +42,13 @@ routes.get('/productsList/editProduct/:id', sessionMiddlewares.isLogin, adminPro
 routes.post('/productsList/editProduct/:id', sessionMiddlewares.isLogin, uploads.array('image'), adminProductController.editProduct)
 
 // view order List
-routes.get('/orderList',sessionMiddlewares.isLogin,adminOrderController.viewOrderList)
+routes.get('/orderList', sessionMiddlewares.isLogin, adminOrderController.viewOrderList)
 //order detals page
-routes.get('/orderList/orderDetail',sessionMiddlewares.isLogin,adminOrderController.viewOrderDetail)
-routes.put('/orderList/orderDetail',sessionMiddlewares.isLogin,adminOrderController.changeStatus)
+routes.get('/orderList/orderDetail', sessionMiddlewares.isLogin, adminOrderController.viewOrderDetail)
+routes.put('/orderList/orderDetail', sessionMiddlewares.isLogin, adminOrderController.changeStatus)
+
+// Coupons
+routes.get('/coupons', sessionMiddlewares.isLogin, adminCouponController.viewCoupons)
+// create Coupon
+routes.get('/createCoupon', sessionMiddlewares.isLogin, adminCouponController.viewCreateCoupon)
 module.exports = routes

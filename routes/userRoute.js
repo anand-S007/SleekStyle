@@ -23,7 +23,8 @@ routes.post('/login', isLogout, userAuthController.userLogin)
 routes.get('/forgot_password', isLogout, userAuthController.viewForgotPass)
 routes.post('/forgot_password', isLogout, userAuthController.forgotPass)
 routes.get('/forgot_password/otpVerify', isLogout, userAuthController.viewForgPassOtpVerify)
-routes.post('/forgot_password/otpVerify', isLogout)
+routes.post('/forgot_password/otpVerify', isLogout , userAuthController.forgotPassOtpVerify)
+routes.get('/forgot_password/passwordChange' )
 
 // Signup route
 routes.get('/signup', isLogout, userAuthController.viewUserSignup)
@@ -64,9 +65,10 @@ routes.put('/user_account/user_details/edit', isLogin, isBlocked, userAccDetails
 
 // view order details in user account
 routes.get('/user_account/orderList', isLogin, isBlocked, orderController.viewOrderList)
-routes.get('/user_account/orderDetails', isLogin, isBlocked ,orderController.viewOrderDetails)
-
-routes.put('/user_account/orderDetails/cancelOrder', isLogin,isBlocked ,orderController.cancelOrder)
+routes.get('/user_account/orderDetails', isLogin, isBlocked, orderController.viewOrderDetails)
+// Order canel and return
+routes.put('/user_account/orderDetails/cancelOrder', isLogin, isBlocked, orderController.cancelOrder)
+routes.put('/user_account/orderDetails/returnOrder', isLogin, isBlocked , orderController.returnOrder)
 
 // view shop page route
 routes.get('/shop', userController.viewShopPage)

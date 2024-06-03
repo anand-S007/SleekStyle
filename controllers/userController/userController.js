@@ -24,6 +24,7 @@ const viewUserAccount = (req,res)=>{
 const viewShopPage = async(req,res)=>{
     const category = await categories.find({})
     const sort = req.query.sort
+    const search = req.query.searchVal
     switch (sort) {
         case "lowToHigh":
             productData = await products.find({isBlocked:false}).sort({"price.offerPrice":1})
