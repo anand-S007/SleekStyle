@@ -304,14 +304,14 @@ const placeOrder = async (req, res) => {
                 .exec();
             
             // Delivery address
-            const userAddress = await userAddress.findOne(
+            const userAddressData = await userAddress.findOne(
                 { 
                     userId: req.session.user._id ,
                     addresses: {$elemMatch:{_id:selectedAddressId}}
                 },
                 {'addresses.$':1}
             )
-            const deliveryAddress = userAddress.addresses[0]
+            const deliveryAddress = userAddressData.addresses[0]
 
             // ordered products
             const orderItems = cartData.items.map((item) => {
@@ -349,7 +349,8 @@ const placeOrder = async (req, res) => {
 
             if (paymentMethod == 'cod') {
                 await finalizeOrder(newOrder,user,cartData,couponDiscount,couponCode)
-                res.json({ success: true, message: 'Order is successfully placed' })
+                delete req.session.cartData
+                return res.json({ success: true, message: 'Order is successfully placed' })
             }
             // Razorpay payment
             else if (paymentMethod == 'razorpay') {
@@ -360,14 +361,15 @@ const placeOrder = async (req, res) => {
                     payment_capture: 1,
                 }
                 const instance = new Razorpay({ 
-                    key_id: 'rzp_test_m0dRXZ082qPP0X', 
-                    key_secret: '0NGUJxkPWR3MxCtpwmXrvNwe'
+                    key_id: process.env.keyId, 
+                    key_secret: process.env.secret_key 
                 })
 
                 instance.orders.create(options, async(err, order) => {
                     if (order && order.status === 'created') {
                         console.log('order details=', order);
                         await finalizeOrder(newOrder,user,cartData,couponDiscount,couponCode)
+                        delete req.session.cartData
                         return res.json({
                             status: 'razorpay',
                             order,
@@ -422,7 +424,6 @@ async function finalizeOrder(newOrder,user,cartData,couponDiscount,couponCode){
         }
         // Delete cart data
         await cartModel.deleteOne({ userId: user._id })
-        delete req.session.cartData
     } catch (error) {
         console.log(error);
     }

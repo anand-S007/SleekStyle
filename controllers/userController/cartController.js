@@ -113,6 +113,7 @@ const viewCheckout = async (req, res) => {
 
     const cartData = await cartModel.findOne({ userId: req.session.user._id }).populate('items.productId')
     const coupons = await couponModel.find()
+    console.log('coupons:',coupons);
     const user_address = await userAddress.findOne({ userId: user._id })
     res.render('user/page_checkout', { user, cartData, user_address, coupons })
 }

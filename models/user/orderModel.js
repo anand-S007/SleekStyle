@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { default: payments } = require('razorpay/dist/types/payments');
 
 const orderSchema = new mongoose.Schema({
     userId: {
