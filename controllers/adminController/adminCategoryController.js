@@ -1,5 +1,5 @@
 const Category = require('../../models/admin/category')
-
+const products = require('../../models/admin/productSchema')
 // admin view category page
 const viewCategoryPage = async (req, res) => {
     try {
@@ -83,6 +83,69 @@ const editCategory = async (req, res) => {
     }
 }
 
+// view category offer
+const viewCategoryOffer = async (req, res) => {
+    try {
+        const admin = req.session.admin
+        const category = await Category.find()
+        const offerCategory = await Category.find({ offer: { $exists: true } })
+        res.render('admin/offerManagement/admin_categoryOfferPage', { admin, offerCategory: offerCategory ? offerCategory : null, category })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// create category offer
+const createCategoryOffer = async (req, res) => {
+    try {
+        const { offerName, discountPercent, expiryDate, selectedCategory } = req.body
+        const updatedCategory = await Category.updateOne(
+            { _id: selectedCategory },
+            {
+                $set: {
+                    'offer.offerName': offerName,
+                    'offer.discountPercent': discountPercent,
+                    'offer.expiryDate': expiryDate,
+                    'offer.createdAt': Date.now()
+                }
+            },
+            { new: true, upsert: true }
+        );
+        if (updatedCategory) {
+            const productsInSelectedCat = await products.find({ category: selectedCategory })
+            for (let item of productsInSelectedCat) {
+                let discountAmount = Math.floor((item.price.regularPrice * discountPercent) / 100);
+                let offerPrice = item.price.regularPrice - discountAmount
+                if (offerPrice < item.price.offerPrice) {
+                    item.price.offerPrice = offerPrice;
+                    await item.save();
+                }
+            }
+            res.json({ success: true })
+        } else {
+            res.error('Category offer is not created')
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// Delete category offer
+const deleteOffer = async (req, res) => {
+    try {
+        const offerCatId = req.body.offerCatId
+        await Category.findByIdAndUpdate({ _id: offerCatId }, { $unset: { offer: 1 } })
+        const productsData = await products.find({ category: offerCatId })
+        for (let item of productsData) {
+            item.price.offerPrice = item.price.regularPrice
+            await item.save();
+        }
+        res.json({ succes: true })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     viewCategoryPage,
     viewEditCategory,
@@ -90,5 +153,8 @@ module.exports = {
     isCategoryUnblock,
     isCategoryBlock,
     editCategory,
+    viewCategoryOffer,
+    createCategoryOffer,
+    deleteOffer,
 }
 

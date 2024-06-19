@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+
+    <!-- Included Side menu bar -->
+    <%-include('../sideMenubar')-%>
+
+        <main class="main-wrap">
+
+            <%-include('../navbar') %>
+                <section class="content-main">
+                    <div class="content-header">
+                        <div>
+                            <h2 class="content-title card-title">Categories </h2>
+                            <p>Add, edit or delete a category</p>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <form id="categoryOfferFormId">
+                                        <div class="mb-4">
+                                            <label for="offerNameId" class="form-label">Offer name</label>
+                                            <input type="text" placeholder="Type here" class="form-control"
+                                                name="offerName" id="offerNameId" />
+                                            <p>
+                                            <div id="offerNameErr" class="text-danger" style="display: none;"></div>
+                                            </p>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="discountPercentId" class="form-label">Discount
+                                                percentage</label>
+                                            <input type="text" placeholder="Type here" class="form-control"
+                                                name="discountPercent" id="discountPercentId" />
+                                            <p>
+                                            <div id="discountPercentErr" class="text-danger" style="display: none;">
+                                            </div>
+                                            </p>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Expiry date</label>
+                                            <input type="date" id="expiryDateId" class="form-control"
+                                                placeholder="date">
+                                            <p>
+                                            <div id="expiryDateErr" class="text-danger" style="display: none;">
+                                            </div>
+                                            </p>
+                                        </div>
+                                        <div class="mb-4">
+
+                                            <div id="categoryId" class="form-group">
+                                                <label class="form-label">Category</label>
+                                                <select class="form-select" name="category" id=""
+                                                    onchange="selectCategory(this)">
+                                                    <option disabled selected>Select</option>
+                                                    <% category.forEach((item)=>{ %>
+                                                        <option value="<%=item._id %>">
+                                                            <%=item.name %>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                            <p>
+                                            <div style="display: none;" id="catError" class="text-danger"></div>
+                                            </p>
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="button" id="createBtnId" class="btn btn-primary"
+                                                onclick="createOffer()">
+                                                Create category</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Offer name</th>
+                                                    <th>Category</th>
+                                                    <th>Discount percentage</th>
+                                                    <th>Start date</th>
+                                                    <th>Expiry date</th>
+                                                    <th class="text-end">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <% if(offerCategory){ %>
+                                                <% offerCategory.forEach((item, index)=>{ %>
+                                                    <tbody>
+                                                        <tr id="offCat_<%=index %>">
+                                                            <td><b>
+                                                                    <%=item.offer.offerName %>
+                                                                </b></td>
+                                                                <td><%=item.name %></td>
+                                                            <td style="max-width: 140px;">
+                                                                <%=item.offer.discountPercent%> %
+                                                            </td>
+                                                            <td>
+                                                                <%= new Date(item.offer.createdAt).toLocaleDateString()
+                                                                    %>
+                                                            </td>
+                                                            <td>
+                                                                <%= new Date(item.offer.expiryDate).toLocaleDateString()
+                                                                    %>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="dropdown">
+                                                                    <a href="#" data-bs-toggle="dropdown"
+                                                                        class="btn btn-light rounded btn-sm font-sm"> <i
+                                                                            class="material-icons md-more_horiz"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item text-danger"
+                                                                            onclick="deleteOffer('<%=item._id%>','<%=index%>')">Delete</a>
+                                                                    </div>
+                                                                </div> <!-- dropdown //end -->
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <% }) %>
+                                                        <% }else{ %>
+                                                            <h3>NO OFFERS</h3>
+                                                            <% } %>
+
+                                        </table>
+                                    </div>
+                                </div> <!-- .col// -->
+                            </div> <!-- .row // -->
+                        </div> <!-- card body .// -->
+                    </div> <!-- card .// -->
+                </section> <!-- content-main end// -->
+                <footer class="main-footer font-xs">
+                    <div class="row pb-30 pt-15">
+                        <div class="col-sm-6">
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> ©, Evara - HTML Ecommerce Template .
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end">
+                                All rights reserved
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+        </main>
+
+        <script>
+            // set min expiry date as current date to not to select previous dates
+            function formatDateToYYYYMMDD(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            const today = new Date();
+            const formattedDate = formatDateToYYYYMMDD(today);
+            const expiryDate = document.getElementById('expiryDateId')
+            expiryDate.setAttribute('min', formattedDate);
+
+            // Selecting category in offer
+            let selectedCategory = ''
+            async function selectCategory(element) {
+                console.log('element:', element);
+                if (element) {
+                    selectedCategory = element.value
+                    console.log('selectedCategory:', selectedCategory);
+                }
+            }
+            // create offer fetch request
+            async function createOffer() {
+                const offerName = document.getElementById('offerNameId').value
+                const discountPercent = document.getElementById('discountPercentId').value
+                const expiryDate = document.getElementById('expiryDateId').value
+                async function selectCategory(element) {
+                    if (element) {
+                        let selectedCategory = element.value
+                        console.log('selectedCategory:', selectedCategory);
+                    }
+                }
+                console.log('selectedCategory:', selectedCategory);
+                fetch('/admin/categoryOffers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ offerName, discountPercent, expiryDate, selectedCategory })
+                }).then(res => res.json())
+                    .then((res) => {
+                        console.log('response:', res);
+                        if (res.error) {
+                            const offerNameErr = document.getElementById('offerNameErr')
+                            offerNameErr.innerHTML = res.message
+                            offerNameErr.style.display = 'block'
+                            setTimeout(() => {
+
+                            }, timeout);
+                        } else {
+                            window.location.href = '/admin/categoryOffers'
+                        }
+                    })
+            }
+
+            // Offer delete 
+            async function deleteOffer(offerCatId,index) {
+                try {
+                    console.log("offerCatId:", offerCatId);
+                    fetch('/admin/categoryOffers', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ offerCatId })
+                    })
+                        .then(res => res.json())
+                        .then((res) => {
+                            const catOffRow = document.getElementById(`offCat_${index}`)
+                            catOffRow.style.display = 'none'
+                        })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        </script>
+
+
+
+
+        <script src="/public/adminAssets/assets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/select2.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/public/adminAssets/assets/js/main.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+</html>

@@ -10,6 +10,21 @@ const categorySchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    offer:{
+        offerName:{
+            type:String,
+        },
+        discountPercent:{
+            type:Number,
+        },
+        expiryDate:{
+            type:Date,
+        },
+        createdAt:{
+            type: Date,
+            default: Date.now()
+        }
+    },
     isList:{
         type:Boolean,
         default:true,

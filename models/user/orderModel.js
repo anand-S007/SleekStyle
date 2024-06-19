@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { default: payments } = require('razorpay/dist/types/payments');
 
 const orderSchema = new mongoose.Schema({
     userId: {
@@ -82,8 +83,16 @@ const orderSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        paymentStatus:{
+            type: String,
+            default:'pending'
+        },
+        couponDiscountAmount: {
+            type: Number
+        },
         totalPrice: {
-
+            type: Number,
+            required: true
         },
         status: {
             type: String,

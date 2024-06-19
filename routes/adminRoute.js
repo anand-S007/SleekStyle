@@ -49,6 +49,16 @@ routes.put('/orderList/orderDetail', sessionMiddlewares.isLogin, adminOrderContr
 
 // Coupons
 routes.get('/coupons', sessionMiddlewares.isLogin, adminCouponController.viewCoupons)
+routes.delete('/coupons',sessionMiddlewares.isLogin,adminCouponController.deleteCoupon)
 // create Coupon
 routes.get('/createCoupon', sessionMiddlewares.isLogin, adminCouponController.viewCreateCoupon)
+routes.post('/createCoupon', sessionMiddlewares.isLogin, adminCouponController.createCoupon)
+// change coupon status
+routes.put('/admin/coupons/changeCouponStatus',sessionMiddlewares.isLogin, adminCouponController.changeCouponStatus)
+
+// Admin category offers
+routes.get('/categoryOffers',sessionMiddlewares.isLogin, adminCategoreyController.viewCategoryOffer)
+routes.post('/categoryOffers',sessionMiddlewares.isLogin, adminCategoreyController.createCategoryOffer)
+routes.delete('/categoryOffers',sessionMiddlewares.isLogin, adminCategoreyController.deleteOffer)
+
 module.exports = routes

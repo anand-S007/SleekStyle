@@ -1,14 +1,15 @@
 const products = require('../../models/admin/productSchema')
 const categories = require('../../models/admin/category')
-
+const wishlist = require('../../models/user/wishlistModel')
 
 // view user Home page
 const viewHomePage = async(req,res)=>{
     try {
+        const user= req.session.user
         const productData = await products.find({isBlocked:false})
         const newArrival = await  products.find({isBlocked:false}).sort({_id:-1}).limit(8)
         const category = await categories.find({isList:true})
-        res.render('user/home',{user:req.session.user,products:productData,categories:category,newArrivals:newArrival})
+        res.render('user/home',{user,products:productData,categories:category,newArrivals:newArrival})
         console.log('enterded home ');
     } catch (error) {
         console.log(error,'error found while viewing home page');

@@ -159,10 +159,7 @@
                             'Content-Type': 'application/json'
                         }
                     })
-
-                    console.log(response);
                     const data = await response.json()
-                    console.log(data,'lllll');
                     if (data.blocked) {
                         let status = document.getElementById(data.title)
                         let button = document.getElementById(data.id)

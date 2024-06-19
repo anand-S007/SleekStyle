@@ -542,13 +542,18 @@
                                                                             <dl class="dlist">
                                                                                 <dt>Subtotal:</dt>
                                                                                 <dd>Rs
-                                                                                    <%=orderDetails?orderDetails.totalPrice:0
-                                                                                        %>
+                                                                                    <%=orderDetails?orderDetails.products[0].subTotalPrice:0%>
                                                                                 </dd>
                                                                             </dl>
+                                                                            <% if(orderDetails.couponDiscountAmount){%>
+                                                                                <dl class="dlist">
+                                                                                    <dt>Coupon discount</dt>
+                                                                                    <dd>Rs <%=orderDetails.couponDiscountAmount%></dd>
+                                                                                    <%}%>
+                                                                                </dl>
                                                                             <dl class="dlist">
                                                                                 <dt>Shipping cost:</dt>
-                                                                                <dd>Rs 0</dd>
+                                                                                <dd>Free</dd>
                                                                             </dl>
                                                                             <dl class="dlist">
                                                                                 <dt>Grand total:</dt>
@@ -561,8 +566,8 @@
                                                                                 <dt class="text-muted">Status:</dt>
                                                                                 <dd>
                                                                                     <span
-                                                                                        class="badge rounded-pill alert-success text-success">Payment
-                                                                                        done</span>
+                                                                                        class="badge rounded-pill alert-success text-success">Payment done
+                                                                                    </span>
                                                                                 </dd>
                                                                             </dl>
                                                                         </article>

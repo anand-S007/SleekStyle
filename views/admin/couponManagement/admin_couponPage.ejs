@@ -17,6 +17,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -65,54 +66,53 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>#ID</th>
+                                    <th>Code</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col" class="text-end"> Action </th>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">Expiry date</th>
+                                    <th scope="col">Disocunt percent</th>
+                                    <th scope="col">Min purchase amount</th>
+                                    <th scope="col"> Max discount </th>
+                                    <th scope="col"> Active/Inactive </th>
+                                    <th scope="col" class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>0901</td>
-                                    <td><b>Marvin McKinney</b></td>
-                                    <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td>
-                                    <td>$9.00</td>
-                                    <td><span class="badge rounded-pill alert-warning">Pending</span></td>
-                                    <td>03.12.2020</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-md rounded font-sm">Detail</a>
-                                        <div class="dropdown">
-                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">View detail</a>
-                                                <a class="dropdown-item" href="#">Edit info</a>
-                                                <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            </div>
-                                        </div> <!-- dropdown //end -->
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2323</td>
-                                    <td><b>Leslie Alexander</b></td>
-                                    <td><template class="__cf_email__" data-cfemail="b7dbd2c4dbded2f7d2cfd6dac7dbd299d4d8da">[email&#160;protected]</template></td>
-                                    <td>$46.61</td>
-                                    <td><span class="badge rounded-pill alert-warning">Pending</span></td>
-                                    <td>21.02.2020</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-md rounded font-sm">Detail</a>
-                                        <div class="dropdown">
-                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">View detail</a>
-                                                <a class="dropdown-item" href="#">Edit info</a>
-                                                <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            </div>
-                                        </div> <!-- dropdown //end -->
-                                    </td>
-                                </tr>
+                                <% if(coupons){ %>
+                                    <% coupons.forEach((item , index)=>{ %>
+                                        <tr id="row<%=index %>">
+                                            <td><%=item.code %></td>
+                                            <td><b><%=item.name %></b></td>
+        
+                                            <td><%=new Date(item.createdAt).toLocaleDateString() %></td>
+                                            <td><%=new Date(item.expiryDate).toLocaleDateString() %></td>
+                                            <td><%=item.discountPercentage %>%</td>
+                                            <td><%=item.minPurchaseAmount %></td>
+                                            <td><%=item.maxDiscountAmount %></td>
+                                            <% if(item.isBlocked){ %>
+                                                <td ><span id="statusId<%=index %>" class="badge rounded-pill alert-danger">Inactive</span></td>
+                                            <% }else{ %>
+                                                <td><span id="statusId<%=index %>" class="badge rounded-pill alert-success">Active</span></td>
+                                            <% } %>
+                                            <td class="text-end">
+                                                <!-- <a href="#" class="btn btn-md rounded font-sm">Detail</a> -->
+                                                <div class="dropdown">
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                                    <div class="dropdown-menu">
+                                                        <% if(item.isBlocked){ %>
+                                                            <a class="dropdown-item" onclick="changeCouponStatus('<%=index%>','<%=item._id%>')"><span id="<%item._id %>" class="text-success">Unblock</span></a>
+                                                        <% }else{ %>
+                                                            <a class="dropdown-item" onclick="changeCouponStatus('<%=index%>','<%=item._id%>')"><span id="<%=item._id %>" class="text-danger">Block</span></a>
+                                                        <% } %>
+                                                        <a class="dropdown-item text-danger" onclick="deleteCoupon('<%=index%>','<%=item._id%>')">Delete</a>
+                                                    </div>
+                                                </div> <!-- dropdown //end -->
+                                            </td>
+                                        </tr>
+
+                                    <% }) %>
+                                <% } %>
+                                
                             </tbody>
                         </table>
                     </div> <!-- table-responsive //end -->
@@ -146,6 +146,71 @@
             </div>
         </footer>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Change coupon status
+        async function changeCouponStatus(index, id){
+            try {
+                const statusId = document.getElementById("statusId"+index)
+                const blockBtnId = document.getElementById(id)
+                console.log('statusId:',statusId,'blockBtnId:',blockBtnId);
+                await fetch('admin/coupons/changeCouponStatus',{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({id})
+                }).then(res=>res.json())
+                .then((res)=>{
+                    if(res.blocked){
+                        statusId.innerHTML = 'Inactive'
+                        blockBtnId.innerHTML = 'Unblock'
+                    }else{
+                        statusId.innerHTML = 'Active'
+                        blockBtnId.innerHTML = 'Block'
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        async function deleteCoupon(index,id){
+            try {
+                fetch(`/admin/coupons`,{
+                    method:'DELETE',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({id})
+                })
+                .then(res=>{res.json()})
+                .then((res)=>{
+                    const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                iconColor: 'green',
+                                customClass: {
+                                    popup: 'colored-toast',
+                                },
+                                showConfirmButton: false,
+                                timer: 1800,
+                                timerProgressBar: false,
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Coupon deleted successfully'
+                            });
+                    const couponRowId = document.getElementById('row'+index)
+                    couponRowId.style.display = 'none'
+                    console.log('deletede successfully');
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
     <script src="/public/adminAssets/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/public/adminAssets/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/public/adminAssets/assets/js/vendors/select2.min.js"></script>

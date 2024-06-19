@@ -10,6 +10,7 @@ const userAccDetailsController = require('../controllers/userController/accountD
 const cartController = require('../controllers/userController/cartController')
 const productController = require('../controllers/userController/productController')
 const orderController = require('../controllers/userController/userOrderController')
+const wishlistController = require('../controllers/userController/wishlistController')
 
 
 // Home page route
@@ -78,6 +79,11 @@ routes.get('/shop/category', userController.viewCategoryPage)
 routes.get('/product/sizeSelect', productController.sizeSelect)
 routes.get('/product/:id', productController.viewProductDetails)
 
+// Wishlist
+routes.get('/wishlist', isLogin, isBlocked, wishlistController.viewWishlist)
+routes.post('/wishlist', isLogin, isBlocked, wishlistController.addToWishlist)
+routes.delete('/wishlist', isLogin,isBlocked,wishlistController.deleteWishlist)
+
 // cart
 routes.get('/viewcart', isLogin, isBlocked, productController.viewCart)
 routes.get('/addToCart', productController.addtocart)
@@ -91,6 +97,8 @@ routes.get('/check_dataInCart', isLogin, isBlocked, cartController.checkDataInCa
 // view checkout page
 routes.get('/checkout', isLogin, isBlocked, checkCartData, cartController.viewCheckout)
 routes.post('/checkout', isLogin, isBlocked, checkCartData, orderController.placeOrder)
+// apply coupon
+routes.post('/checkout/apply_coupon',isLogin,isBlocked,checkCartData, orderController.applyCoupon)
 // Edit user address in checkout page
 routes.get('/checkout/edit_address', isLogin, isBlocked, orderController.viewEditAddress)
 routes.put('/checkout/edit_address', isLogin, isBlocked, orderController.editAddress)
@@ -98,4 +106,7 @@ routes.put('/checkout/edit_address', isLogin, isBlocked, orderController.editAdd
 routes.get('/checkout/add_address', isLogin, isBlocked, orderController.viewAddAddress)
 routes.post('/checkout/add_address', isLogin, isBlocked, orderController.addAddress)
 routes.get('/checkout/orderSuccess', isLogin, isBlocked, orderController.orderSuccess)
+
+
+
 module.exports = routes

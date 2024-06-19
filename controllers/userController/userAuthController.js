@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt')
 // view user login page
 const viewUserLogin = async (req, res) => {
     try {
-        res.render('user/userAuthPages/page-login-register.ejs')
+        res.render('user/userAuthPages/page-login-register')
     } catch (error) {
         console.error(error, 'error found at view login');
     }

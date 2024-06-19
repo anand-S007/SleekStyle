@@ -1,6 +1,7 @@
 const cartModel = require('../../models/user/cartSchema')
 const productModel = require('../../models/admin/productSchema')
 const userAddress = require('../../models/user/userAddressModel')
+const couponModel = require('../../models/admin/couponModel')
 
 // cart product qty increase
 const cartQtyInc = async (req, res) => {
@@ -109,11 +110,11 @@ const checkDataInCart = async (req, res) => {
 // view checkout page
 const viewCheckout = async (req, res) => {
     const user = req.session.user
-    
+
     const cartData = await cartModel.findOne({ userId: req.session.user._id }).populate('items.productId')
-    
+    const coupons = await couponModel.find()
     const user_address = await userAddress.findOne({ userId: user._id })
-    res.render('user/page_checkout', { user, cartData, user_address })
+    res.render('user/page_checkout', { user, cartData, user_address, coupons })
 }
 
 module.exports = {

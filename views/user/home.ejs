@@ -1,4 +1,25 @@
-﻿<%-include('head')-%>
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Sleek Style</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/userAssets/assets/imgs/theme/sleek-style-logo.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/public/userAssets/assets/css/maind134.css?v=3.4">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body >
     <!-- Quick view -->
     <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -454,7 +475,7 @@
                                 <div class="carausel-6-columns-cover position-relative">
                                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows"></div>
                                     <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-columns-2">
-                                        <% newArrivals.forEach((item)=>{ %>
+                                        <% newArrivals.forEach((item,index)=>{ %>
                                         <div class="product-cart-wrap small hover-up">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
@@ -466,7 +487,9 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="#" tabindex="0"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" onclick="addToWishlist('<%=item._id%>','<%=index%>')" tabindex="0">
+                                                        <i class="fi-rs-heart"></i>
+                                                    </a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
@@ -494,8 +517,8 @@
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                                 <div class="row product-grid-4">
 
-                                    <!---Products grid foreach-  -->
-                                    <% products.forEach((item)=>{ %>
+                                    <!---Products grid foreach--->
+                                    <% products.forEach((item,index)=>{ %>
                                         <div class="col-lg-3 col-md-4 col-12 col-sm-6 ">
                                             <div class="product-cart-wrap mb-30">
                                                 <div class="product-img-action-wrap">
@@ -508,10 +531,15 @@
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a id="wishlistHeartId_<%=index %>" aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addToWishlist('<%=item._id%>','<%=index%>')"><i class="fi-rs-heart"></i></a>
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="hot">Hot</span>
+                                                        
+                                                        <% let categoryWithOffer = categories.find((data) => item.category.toString() === data._id.toString() && data.offer && data.offer.discountPercent);%>
+                                                        <% if (categoryWithOffer) { %>
+                                                            <span class="hot"><%= categoryWithOffer.offer.discountPercent %>%</span>
+                                                        <% } %>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
@@ -525,8 +553,12 @@
                                                         </span>
                                                     </div>
                                                     <div class="product-price">
-                                                        <span>Rs <%=item.price.offerPrice %> </span>
-                                                        <span class="old-price">Rs <%=item.price.regularPrice %></span>
+                                                    <% if(item.price.offerPrice == item.price.regularPrice){ %>
+                                                        <span >Rs <%=item.price.regularPrice %></span>
+                                                        <% }else{%>
+                                                            <span>Rs <%=item.price.offerPrice %> </span>
+                                                            <span class="old-price">Rs <%=item.price.regularPrice %></span>
+                                                    <% }%>
                                                     </div>
                                                     <div class="product-action-1 show">
                                                         <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
@@ -685,4 +717,46 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+        async function addToWishlist(productId,index){
+            const wishlistHeartId= document.getElementById(`wishlistHeartId_${index}`)
+            console.log(wishlistHeartId);
+            const response = await fetch('/wishlist',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({productId})
+            })
+            const data = await response.json()
+            if(data.success){
+                // wishlistHeartId.style.display = 'none'
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "bottom",
+                                    showConfirmButton: false,
+                                    timer: 1800,
+                                    timerProgressBar: false,
+                                });
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Product added to wishlist"
+                                })
+            }else{
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "bottom",
+                                    showConfirmButton: false,
+                                    timer: 1800,
+                                    timerProgressBar: false,
+                                });
+                                Toast.fire({
+                                    icon: "warning",
+                                    title: data.message
+                                })
+            }
+        }
+    </script>
     <%-include('foot')-%>

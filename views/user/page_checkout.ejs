@@ -144,14 +144,54 @@
                             <div class="panel-collapse collapse coupon_form " id="coupon">
                                 <div class="panel-body">
                                     <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                    <form method="post">
+                                    <form id="couponFormId">
                                         <div class="form-group">
-                                            <input type="text" placeholder="Enter Coupon Code...">
+                                            <input id="couponCodeId" type="text" placeholder="Enter Coupon Code...">
                                         </div>
-                                        <div class="form-group">
-                                            <button class="btn  btn-md" name="login">Apply Coupon</button>
+                                        <div class="form-group d-flex gap-3">
+                                            <button id="applyCouponBtnId" class="btn btn-md" type="button"
+                                                onclick="applyCoupon()" name="login">Apply Coupon</button>
+                                            <button id="showCouponBtnId" class="btn btn-md " type="button"
+                                                data-bs-toggle="modal" data-bs-target="#couponModal">Show
+                                                Coupons</button>
+                                            <button id="removeCouponBtnId" style="display: none;" class="btn btn-md"
+                                                type="button" onclick="removeCoupon()">Remove coupon</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="couponModalLabel">Available Coupons</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="coupon-list">
+                                        <% coupons.forEach((item)=>{ %>
+                                            <% if(item.expiryDate>= Date.now()){ %>
+                                                <div class="coupon-item d-flex justify-content-between">
+                                                    <p>Coupon Code: <span class="coupon-code">
+                                                            <%=item.code %>
+                                                        </span></p>
+                                                    <button style="background:none;border: none;" class="copy-btn"
+                                                        data-coupon="<%=item.code %>">Copy</button>
+                                                </div>
+                                                <% } %>
+                                                    <% }) %>
+
+                                                        <!-- Add more coupons as needed -->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -264,28 +304,31 @@
                                                                 <%=data.productId.title %>
                                                             </h5> <span class="product-qty">x <%=data.quantity %></span>
                                                         </td>
-                                                        <td>Rs <%=data.subTotalPrice %>
+                                                        <td>Rs <span id="subTotalPriceId">
+                                                                <%=data.subTotalPrice %>
+                                                            </span>
                                                         </td>
                                                     </tr>
 
                                                     <% }) %>
                                                         <% } %>
 
-                                                            <tr>
-                                                                <th>SubTotal</th>
-                                                                <td class="product-subtotal" colspan="2">Rs
-                                                                    <%=cartData?cartData.totalPrice:0 %>
-                                                                </td>
-                                                            </tr>
+
                                                             <tr>
                                                                 <th>Shipping</th>
                                                                 <td colspan="2"><em>Free Shipping</em></td>
                                                             </tr>
+                                                            <tr id="couponPriceRowId" style="display: none;">
+                                                                <th>Coupon</th>
+                                                                <td colspan="2" id="couponPriceId">Apply coupon</td>
+                                                            </tr>
                                                             <tr>
-                                                                <th>Total</th>
+                                                                <th>Total amount</th>
                                                                 <td colspan="2" class="product-subtotal"><span
-                                                                        class="font-xl text-brand fw-900">Rs
-                                                                        <%=cartData?cartData.totalPrice:0 %>
+                                                                        class="font-xl text-brand fw-900">
+                                                                        Rs <span id="totalPriceId">
+                                                                            <%=cartData?cartData.totalPrice:0 %>
+                                                                        </span>
                                                                     </span></td>
                                                             </tr>
                                         </tbody>
@@ -312,14 +355,15 @@
                                         </div>
                                         <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio"
-                                                onclick="handlePaymentMethod(this,'paypal')" name="payment_option"
-                                                id="exampleRadios5" value="paypal">
+                                                onclick="handlePaymentMethod(this,'razorpay')" name="payment_option"
+                                                id="exampleRadios5" value="razorpay">
                                             <label class="form-check-label" for="exampleRadios5"
                                                 data-bs-toggle="collapse" data-target="#paypal"
-                                                aria-controls="paypal">Paypal</label>
+                                                aria-controls="paypal">Razorpay</label>
                                             <div class="form-group collapse in" id="paypal">
-                                                <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit
-                                                    card if you don't have a PayPal account.</p>
+                                                <p class="text-muted mt-5">Pay via Razorpay; you can pay with your
+                                                    credit
+                                                    card if you don't have a Razorpay account.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -475,7 +519,7 @@
             </div>
         </div>
 
-        <!--View more button modify -->
+        <!--View more button of address selection -->
         <script>
             async function changeViewBtnTxt() {
                 let viewMoreBtn = document.getElementById('viewmoreBtnId');
@@ -491,6 +535,13 @@
         </script>
 
         <script>
+            // Coupon priceId, totalPriceId and code
+            const couponPriceId = document.getElementById('couponPriceId')
+            const totalPriceId = document.getElementById('totalPriceId')
+
+            // couponDiscount amount
+            let couponDiscount
+
             // Address selection
             let selectedAddressId = ''
             const radioBtn = document.querySelectorAll('.radioBtn')
@@ -504,7 +555,8 @@
                     selectedAddressId = addressId
                 }
             }
-            // payment selection
+
+            //Default payment selection
             let paymentMethod = ''
             const paymentRadio = document.querySelectorAll('.form-check-input')
             paymentRadio.forEach((element) => {
@@ -512,19 +564,96 @@
                     paymentMethod = element.value
                 }
             })
+
+            // Payment selection by user
             async function handlePaymentMethod(checkbox, payMethod) {
                 try {
                     if (checkbox.checked) {
                         paymentMethod = payMethod
-                        console.log("paymentMethod:", paymentMethod);
                     }
                 } catch (error) {
                     console.log(error);
                 }
             }
 
+            // apply coupon
+            async function applyCoupon() {
+                const applyCouponBtnId = document.getElementById('applyCouponBtnId')
+                const showCouponBtnId = document.getElementById('showCouponBtnId')
+                const removeCouponBtnId = document.getElementById('removeCouponBtnId')
+                const couponPriceRowId = document.getElementById('couponPriceRowId')
+
+                try {
+                    const couponCode = couponCodeId.value
+                    fetch("/checkout/apply_coupon", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ couponCode })
+                    })
+                        .then(res => res.json())
+                        .then((res) => {
+                            if (res.success) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'centre',
+                                    iconColor: 'green',
+                                    customClass: {
+                                        popup: 'colored-toast',
+                                    },
+                                    showConfirmButton: false,
+                                    timer: 1900,
+                                    timerProgressBar: false,
+                                })
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: res.message,
+                                })
+                                    .then(res => res)
+                                applyCouponBtnId.style.display = 'none'
+                                showCouponBtnId.style.display = 'none'
+                                removeCouponBtnId.style.display = 'block'
+                                couponPriceRowId.style.display = 'contents'
+                                couponPriceId.innerText = res.discount
+                                couponDiscount = res.discount
+                                totalPriceId.innerText = res.totalPrice - res.discount
+                                couponCodeId.disabled = true
+                            } else {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'centre',
+                                    iconColor: 'red',
+                                    customClass: {
+                                        popup: 'colored-toast',
+                                    },
+                                    showConfirmButton: false,
+                                    timer: 1900,
+                                    timerProgressBar: false,
+                                })
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: res.message,
+                                })
+                                    .then(res => res)
+                            }
+                        })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            // Remove coupon
+            async function removeCoupon() {
+                try {
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            // Place order 
             async function placeOrder(cartId) {
-                console.log('cartId:', cartId);
+                const couponPriceRowId = document.getElementById('couponPriceRowId')
                 fetch('/checkout', {
                     method: 'POST',
                     headers: {
@@ -534,13 +663,16 @@
                         cartId,
                         selectedAddressId,
                         paymentMethod,
+                        couponDiscount: couponDiscount ? couponDiscount : null,
+                        couponCode: couponCodeId.value ? couponCodeId.value : null,
+                        totalPrice: totalPriceId.innerText
                     })
                 })
                     .then((res) => {
                         return res.json()
                     })
                     .then((res) => {
-                        if (res.message == 'no products') {
+                        if (res.success == false) {
                             window.location.href = '/viewcart'
                         } else if (res.success) {
                             let timerInterval;
@@ -564,14 +696,61 @@
                                     window.location.href = '/checkout/orderSuccess'
                                 }
                             });
-                        } else {
+                        } else if (res.status == 'razorpay') {
+                            console.log('response:',res);
+                            razorPayment(res)
+                        }
+                        else {
                             throw new error('Error while order placing in cash on delivery')
                         }
                     })
             }
+
+            function razorPayment(order) {
+                var options = {
+                    "key": process.env.keyId, // Enter the Key ID generated from the Dashboard
+                    "amount": order.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "currency": "INR",
+                    "name": "Sleek Style mens fashion store", //your business name
+                    "description": "Order payment",
+                    "image": "https://example.com/your_logo",
+                    "order_id": order.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                        "name": order.address.name, //your customer's name
+                        "email": "gaurav.kumar@example.com",
+                        "contact": order.address.mobile //Provide the customer's phone number for better conversion rates 
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+            }
         </script>
 
+        <!-- Custom JS for coupon modal window -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const copyButtons = document.querySelectorAll('.copy-btn');
 
+                copyButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const couponCode = this.getAttribute('data-coupon');
+                        navigator.clipboard.writeText(couponCode).then(() => {
+                            alert(`Coupon code ${couponCode} copied to clipboard`);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    });
+                });
+            });
+        </script>
+
+        <!---Razorpay CDN -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <!-- Vendor JS-->
         <script src="/public/userAssets/assets/js/vendor/modernizr-3.6.0.min.js"></script>
         <script src="/public/userAssets/assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -596,7 +775,9 @@
         <script src="/public/userAssets/assets/js/shopd134.js?v=3.4"></script>
 </body>
 
+<style>
 
+</style>
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 
 </html>

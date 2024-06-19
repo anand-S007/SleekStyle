@@ -133,17 +133,17 @@ function sizeLvalidate(){
     }
 }
 
-function imageValidate(){
-    const images = image.files
-    console.log('imgae is validating');
-    // if(images.length<5 || images.length>5){
-    //     imageErr.style.display= 'block'
-    //     imageErr.innerHTML = '*Minimum and maximum 5 images should add'
-    // }else{
-    //     imageErr.style.display= 'none'
-    //     imageErr.innerHTML = ''
-    // }
-}
+// function imageValidate(){
+//     const images = image.files
+//     console.log('imgae is validating');
+//     if(images.length<5 || images.length>5){
+//         imageErr.style.display= 'block'
+//         imageErr.innerHTML = '*Minimum and maximum 5 images should add'
+//     }else{
+//         imageErr.style.display= 'none'
+//         imageErr.innerHTML = ''
+//     }
+// }
 
 productName.addEventListener('blur',nameValidate);
 description.addEventListener('blur',desValidate)
@@ -153,7 +153,7 @@ offerPrice.addEventListener('blur',offerPriceValidate)
 small.addEventListener('blur',sizeSvalidate)
 medium.addEventListener('blur',sizeMvalidate)
 large.addEventListener('blur',sizeLvalidate)
-image.addEventListener('blur',imageValidate)
+// image.addEventListener('blur',imageValidate)
 
 productForm.addEventListener('submit',(e)=>{
     nameValidate()

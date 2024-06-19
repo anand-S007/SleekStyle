@@ -17,6 +17,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/public/userAssets/assets/imgs/theme/sleek-style-logo.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/public/userAssets/assets/css/maind134.css?v=3.4">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -374,7 +375,7 @@
                         <!----Product Grid-- -->
                         <div class="row product-grid-3">
                             <% if(products){ %>
-                                <% products.forEach((item)=>{ %>
+                                <% products.forEach((item,index)=>{ %>
                             <div class="col-lg-3 col-md-4">
                                 <div class="product-cart-wrap mb-30">
                                             <div class="product-img-action-wrap">
@@ -388,7 +389,9 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" onclick="addToWishlist('<%=item._id%>','<%=index%>')">
+                                                        <i class="fi-rs-heart"></i>
+                                                    </a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
@@ -668,6 +671,46 @@
             const searchId = document.getElementById('searchId')
             const searchVal = searchId.value
             await fetch(`/shop?search=${searchVal}`)
+        }
+
+        // Add product to wishlist
+        async function addToWishlist(productId,index){
+            const wishlistHeartId= document.getElementById(`wishlistHeartId_${index}`)
+            console.log(wishlistHeartId);
+            const response = await fetch('/wishlist',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({productId})
+            })
+            const data = await response.json()
+            if(data.success){
+                // wishlistHeartId.style.display = 'none'
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "bottom",
+                                    showConfirmButton: false,
+                                    timer: 1800,
+                                    timerProgressBar: false,
+                                });
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Product added to wishlist"
+                                })
+            }else{
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "bottom",
+                                    showConfirmButton: false,
+                                    timer: 1800,
+                                    timerProgressBar: false,
+                                });
+                                Toast.fire({
+                                    icon: "warning",
+                                    title: data.message
+                                })
+            }
         }
     </script>
 

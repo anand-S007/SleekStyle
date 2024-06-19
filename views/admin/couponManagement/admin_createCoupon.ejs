@@ -18,6 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -36,7 +37,7 @@
                         <div class="col-9">
                             <div class="content-header">
                                 <h2 class="content-title">Create coupon</h2>
-                                
+
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -44,58 +45,72 @@
                                 <div class="card-header">
                                     <h4>Details</h4>
                                 </div>
-                                <form method="post" action="/admin/createCoupon" id="productForm">
-                                <div class="card-body">
-                                    
-                                    <div class="mb-4">
-                                        <label for="product_name" class="form-label">Coupon Code</label>
-                                        <input type="text" placeholder="Type here" class="form-control"
-                                            id="product_name" name="productName">
-                                        <p>
-                                        <div style="display: none;" id="nameError" class="text-danger"></div>
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-4">
+                                <form id="couponForm">
+                                    <div class="card-body">
                                         <div class="mb-4">
-                                            <label class="form-label">Expriy Date</label>
-                                            <input id="expiryDateId" name="expiryDate" type="date" class="form-control">
+                                            <label for="product_name" class="form-label">Coupon name</label>
+                                            <input type="text" placeholder="Type here" class="form-control" name="name"
+                                                id="nameId">
                                             <p>
-                                            <div style="display: none;" id="expiryDateErr" class="text-danger"></div>
+                                            <div style="display: none;" id="nameErr" class="text-danger"></div>
                                             </p>
                                         </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Discount percentage</label>
-                                        <input type="number" placeholder="Type here" class="form-control w-50"
-                                            oninput="digitLimit(this)" max="3">
-                                        <p>
-                                        <div style="display: none;" id="discountErr" class="text-danger"></div>
-                                        </p>
-                                    </div>
+                                        <div class="mb-4">
+                                            <label for="product_name" class="form-label">Coupon Code</label>
+                                            <input type="text" placeholder="Type here" class="form-control" name="code"
+                                                id="codeId">
+                                            <p>
+                                            <div style="display: none;" id="codeErr" class="text-danger"></div>
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">Expriy Date</label>
+                                                <input id="expiryDateId" name="expiryDate" type="date"
+                                                    class="form-control">
+                                                <p>
+                                                <div style="display: none;" id="expiryDateErr" class="text-danger">
+                                                </div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Discount percentage</label>
+                                            <input type="number" placeholder="Type here" class="form-control w-50"
+                                                id="discountPercentId" oninput="digitLimit(this)"
+                                                name="discountPercentage">
+                                            <p>
+                                            <div style="display: none;" id="discountPercentErr" class="text-danger">
+                                            </div>
+                                            </p>
+                                        </div>
 
-                                    <div class="mb-4 d-flex">
-                                        <div>
-                                            <label class="form-label">Min purchase amount</label>
-                                            <input type="number" name="minPurchase" class="form-control w-75"
-                                                id="minPurchaseId">
-                                            <p>
-                                            <div style="display: none;" id="minPurchaseErr" class="text-danger"></div>
-                                            </p>
+                                        <div class="mb-4 d-flex">
+                                            <div>
+                                                <label class="form-label">Min purchase amount</label>
+                                                <input type="number" name="minPurchase" class="form-control w-75"
+                                                    placeholder="Type here" id="minPurchaseId">
+                                                <p>
+                                                <div style="display: none;" id="minPurchaseErr" class="text-danger">
+                                                </div>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <label class="form-label">Max discount amount</label>
+                                                <input type="number" name="maxDiscount" class="form-control w-75"
+                                                    placeholder="Type here" id="maxDiscountId">
+                                                <p>
+                                                <div style="display: none;" id="maxDiscountErr" class="text-danger">
+                                                </div>
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label class="form-label">Max discount amount</label>
-                                            <input type="number" name="maxDiscount" class="form-control w-75"
-                                                id="maxDiscountId">
-                                            <p>
-                                            <div style="display: none;" id="maxDiscountErr" class="text-danger"></div>
-                                            </p>
+                                        <div class="d-flex justify-content-end">
+                                            <button type="button" onclick="createCoupon(event)" id="couponBtnId"
+                                                class="btn btn-md rounded font-sm hover-up">Create</button>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Create</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
                             </div>
                         </div>
 
@@ -117,8 +132,20 @@
                     </div>
                 </footer>
         </main>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="/public/adminAssets/assets/js/validation/couponValidation.js"></script>
         <script>
+            // set min expiry date as current date to not to select previous dates
+            function formatDateToYYYYMMDD(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            const today = new Date();
+            const formattedDate = formatDateToYYYYMMDD(today);
+            expiryDate.setAttribute('min', formattedDate);
+
             // discount percentage limit
             async function digitLimit(element) {
                 try {
@@ -132,11 +159,69 @@
                     console.log(error);
                 }
             }
+
+            //Create form submission
+            async function createCoupon(e) {
+                e.preventDefault()
+                nameValidate()
+                codeValidate()
+                discountPercentValidate()
+                expiryDateValidate()
+                maxDiscountValidate()
+                minPurchaseValidate()
+                if (nameErr.style.display == 'block' ||
+                    codeErr.style.display == 'block' ||
+                    discountPercentErr.style.display == 'block' ||
+                    expiryDateErr.style.display == 'block' ||
+                    maxDiscountErr.style.display == 'block' ||
+                    minPurchaseErr.style.display == 'block') {
+                    return
+                }
+                fetch('/admin/createCoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: couponName.value,
+                        code: code.value,
+                        expiryDate: expiryDate.value,
+                        discountPercentage: discountPercent.value,
+                        minPurchase: minPurchase.value,
+                        maxDiscount: maxDiscount.value,
+                    })
+                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        if (res.success) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'center',
+                                iconColor: 'green',
+                                customClass: {
+                                    popup: 'colored-toast',
+                                },
+                                showConfirmButton: false,
+                                timer: 1800,
+                                timerProgressBar: false,
+                                didClose: () => {
+                                    // Redirect after the toast is closed
+                                    window.location.href = '/admin/coupons';
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Coupon created successfully'
+                            });
+
+
+                        }
+                    })
+            }
         </script>
 
-        <!-- -----------add product validation -->
-        <script src="../../../public/adminAssets/assets/js/validation/addProductValidation.js"></script>
-
+        
         <script src="/public/adminAssets/assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="/public/adminAssets/assets/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="/public/adminAssets/assets/js/vendors/select2.min.js"></script>
