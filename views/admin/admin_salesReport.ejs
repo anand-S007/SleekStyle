@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-transactions-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- customized style -->
+    <style>
+        @media (max-width:1100px) {
+            .topper {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .topper-main {
+                justify-content: start !important;
+            }
+        }
+
+        @media (max-width:530px) {
+            .topper1 {
+                flex-direction: column;
+                width: 100% !important;
+            }
+        }
+
+        .topper-select {
+            width: 15rem !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <!-- Side menu bar included-------------->
+    <%- include('./sideMenubar')-%>
+        <main class="main-wrap">
+            <!--Nav bar included--------------------->
+            <%-include('./navbar')-%>
+                <section class="content-main">
+                    <div class="content-header d-flex justify-content-between">
+                        <!-- <h2 class="content-title">Sales Report </h2> -->
+                        <div class="d-flex gap-3">
+                            <button class="btn btn-md btn-primary" onclick="downloadPdf('tablesId')">Download
+                                PDF</button>
+                            <button class="btn btn-md btn-primary" onclick="downloadExcel('tablesId')">Download Excel</button>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12 ">
+                                    <header class="border-bottom mb-4 pb-4">
+                                        <div class="row topper">
+                                            <div class="col-lg-6 col-6  d-flex gap-3 topper1">
+                                                <form class="d-flex gap-3">
+                                                    <input required="" id="fromDateId" type="date" class="form-control">
+                                                    <input required="" id="toDateId" type="date" class="form-control">
+                                                    <button class="btn btn-lg btn-primary" type="button"
+                                                        onclick="filterReportByDate()">Search</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-lg-6 col-12 d-flex gap-3 justify-content-end topper-main">
+                                                <select class="form-select topper-select" name="filter"
+                                                    onchange="filterReport(this)">
+                                                    <option>Select</option>
+                                                    <option value="all">All</option>
+                                                    <option value="day">Day</option>
+                                                    <option value="week">Week</option>
+                                                    <option value="month">Month</option>
+                                                    <option value="year">Year</option>
+                                                </select>
+                                                <!-- <button class="btn btn-lg btn-primary">Search</button> -->
+                                            </div>
+                                        </div>
+                                        <p id="dateErr" style="display: none;"></p>
+                                    </header> <!-- card-header end// -->
+
+                                    <div id="tablesId">
+                                        <h2 id="titleId" class="content-title d-flex justify-content-center">Sales Report </h2>
+                                        <div class="table-responsive">
+                                            <table id="table1" class="table border border-2">
+                                                <thead class="table border border-2 ">
+                                                    <th>Total sales count</th>
+                                                    <th>Total coupon discount</th>
+                                                    <th>Total sales</th>
+                                                </thead>
+                                                <tbody>
+                                                    <td>
+                                                        <%=salesReport?salesReport.totalSalesCount:0 %>
+                                                    </td>
+                                                    <td>Rs <%=salesReport?salesReport.totalCouponDiscount:0 %>
+                                                    </td>
+                                                    <td>Rs <%=salesReport?salesReport.totalOrderAmount:0 %>
+                                                    </td>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+
+                                            <table id="salesDetailsTableId" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Date</th>
+                                                        <th>Email</th>
+                                                        <th>Coupon</th>
+                                                        <!-- <th>Referal discount</th> -->
+                                                        <th>Paid</th>
+                                                        <th>Payment type</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(orderData){ %>
+                                                        <% orderData.forEach((item,index)=>{ %>
+                                                            <tr>
+                                                                <td><b>
+                                                                        <%=item.orders.orderId %>
+                                                                    </b></td>
+                                                                <td>
+                                                                    <%=new
+                                                                        Date(item.orders.createdAt).toLocaleDateString()
+                                                                        %>
+                                                                </td>
+                                                                <td>
+                                                                    <%=item.userEmail %>
+                                                                </td>
+                                                                <td>
+                                                                    <%=item.orders.couponDiscountAmount? 'Rs '
+                                                                        +item.orders.couponDiscountAmount:'No Coupon' %>
+                                                                </td>
+                                                                <!-- <td> </td> -->
+                                                                <td>Rs <%=item.orders.totalPrice %>
+                                                                </td>
+                                                                <td>
+                                                                    <% if(item.orders.paymentMethod=='razorpay' ){ %>
+                                                                        <div class="icontext ">
+                                                                            <img class="icon border"
+                                                                                src="/public/adminAssets/assets/imgs/card-brands/razorpay-icon.png"
+                                                                                alt="Payment">
+                                                                            <span class="text text-muted"
+                                                                                style="font-size: medium !important;">Razorpay</span>
+                                                                        </div>
+                                                                        <% }else{ %>
+                                                                            <div class="icontext">
+                                                                                <img class="icon border"
+                                                                                    src="/public/adminAssets/assets/imgs/card-brands/cod.png">
+                                                                                <span class="text text-muted"
+                                                                                    style="font-size: medium !important;">Cash
+                                                                                    on Delivery</span>
+                                                                            </div>
+                                                                            <% } %>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                                <% } %>
+                                                </tbody>
+                                            </table>
+
+                                        </div> <!-- table-responsive.// -->
+                                    </div>
+                                </div> <!-- col end// -->
+                            </div> <!-- row end// -->
+                        </div> <!-- card-body // -->
+                    </div> <!-- card end// -->
+                    <div class="pagination-area mt-30 mb-50">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i
+                                            class="material-icons md-chevron_right"></i></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </section>
+                <footer class="main-footer font-xs">
+                    <div class="row pb-30 pt-15">
+                        <div class="col-sm-6">
+                            <script data-cfasync="false"
+                                src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> ©, Evara - HTML Ecommerce Template .
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end">
+                                All rights reserved
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+        </main>
+
+        <script>
+            // filter report by Day, Week, Month and Year
+            function filterReport(element) {
+                const filterBy = element.value
+
+                console.log('filterBy', filterBy);
+                if (filterBy == 'all') {
+                    window.location.href = '/admin/salesReport'
+                }
+                window.location.href = `/admin/salesReport?filter=${filterBy}`
+            }
+
+            // Filter report by date
+            function filterReportByDate() {
+                const fromDateVal = document.getElementById('fromDateId').value
+                const toDateVal = document.getElementById('toDateId').value
+
+                if (fromDateVal && toDateVal && fromDateVal < toDateVal) {
+                    console.log('fromDate =', fromDateVal, 'toDate= ', toDateVal);
+                    dateErr.style.display = 'none'
+                    window.location.href = `/admin/salesReport?from=${fromDateVal}&to=${toDateVal}`
+
+                } else {
+                    const dateErr = document.getElementById('dateErr')
+                    console.log(dateErr);
+                    dateErr.innerText = 'Select from and to date properly'
+                    dateErr.style.display = 'block'
+                    dateErr.style.color = 'red'
+                }
+            }
+
+            // Set date max value as current date
+            function formatDateToYYYYMMDD(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            const today = new Date();
+            const formattedDate = formatDateToYYYYMMDD(today);
+            const fromDateId = document.getElementById('fromDateId')
+            const toDateId = document.getElementById('toDateId')
+            fromDateId.setAttribute('max', formattedDate);
+            toDateId.setAttribute('max', formattedDate);
+
+            // Download sales report in PDF
+            function downloadPdf(fileId) {
+                const file = document.getElementById(fileId)
+                const options = {
+                    margin: 1,
+                    filename: 'sales_report'+Math.random()+'.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                }
+                    html2pdf().from(file).set(options).save()
+            }
+
+            // Download sales in excel
+            function downloadExcel(fileId){
+                var table = document.getElementById('salesDetailsTableId');
+            var tableData = [];
+            var rows = table.rows;
+            console.log(rows);
+            for (var i = 0; i < rows.length; i++) {
+                var rowData = [];
+                var cells = rows[i].cells;
+                for (var j = 0; j < cells.length; j++) {
+                    rowData.push(cells[j].innerText);
+                }
+                tableData.push(rowData);
+            }
+
+            /* Convert table data to Excel file */
+            var worksheet = XLSX.utils.aoa_to_sheet(tableData);
+            var workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            var excelBuffer = XLSX.write(workbook, {
+                bookType: "xlsx",
+                type: "array",
+            });
+
+            /* Save the Excel file */
+            saveAsExcelFile(excelBuffer, "sales_report.xlsx");
+            }
+            function saveAsExcelFile(buffer, fileName) {
+            var data = new Blob([buffer], { type: "application/octet-stream" });
+            var url = window.URL.createObjectURL(data);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            link.click();
+            setTimeout(function () {
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
+        </script>
+
+        <!-------PDF downloader -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+         <!-- Include xlsx library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Include FileSaver.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+        <script src="/public/adminAssets/assets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/select2.min.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/public/adminAssets/assets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/public/adminAssets/assets/js/main.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-transactions-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
+</html>

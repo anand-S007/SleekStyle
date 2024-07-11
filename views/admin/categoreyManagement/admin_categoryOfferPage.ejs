@@ -35,10 +35,7 @@
                     <div class="content-header">
                         <div>
                             <h2 class="content-title card-title">Categories </h2>
-                            <p>Add, edit or delete a category</p>
-                        </div>
-                        <div>
-                            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                            <p>Add, or delete a category</p>
                         </div>
                     </div>
                     <div class="card">
@@ -49,7 +46,7 @@
                                         <div class="mb-4">
                                             <label for="offerNameId" class="form-label">Offer name</label>
                                             <input type="text" placeholder="Type here" class="form-control"
-                                                name="offerName" id="offerNameId" />
+                                                onblur="nameValidate()" name="offerName" id="offerNameId" />
                                             <p>
                                             <div id="offerNameErr" class="text-danger" style="display: none;"></div>
                                             </p>
@@ -57,7 +54,8 @@
                                         <div class="mb-4">
                                             <label for="discountPercentId" class="form-label">Discount
                                                 percentage</label>
-                                            <input type="text" placeholder="Type here" class="form-control"
+                                            <input type="number" placeholder="Type here" class="form-control"
+                                                oninput="setDigitLimit()" onblur="discountValidate()"
                                                 name="discountPercent" id="discountPercentId" />
                                             <p>
                                             <div id="discountPercentErr" class="text-danger" style="display: none;">
@@ -66,7 +64,7 @@
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label">Expiry date</label>
-                                            <input type="date" id="expiryDateId" class="form-control"
+                                            <input type="date" id="expiryDateId" class="form-control" onblur="dateValidate()"
                                                 placeholder="date">
                                             <p>
                                             <div id="expiryDateErr" class="text-danger" style="display: none;">
@@ -94,7 +92,7 @@
 
                                         <div class="d-grid">
                                             <button type="button" id="createBtnId" class="btn btn-primary"
-                                                onclick="createOffer()">
+                                                onclick="createOffer(event)">
                                                 Create category</button>
                                         </div>
                                     </form>
@@ -119,7 +117,9 @@
                                                             <td><b>
                                                                     <%=item.offer.offerName %>
                                                                 </b></td>
-                                                                <td><%=item.name %></td>
+                                                            <td>
+                                                                <%=item.name %>
+                                                            </td>
                                                             <td style="max-width: 140px;">
                                                                 <%=item.offer.discountPercent%> %
                                                             </td>
@@ -162,7 +162,7 @@
                         <div class="col-sm-6">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> ©, Evara - HTML Ecommerce Template .
+                            </script> ©, Sleek Style Men's fashion store .
                         </div>
                         <div class="col-sm-6">
                             <div class="text-sm-end">
@@ -173,6 +173,7 @@
                 </footer>
         </main>
 
+        <script src="/public/adminAssets/assets/js/validation/categoryOfferValidation.js"></script>
         <script>
             // set min expiry date as current date to not to select previous dates
             function formatDateToYYYYMMDD(date) {
@@ -195,8 +196,23 @@
                     console.log('selectedCategory:', selectedCategory);
                 }
             }
+
             // create offer fetch request
-            async function createOffer() {
+            async function createOffer(e) {
+                const offerNameErr = document.getElementById('offerNameErr')
+                const discountPercentErr = document.getElementById('discountPercentErr');
+                const dateErr = document.getElementById('expiryDateErr');
+
+                nameValidate()
+                discountValidate()
+                dateValidate()
+
+                if(offerNameErr.style.display == 'block'|| discountPercentErr.style.display == 'block' || dateErr.style.display == 'block'){
+                    e.preventDefault()
+                    return
+                }
+
+
                 const offerName = document.getElementById('offerNameId').value
                 const discountPercent = document.getElementById('discountPercentId').value
                 const expiryDate = document.getElementById('expiryDateId').value
@@ -206,7 +222,7 @@
                         console.log('selectedCategory:', selectedCategory);
                     }
                 }
-                console.log('selectedCategory:', selectedCategory);
+
                 fetch('/admin/categoryOffers', {
                     method: 'POST',
                     headers: {
@@ -230,7 +246,7 @@
             }
 
             // Offer delete 
-            async function deleteOffer(offerCatId,index) {
+            async function deleteOffer(offerCatId, index) {
                 try {
                     console.log("offerCatId:", offerCatId);
                     fetch('/admin/categoryOffers', {
@@ -249,6 +265,7 @@
                     console.log(error);
                 }
             }
+
         </script>
 
 

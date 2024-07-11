@@ -72,15 +72,27 @@ const addProduct = async (req, res) => {
 
 const viewProductList = async (req, res) => {
     try {
-        let product = await products.find({})
-        // const productDate = await products.find({},{createdAt:1,_id:0})
-        let productData = product.map(item => {
-
-            const formattedDate = new Date(item.createdAt).toLocaleDateString('en-GB');  // Format the date
-            item.createdAt = formattedDate
-            return item
-        });
-        res.render('admin/productManagement/adminProductList', { productData: productData })
+        let allProducts = await products.find({})
+        
+        if(!allProducts){
+            res.render('admin/productManagement/adminProductList', { 
+                productData: null, 
+                currentPage:page,
+                totalPages:1
+            })
+        }
+        const page = req.query.page || 1
+        const limit = 5
+        const skip = (page-1)*limit
+        const totalProducts = allProducts.length
+        const totalPages = Math.ceil(totalProducts/limit)
+        const productData = await products.find().sort({_id:-1}).skip(skip).limit(limit)
+        
+        res.render('admin/productManagement/adminProductList', { 
+            productData, 
+            currentPage:page,
+            totalPages
+        })
     } catch (error) {
         console.log('error found while admin product list', error);
     }

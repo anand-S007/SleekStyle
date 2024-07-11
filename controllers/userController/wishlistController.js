@@ -5,11 +5,13 @@ const viewWishlist = async (req, res) => {
     try {
         const user = req.session.user
         const wishlistData = await wishlist.findOne({ userId: user._id })
+        if(!wishlistData){
+            res.render('user/page_wishlist',{ user, proInWishlist: null })
+        }
         const productIds = wishlistData.products
-
-        const proInWishlist = await products.find({ _id: { $in: productIds } }).sort({_id:-1})
-        console.log('wishlist:', proInWishlist);
-        res.render('user/page_wishlist', { user, proInWishlist: proInWishlist.length>0 ? proInWishlist : null })
+        const proDataInWishlist = await products.find({ _id: { $in: productIds } }).sort({createdAt:-1})
+        
+        res.render('user/page_wishlist', { user, proInWishlist: proDataInWishlist.length>0 ? proDataInWishlist : null })
 
     } catch (error) {
         console.log(error);

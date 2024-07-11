@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema({
         default:false,
     }
 })
-
+productSchema.index({title:'text',category:'text'})
 const productData = new mongoose.model('product',productSchema)
 
 module.exports = productData

@@ -245,9 +245,8 @@
                                 otpError.style.display = 'none'
                             }, 3000)
                         } else {
-                            window.alert('registerd successfully')
-                            window.history.pushState(null, null, '/login');
-                            window.location.href = '/login'
+
+                            window.location.href = '/forgot_password/passwordChange'
                         }
                     })
             } catch (error) {

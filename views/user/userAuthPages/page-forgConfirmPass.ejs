@@ -1,4 +1,6 @@
 <%- include('../head') %>
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -117,58 +119,73 @@
                     <div class="col-lg-5 col-12  m-auto">
                         <form id="loginForm">
                             <div
-                                class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5 ">
+                                class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
                                 <div class="padding_eight_all bg-white">
                                     <div class="heading_s1">
-                                        <h3 class="mb-30">OTP Verification</h3>
+                                        <h3 class="mb-30">Change password</h3>
                                     </div>
-                                    <p>
-                                    <div id="otp_error" style="display: none;" class="text-danger"></div>
-                                    </p>
-                                    <div>
-                                        <p>Enter 6 digit code</p>
-                                    </div>
-
-                                    <div></div>
+                                    <div id="passwordErr" style="display: none;" class="text-danger"></div>
                                     <div class="form-group">
-                                        <input required="" type="number" name="otp_verify" placeholder="otp verify"
-                                            id="otpId">
-                                    </div>
-                                    <div class="login_footer form-group">
-                                        <div>
-                                            <!-- <a class="text-muted" href="#">Forgot password?</a>
-                                                <span><a class="text-muted d-flex text-end" href="/signup">Create account</a></span> -->
-                                            <p>Didn't you recieve the OTP?<a href="/otp-verify/resend"
-                                                    class="text-muted" id="resend_otp" style="display: none;"> Resend
-                                                    OTP</a></p>
-                                            <p id="timer" style="display: block;"><span id="countdown">60</span> seconds
-                                            </p>
-                                        </div>
-
+                                        <label for="newPassword">New password</label>
+                                        <input required type="password" name="newPassword" placeholder="New password"
+                                            id="newPassword" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-fill-out btn-block hover-up" name="login"
-                                            id="verify_btn">Verify</button>
+                                        <label for="confirmPassword">Confirm password</label>
+                                        <input required type="password" name="confirmPassword"
+                                            placeholder="Confirm password" id="confirmPassword" class="form-control">
+                                    </div>
+                                    <div class="form-group d-flex justify-content-end">
+                                        <button type="button" class="btn btn-block hover-up" id="submit_btn"
+                                            onclick="changePassword(event)">Submit</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
-
         </section>
-        <style>
-            .disabled {
-                pointer-events: none;
-                opacity: 0.6;
-            }
-        </style>
     </main>
-    <!-- --------------Login form end--------------- -->
 
     <script>
-       
+        async function changePassword(e) {
+            e.preventDefault()
+            const newPassword = document.getElementById('newPassword').value
+            const confirmPassword = document.getElementById('confirmPassword').value
+            if (newPassword == confirmPassword) {
+                passwordErr.style.display = 'none'
+                fetch('/forgot_password/passwordChange', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ newPassword })
+                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        if (res.success) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Password changed",
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            .then((res)=>{
+                                window.location.href = '/login'
+                            })
+                        }
+                    })
+            } else {
+                console.log('entry2');
+                const passwordErr = document.getElementById('passwordErr')
+                passwordErr.innerText = '*Password not matched!'
+                passwordErr.style.display = 'block'
+                passwordErr.style.color = 'red'
+            }
+        }
     </script>
 
     <%- include('../foot') %>

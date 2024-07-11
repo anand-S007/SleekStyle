@@ -11,7 +11,7 @@ const cartQtyInc = async (req, res) => {
         const sizeStock = proData.size[`${size}`].quantity
         const cartData = await cartModel.findOne({ _id: cartId })
 
-        if (sizeStock > 0) {
+        if (!sizeStock < 0) {
             const cartProData = cartData.items.find((item) => {
                 return item.productId == productId && item.size == size
             })
@@ -112,10 +112,18 @@ const viewCheckout = async (req, res) => {
     const user = req.session.user
 
     const cartData = await cartModel.findOne({ userId: req.session.user._id }).populate('items.productId')
+    if(!cartData){
+        return res.redirect('/viewcart')
+    }
+
     const coupons = await couponModel.find()
-    console.log('coupons:',coupons);
     const user_address = await userAddress.findOne({ userId: user._id })
-    res.render('user/page_checkout', { user, cartData, user_address, coupons })
+    res.render('user/page_checkout', { 
+        user, 
+        cartData, 
+        user_address, 
+        coupons
+    })
 }
 
 module.exports = {

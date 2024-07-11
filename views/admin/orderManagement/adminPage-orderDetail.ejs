@@ -52,16 +52,11 @@
                                             onchange="changeStatus(this,'<%=orderId%>','<%=userData._id%>')"
                                             class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                                             <option>Change status</option>
-                                            <option value="Confirmed" <%=orderDetails.status==='Confirmed' ? 'selected'
-                                                : '' %>>Confirmed</option>
-                                            <option value="Cancelled" <%=orderDetails.status==='Cancelled' ? 'selected'
-                                                : '' %>>Cancelled</option>
-                                            <option value="Shipped" <%=orderDetails.status==='Shipped' ? 'selected' : ''
-                                                %>>Shipped</option>
-                                            <option value="Delivered" <%=orderDetails.status==='Delivered' ? 'selected'
-                                                : '' %>>Delivered</option>
-                                            <option value="Returned" <%=orderDetails.status==='Returned' ? 'selected'
-                                                : '' %>>Returned</option>
+                                            <option value="Confirmed" <%=orderDetails.status==='Confirmed' ? 'selected': '' %>>Confirmed</option>
+                                            <option value="Cancelled" <%=orderDetails.status==='Cancelled' ? 'selected': '' %>>Cancelled</option>
+                                            <option value="Shipped" <%=orderDetails.status==='Shipped' ? 'selected' : ''%>>Shipped</option>
+                                            <option value="Delivered" <%=orderDetails.status==='Delivered' ? 'selected': '' %>>Delivered</option>
+                                            <option value="Returned" <%=orderDetails.status==='Returned' ? 'selected': '' %>>Returned</option>
                                         </select>
 
                                         <h3 id="statusMsgId" style="display: none;color: red !important;"><span>Order

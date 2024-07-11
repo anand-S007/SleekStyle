@@ -7,6 +7,9 @@ const adminRoute = require('./routes/adminRoute')
 const session = require('express-session')
 const { v4: uuidv4 } = require('uuid')
 const uuid = uuidv4()
+const passport = require('passport')
+require('dotenv').config()
+require('./config/passport')
 const mongodbconfig = require('./config/mongodbConfig')
 const nocache = require('nocache');
 
@@ -26,6 +29,9 @@ app.use(session({
 }))
 
 app.use(nocache())
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/admin', adminRoute)
 app.use('/', userRoute)

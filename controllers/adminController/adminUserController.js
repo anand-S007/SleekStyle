@@ -1,5 +1,14 @@
 const User = require('../../models/user/user')
 
+const viewUsersList = async (req, res) => {
+    try {
+        const users = await User.find({ isAdmin: false })
+        res.render('admin/userManagement/usersList', { admin: req.session.admin, users: users })
+    } catch (error) {
+        console.log('error found while rendering users list', error);
+    }
+}
+
 const blockUser = async (req, res) => {
     try {
         const userId = req.params.id
@@ -31,4 +40,5 @@ const unblockUser = async (req, res) => {
 module.exports = {
     blockUser,
     unblockUser,
+    viewUsersList,
 }

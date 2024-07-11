@@ -16,6 +16,8 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/public/adminAssets/assets/imgs/theme/sleek-style-logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
     <!-- Template CSS -->
     <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
 </head>
@@ -32,14 +34,11 @@
                     <div class="content-header">
                         <div>
                             <h2 class="content-title card-title">Order List </h2>
-                            <p>Lorem ipsum dolor sit amet.</p>
-                        </div>
-                        <div>
-                            <input type="text" placeholder="Search order ID" class="form-control bg-white">
+                            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
                         </div>
                     </div>
                     <div class="card mb-4">
-                        <header class="card-header">
+                        <!-- <header class="card-header">
                             <div class="row gx-3">
                                 <div class="col-lg-4 col-md-6 me-auto">
                                     <input type="text" placeholder="Search..." class="form-control">
@@ -60,7 +59,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </header> <!-- card-header end// -->
+                        </header> card-header end// -->
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -78,17 +77,15 @@
                                     <tbody>
                                         <% if(orderData){ %>
                                             <%orderData.forEach((item)=>{ %>
-                                                <% item.orders.forEach((order)=>{ %>
                                                     <tr>
-                                                        <td><%=order.orderId %></td>
-                                                        <td><b><%=item.userId.firstname+' '+item.userId.lastname %></b></td>
-                                                        <!-- <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td> -->
-                                                        <td><%=item.userEmail %></td>
-                                                        <td>Rs <%=order.totalPrice %></td>
-                                                        <td><span class="badge rounded-pill alert-warning"><%=order.status %></span></td>
-                                                        <td><%=new Date(order.createdAt).toLocaleDateString() %></td>
+                                                        <td><%=item.orders.orderId %></td>
+                                                        <td><b><%=item.userDetails[0].firstname+' '+item.userDetails[0].lastname %></b></td>
+                                                        <td><%=item.userDetails[0].email %></td>
+                                                        <td>Rs <%=item.orders.totalPrice %></td>
+                                                        <td><span class="badge rounded-pill alert-warning"><%=item.orders.status %></span></td>
+                                                        <td><%=new Date(item.orders.createdAt).toLocaleDateString() %></td>
                                                         <td class="text-end">
-                                                            <a href="/admin/orderList/orderDetail?userId=<%=item.userId._id%>&orderId=<%=order._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                                            <a href="/admin/orderList/orderDetail?userId=<%=item.userDetails[0]._id%>&orderId=<%=item.orders._id %>" class="btn btn-md rounded font-sm">Detail</a>
                                                             <div class="dropdown">
                                                                 <a href="" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                                 <div class="dropdown-menu">
@@ -99,7 +96,6 @@
                                                             </div> <!-- dropdown //end -->
                                                         </td>
                                                     </tr>
-                                                    <% }) %>
                                         
                                             <% }) %>
                                         <% } %>
@@ -108,25 +104,29 @@
                             </div> <!-- table-responsive //end -->
                         </div> <!-- card-body end// -->
                     </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
+            <!-- <div class="pagination-area mt-15 mb-50"> -->
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(currentPage) - 1 %>" tabindex="-1">Previous</a>
+                        </li>
+                        
+                        <li class="page-item disabled">
+                            <a class="page-link" ><%= currentPage %></a>
+                        </li>
+                        <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(currentPage)+1 %>">Next</a>
+                        </li>
                     </ul>
                 </nav>
-            </div>
+            <!-- </div> -->
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
                         document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
+                    </script> ©, Sleek Style Mens fashion store .
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end">

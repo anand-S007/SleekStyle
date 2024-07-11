@@ -3,21 +3,23 @@ const nodemailer = require('nodemailer')
 const otpGenerator = require('otp-generator')
 require('dotenv').config()
 const bcrypt = require('bcrypt')
-
-
+const passport = require('passport')
+const googleStrategy = require('passport-google-oidc').Strategy
 
 
 // view user login page
 const viewUserLogin = async (req, res) => {
     try {
-        res.render('user/userAuthPages/page-login-register')
+        let user
+        req.session.user?user = req.session.user:null
+        res.render('user/userAuthPages/page-login-register',{user})
     } catch (error) {
         console.error(error, 'error found at view login');
     }
 
 }
 
-// view Forgot password
+//Forgot password
 const viewForgotPass = async (req, res) => {
     try {
         res.render('user/userAuthPages/page-forgotPassword')
@@ -25,7 +27,6 @@ const viewForgotPass = async (req, res) => {
         console.log(error);
     }
 }
-
 const forgotPass = async (req, res) => {
     try {
         const email = req.body.email
@@ -40,37 +41,71 @@ const forgotPass = async (req, res) => {
             console.log('otp is:',otp);
             req.session.forgPassOtp = otp
             setTimeout(() => {
-                req.session.forgPassOtp = null
-            }, 6000)
+                delete req.session.forgPassOtp 
+            }, 30000)
             const otpSend = await sendOtpMail(email, otp)
             if (otpSend) {
-                res.json({ success: true })
+                req.session.forgPass_email = email
+                return res.json({ success: true })
             }
         } else {
-            res.json({ success: false, message: '*Email is not exist' })
+            return res.json({ success: false, message: '*Email is not exist' })
         }
     } catch (error) {
         console.log(error);
     }
 }
-
+// view otp page of forgot password
 const viewForgPassOtpVerify = async (req, res) => {
     try {
-        res.render('user/userAuthPages/page-otpForgPass')
+        if(req.session.forgPass_email){
+            res.render('user/userAuthPages/page-otpForgPass')
+        }
     } catch (error) {
         console.log(error);
     }
 }
-
 const forgotPassOtpVerify = async (req, res) => {
     try {
-        const otp = req.body.otp
+        const otp = req.body.verifyOtp
         const forgPassOtp = req.session.forgPassOtp
+        console.log('otp=',otp,'forgpassotp=',forgPassOtp);
         if (otp == forgPassOtp) {
             res.json({success:true,message:'Verified successfully!'})
         }else{
             res.json({error:true,message:'Otp is not valid/expired!'})
         }
+    } catch (error) {
+        console.log(error);
+    }
+}
+// view confirm forgot password 
+const viewForgConfirmPass = async(req,res)=>{
+    try {
+        if(req.session.forgPass_email){
+            res.render('user/userAuthPages/page-forgConfirmPass')
+        }else{
+            console.error('error found');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+const changePassword = async(req,res)=>{
+    try {
+        const newPassword = req.body.newPassword
+        const userData = await User.findOne({email:req.session.forgPass_email})
+        if(userData){
+            const hashedPassword = await createHashPassword(newPassword)
+            userData.password = hashedPassword
+            await userData.save()
+            delete req.session.forgPass_email
+            delete req.session.forgPassOtp
+            return res.json({success:true})
+        }else{
+            res.json({success:false,message:'*User not found!'})
+        }
+
     } catch (error) {
         console.log(error);
     }
@@ -101,6 +136,12 @@ const userLogin = async (req, res) => {
         console.log('error found while user login', error);
     }
 }
+
+const userGoogleLogin = passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  });
 
 // user logout 
 const logout = async (req, res) => {
@@ -150,7 +191,7 @@ const signup = async (req, res) => {
                     password: hashPassword,
                     isAdmin: 0,
                 }
-                // const user = new User(signupData)
+
                 req.session.tempSaveUser = signupData
                 const otp = otpGenerator.generate(6, {
                     digits: true,
@@ -209,14 +250,6 @@ const viewOtpVarify = async (req, res) => {
     }
 }
 
-const viewForgConfirmPass = async (req,res) =>{
-    try {
-        
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 // user otp verification
 const otpVerification = async (req, res) => {
     try {
@@ -269,6 +302,7 @@ const resendOtp = async (req, res) => {
 module.exports = {
     viewUserLogin,
     userLogin,
+    userGoogleLogin,
     logout,
     viewUserSignup,
     signup,
@@ -279,4 +313,6 @@ module.exports = {
     forgotPass,
     viewForgPassOtpVerify,
     forgotPassOtpVerify,
+    viewForgConfirmPass,
+    changePassword,
 }

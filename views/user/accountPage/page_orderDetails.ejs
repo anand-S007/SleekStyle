@@ -1,6 +1,10 @@
 <%-include('../head')-%>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="/public/adminAssets/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!---Razorpay CDN -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <!-------Heade section-- -->
     <header class="header-area header-style-2 header-height-2 bg-white">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
@@ -18,7 +22,8 @@
                         <div class="text-center">
                             <div id="news-flash" class="d-inline-block">
                                 <ul>
-                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a></li>
+                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a>
+                                    </li>
                                     <li>Supper Value Deals - Save more with coupons</li>
                                     <li>Trendy 25silver jewelry, save up 35% off today <a href="/shop">Shop now</a></li>
                                 </ul>
@@ -28,13 +33,13 @@
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
-                                
+
                                 <% if(user){ %>
                                     <li><i class="fi-rs-user"></i><a href="/logout">Logout</a></li>
-                                <% }else{ %>
-                                    <li><i class="fi-rs-user"></i><a href="/login">Log In / Sign Up</a></li>
-                                <%} %>
-                                 
+                                    <% }else{ %>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In / Sign Up</a></li>
+                                        <%} %>
+
                             </ul>
                         </div>
                     </div>
@@ -67,12 +72,14 @@
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
                                     <a href="/user_account/dashboard">
-                                        <img class="svgInject" s alt="User account" src="/public/userAssets/assets/imgs/theme/icons/user-icon3.png">
+                                        <img class="svgInject" s alt="User account"
+                                            src="/public/userAssets/assets/imgs/theme/icons/user-icon3.png">
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
                                     <a href="shop-wishlist.html">
-                                        <img class="svgInject" id="userIcon" alt="Evara" src="/public/userAssets/assets/imgs/theme/icons/icon-heart.svg">
+                                        <img class="svgInject" id="userIcon" alt="Evara"
+                                            src="/public/userAssets/assets/imgs/theme/icons/icon-heart.svg">
                                         <span class="pro-count blue">4</span>
                                     </a>
                                 </div>
@@ -85,7 +92,8 @@
                                         <ul>
                                             <li>
                                                 <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Evara" src="/public/userAssets/assets/imgs/shop/thumbnail-3.jpg"></a>
+                                                    <a href="shop-product-right.html"><img alt="Evara"
+                                                            src="/public/userAssets/assets/imgs/shop/thumbnail-3.jpg"></a>
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
@@ -97,7 +105,8 @@
                                             </li>
                                             <li>
                                                 <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="Evara" src="/public/userAssets/assets/imgs/shop/thumbnail-2.jpg"></a>
+                                                    <a href="#"><img alt="Evara"
+                                                            src="/public/userAssets/assets/imgs/shop/thumbnail-2.jpg"></a>
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4><a href="#">Corduroy Shirts</a></h4>
@@ -129,10 +138,11 @@
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="/home"><img src="/public/userAssets/assets/imgs/theme/sleek-style-logo.png" alt="logo"></a>
+                        <a href="/home"><img src="/public/userAssets/assets/imgs/theme/sleek-style-logo.png"
+                                alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
-                        
+
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
@@ -141,16 +151,16 @@
                                     </li>
                                     <li><a href="/shop">Shop </a>
                                     </li>
-                                    
+
                                     <li><a href="page-contact.html">Categories</a></li>
-                                    
+
                                     <li>
                                         <a href="/user_account/dashboard">My Account</a>
                                     </li>
                                     <li><a href="#">About Us</a></li>
                                     <li><a href="#">Contact Us</a></li>
-                                            
-                                      
+
+
                                 </ul>
                             </nav>
                         </div>
@@ -158,7 +168,8 @@
                     <div class="hotline d-none d-lg-block">
                         <!-- <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p> -->
                     </div>
-                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%
+                    </p>
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
@@ -176,7 +187,8 @@
                                     <ul>
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="/public/userAssets/assets/imgs/shop/thumbnail-3.jpg"></a>
+                                                <a href="shop-product-right.html"><img alt="Evara"
+                                                        src="/public/userAssets/assets/imgs/shop/thumbnail-3.jpg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
@@ -188,7 +200,8 @@
                                         </li>
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="/public/userAssets/assets/imgs/shop/thumbnail-4.jpg"></a>
+                                                <a href="shop-product-right.html"><img alt="Evara"
+                                                        src="/public/userAssets/assets/imgs/shop/thumbnail-4.jpg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
@@ -224,462 +237,545 @@
         </div>
     </header>
     <!------Mobile menu----- -->
-        <div class="mobile-header-active mobile-header-wrapper-style">
-            <div class="mobile-header-wrapper-inner">
-                <div class="mobile-header-top">
-                    <div class="mobile-header-logo">
-                        <a href="/"><img src="/public/assets/imgs/theme/sleek-style-logo.png" alt="logo"></a>
-                    </div>
-                    <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
-                        <button class="close-style search-close">
-                            <i class="icon-top"></i>
-                            <i class="icon-bottom"></i>
-                        </button>
-                    </div>
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="/"><img src="/public/assets/imgs/theme/sleek-style-logo.png" alt="logo"></a>
                 </div>
-                <div class="mobile-header-content-area">
-                    <div class="mobile-search search-style-3 mobile-header-border">
-                        <form action="#">
-                            <input type="text" placeholder="Search for items…">
-                            <button type="submit"><i class="fi-rs-search"></i></button>
-                        </form>
-                    </div>
-                    <div class="mobile-menu-wrap mobile-header-border">
-                        <div class="main-categori-wrap mobile-header-border">
-                            <a class="categori-button-active-2" href="#">
-                                <span class="fi-rs-apps"></span> Browse Categories
-                            </a>
-                            <div class="categori-dropdown-wrap categori-dropdown-active-small">
-                                <ul>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's
-                                            Clothing</a></li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's
-                                            Clothing</a></li>
-                                    <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i>
-                                            Cellphones</a></li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
-                                            Office</a></li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
-                                            Electronics</a></li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a>
-                                    </li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a>
-                                    </li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
-                                            Kids</a></li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- mobile menu start -->
-                        <nav>
-                            <ul class="mobile-menu">
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="index.html">Home</a>
-                                    <ul class="dropdown">
-                                        <li><a href="index.html">Home 1</a></li>
-                                        <li><a href="index-2.html">Home 2</a></li>
-                                        <li><a href="index-3.html">Home 3</a></li>
-                                        <li><a href="index-4.html">Home 4</a></li>
-                                    </ul>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="main-categori-wrap mobile-header-border">
+                        <a class="categori-button-active-2" href="#">
+                            <span class="fi-rs-apps"></span> Browse Categories
+                        </a>
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                            <ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's
+                                        Clothing</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's
+                                        Clothing</a></li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i>
+                                        Cellphones</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
+                                        Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
+                                        Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a>
                                 </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="shop-grid-right.html">shop</a>
-                                    <ul class="dropdown">
-                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                        <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
-                                        <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
-                                        <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
-                                        <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                                href="#">Single Product</a>
-                                            <ul class="dropdown">
-                                                <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
-                                                <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
-                                                <li><a href="shop-product-full.html">Product – No sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-filter.html">Shop – Filter</a></li>
-                                        <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
-                                        <li><a href="shop-cart.html">Shop – Cart</a></li>
-                                        <li><a href="shop-checkout.html">Shop – Checkout</a></li>
-                                        <li><a href="shop-compare.html">Shop – Compare</a></li>
-                                    </ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a>
                                 </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
-                                        menu</a>
-                                    <ul class="dropdown">
-                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                                href="#">Women's Fashion</a>
-                                            <ul class="dropdown">
-                                                <li><a href="shop-product-right.html">Dresses</a></li>
-                                                <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
-                                                <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
-                                                <li><a href="shop-product-right.html">Women's Sets</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                                href="#">Men's Fashion</a>
-                                            <ul class="dropdown">
-                                                <li><a href="shop-product-right.html">Jackets</a></li>
-                                                <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
-                                                <li><a href="shop-product-right.html">Genuine Leather</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                                href="#">Technology</a>
-                                            <ul class="dropdown">
-                                                <li><a href="shop-product-right.html">Gaming Laptops</a></li>
-                                                <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
-                                                <li><a href="shop-product-right.html">Tablets</a></li>
-                                                <li><a href="shop-product-right.html">Laptop Accessories</a></li>
-                                                <li><a href="shop-product-right.html">Tablet Accessories</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="blog-category-fullwidth.html">Blog</a>
-                                    <ul class="dropdown">
-                                        <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
-                                        <li><a href="blog-category-list.html">Blog Category List</a></li>
-                                        <li><a href="blog-category-big.html">Blog Category Big</a></li>
-                                        <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                                href="#">Single Product Layout</a>
-                                            <ul class="dropdown">
-                                                <li><a href="blog-post-left.html">Left Sidebar</a></li>
-                                                <li><a href="blog-post-right.html">Right Sidebar</a></li>
-                                                <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="#">Pages</a>
-                                    <ul class="dropdown">
-                                        <li><a href="page-about.html">About Us</a></li>
-                                        <li><a href="page-contact.html">Contact</a></li>
-                                        <li><a href="page-account.html">My Account</a></li>
-                                        <li><a href="page-login-register.html">login/register</a></li>
-                                        <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                        <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
-                                        <li><a href="page-terms.html">Terms of Service</a></li>
-                                        <li><a href="page-404.html">404 Page</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                        href="#">Language</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">French</a></li>
-                                        <li><a href="#">German</a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                    </ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
+                                        Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a>
                                 </li>
                             </ul>
-                        </nav>
-                        <!-- mobile menu end -->
-                    </div>
-                    <div class="mobile-header-info-wrap mobile-header-border">
-                        <div class="single-mobile-header-info mt-30">
-                            <a href="page-contact.html"> Our location </a>
-                        </div>
-                        <div class="single-mobile-header-info">
-                            <a href="page-login-register.html">Log In / Sign Up </a>
-                        </div>
-                        <div class="single-mobile-header-info">
-                            <a href="#">(+01) - 2345 - 6789 </a>
                         </div>
                     </div>
-                    <div class="mobile-social-icon">
-                        <h5 class="mb-15 text-grey-4">Follow Us</h5>
-                        <a href="#"><img src="/public/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                        <a href="#"><img src="/public/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                        <a href="#"><img src="/public/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                        <a href="#"><img src="/public/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                        <a href="#"><img src="/public/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu">
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="index.html">Home</a>
+                                <ul class="dropdown">
+                                    <li><a href="index.html">Home 1</a></li>
+                                    <li><a href="index-2.html">Home 2</a></li>
+                                    <li><a href="index-3.html">Home 3</a></li>
+                                    <li><a href="index-4.html">Home 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="shop-grid-right.html">shop</a>
+                                <ul class="dropdown">
+                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
+                                    menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Dresses</a></li>
+                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Jackets</a></li>
+                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Tablets</a></li>
+                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="blog-category-fullwidth.html">Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="page-about.html">About Us</a></li>
+                                    <li><a href="page-contact.html">Contact</a></li>
+                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="page-login-register.html">login/register</a></li>
+                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="page-terms.html">Terms of Service</a></li>
+                                    <li><a href="page-404.html">404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap mobile-header-border">
+                    <div class="single-mobile-header-info mt-30">
+                        <a href="page-contact.html"> Our location </a>
                     </div>
+                    <div class="single-mobile-header-info">
+                        <a href="page-login-register.html">Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#">(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon">
+                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                    <a href="#"><img src="/public/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                    <a href="#"><img src="/public/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                    <a href="#"><img src="/public/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                    <a href="#"><img src="/public/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                    <a href="#"><img src="/public/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
                 </div>
             </div>
         </div>
-        <main class="main">
-            <div class="page-header breadcrumb-wrap">
-                <div class="container">
-                    <div class="breadcrumb">
-                        <a href="/" rel="nofollow">Home</a>
-                        <span></span> Account
+    </div>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/" rel="nofollow">Home</a>
+                    <span></span> Account
+                </div>
+            </div>
+        </div>
+
+        <section class="content-main p-0">
+
+            <div class="card" style="margin-bottom: 0ch;">
+                <header class="card-header bg-white" style="border-bottom: none;margin: 70px 70px 0 70px;">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <div>
+                                <h2 class="content-title card-title">Order detail</h2>
+                                <p>Details for Order ID: <%= orderDetails?orderDetails.orderId:'' %>
+                                </p>
+                            </div>
+                            <span>
+                                <i class="material-icons md-calendar_today"></i> <b>
+                                    <%= orderDetails?orderDetails.createdAt:'' %>
+                                </b>
+                            </span> <br>
+                            <small class="text-muted">Order ID: <%= orderDetails?orderDetails.orderId:'' %>
+                            </small>
+                        </div>
+                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+
+                            <h3 id="statusTitleId" style="display: inline;"><span>Order <%=orderDetails.status %>
+                                </span></h3>
+
+                        </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body" style="margin: 0px 70px;">
+                    <div class="row mb-50 mt-20 order-info-wrap">
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-local_shipping"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                        Pay method: <%= orderDetails?orderDetails.paymentMethod:'' %> <br>
+                                            Status: <span id="statusId" style="display: inline;font-size: medium;">
+                                                <%= orderDetails?orderDetails.status:'' %>
+                                            </span><br>
+                                            <%if(orderDetails.paymentStatus=="pending"
+                                                ||orderDetails.paymentStatus=="Pending" ){%>
+                                                <a style="font-size: medium;color: #3f81eb;" id="retryPaymentId"
+                                                    onclick="retryPayment('<%=orderDetails.orderId%>')">
+                                                    Retry payment
+                                                </a>
+                                                <%}%>
+                                                    <br>
+                                                    Order:
+                                                    <% const status=['processing','Confirmed','Shipped','Processing']
+                                                        if(status.includes(orderDetails.status)){ %>
+                                                        <a onclick="cancelOrder('<%=orderDetails._id%>')">
+                                                            <span id="cancelBtn" class="d-inline text-danger"
+                                                                style="font-size: medium;">
+                                                                Cancel
+                                                            </span></a>
+                                                        <%}else if(orderDetails.status=='Delivered' &&
+                                                            orderDetails.createdAt>= sevenDaysAgo){%>
+                                                            <a onclick="returnOrder('<%=orderDetails._id%>')">
+                                                                <span id="returnBtn" class="d-inline text-danger"
+                                                                    style="font-size: medium;">
+                                                                    Return
+                                                                </span></a>
+                                                            <%}%>
+                                    </p>
+                                    <%if(orderDetails.status=='Delivered' ){%>
+                                        <a href="/user_account/orderDetails/invoice?orderId=<%=orderDetails.orderId%>">Download
+                                            invoice</a>
+                                        <%}%>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-place"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Deliver to</h6>
+                                    <% if(orderDetails){ %>
+                                        <p class="mb-1">
+                                            Name: <%=orderDetails.address.name%> <br>
+                                                Address: <%=orderDetails.address.address %>, <br>
+                                                    Pincode: <%=orderDetails.address.pincode %> <br>
+                                                        District: <%=orderDetails.address.district %> <br>
+                                                            State: <%=orderDetails.address.state %>
+                                        </p>
+                                        <% } %>
+                                </div>
+                            </article>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th width="40%">Product</th>
+                                            <th width="20%">Unit Price</th>
+                                            <th width="20%">Quantity</th>
+                                            <th width="20%" class="text-end">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if(orderDetails){ %>
+                                            <% orderDetails.products.forEach((item)=>{ %>
+                                                <tr>
+                                                    <td>
+                                                        <a class="itemside" href="/product/<%=item.productId%>">
+                                                            <div class="left">
+                                                                <img src="/uploads/<%=item.image %>" width="40"
+                                                                    height="40" class="img-xs" alt="Item">
+                                                            </div>
+                                                            <div class="info">
+                                                                <%=item.category %> <br>
+                                                                    <%=item.size %> size
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td>Rs <%=item.proPrice %>
+                                                    </td>
+                                                    <td>
+                                                        <%=item.quantity %>
+                                                    </td>
+                                                    <td class="text-end">Rs <%=item.subTotalPrice %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                                    <% } %>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <article class="float-end">
+                                                                    <dl class="dlist">
+                                                                        <dt>Subtotal:</dt>
+                                                                        <dd>Rs
+                                                                            <%=subTotalPrice?subTotalPrice:0%>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <% if(orderDetails.couponDiscountAmount){%>
+                                                                        <dl class="dlist">
+                                                                            <dt>Coupon discount</dt>
+                                                                            <dd>Rs
+                                                                                <%=orderDetails.couponDiscountAmount%>
+                                                                            </dd>
+                                                                            <%}%>
+                                                                        </dl>
+                                                                        <dl class="dlist">
+                                                                            <dt>Shipping cost:</dt>
+                                                                            <dd>Free</dd>
+                                                                        </dl>
+                                                                        <dl class="dlist">
+                                                                            <dt>Grand total:</dt>
+                                                                            <dd> <b class="h5">Rs
+                                                                                    <%=orderDetails?orderDetails.totalPrice:0
+                                                                                        %>
+                                                                                </b> </dd>
+                                                                        </dl>
+                                                                        <dl class="dlist">
+                                                                            <dt class="text-muted">Status:</dt>
+                                                                            <dd>
+                                                                                <%if(orderDetails.paymentStatus=='successfull'
+                                                                                    ){ %>
+                                                                                    <span
+                                                                                        class="badge rounded-pill alert-success text-success">Payment
+                                                                                        done</span>
+                                                                                    <%}else{%>
+                                                                                        <span
+                                                                                            class="badge rounded-pill alert-danger text-success">Payment
+                                                                                            <%=orderDetails.paymentStatus%>
+                                                                                        </span>
+                                                                                        <%}%>
+                                                                            </dd>
+                                                                        </dl>
+                                                                </article>
+                                                            </td>
+                                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> <!-- table-responsive// -->
+                        </div> <!-- col// -->
+                        <div class="col-lg-1"></div>
+
+
+                    </div>
+                    <div style="width: 100%;margin-bottom: 30px;"></div>
                 </div>
             </div>
 
-            <section class="content-main p-0">
-                <!-- <div class="content-header">
-                    <div>
-                        <h2 class="content-title card-title">Order detail</h2>
-                        <p>Details for Order ID: <%= orderDetails?orderDetails.orderId:'' %>
-                        </p>
-                    </div>
-                </div> -->
-                <div class="card" style="margin-bottom: 0ch;">
-                    <header class="card-header bg-white" style="border-bottom: none;margin: 70px 70px 0 70px;">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                                <div>
-                                    <h2 class="content-title card-title">Order detail</h2>
-                                    <p>Details for Order ID: <%= orderDetails?orderDetails.orderId:'' %>
-                                    </p>
-                                </div>
-                                <span>
-                                    <i class="material-icons md-calendar_today"></i> <b>
-                                        <%= orderDetails?orderDetails.createdAt:'' %>
-                                    </b>
-                                </span> <br>
-                                <small class="text-muted">Order ID: <%= orderDetails?orderDetails.orderId:'' %>
-                                </small>
-                            </div>
-                            <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+        </section>
 
-                                <h3 id="statusTitleId" style="display: inline;"><span>Order <%=orderDetails.status %>
-                                    </span></h3>
+    </main>
 
-                            </div>
-                    </header> <!-- card-header end// -->
-                    <div class="card-body" style="margin: 0px 70px;">
-                        <div class="row mb-50 mt-20 order-info-wrap">
-                            <div class="col-md-4">
-                                <article class="icontext align-items-start">
-                                    <span class="icon icon-sm rounded-circle bg-primary-light">
-                                        <i class="text-primary material-icons md-local_shipping"></i>
-                                    </span>
-                                    <div class="text">
-                                        <h6 class="mb-1">Order info</h6>
-                                        <p class="mb-1">
-                                            Pay method: <%= orderDetails?orderDetails.paymentMethod:'' %> <br>
-                                                Status: <span id="statusId" style="display: inline;font-size: medium;">
-                                                    <%= orderDetails?orderDetails.status:'' %>
-                                                </span><br>
-                                                Order:
-                                                <% const status=['processing','Confirmed','Shipped']
-                                                    if(status.includes(orderDetails.status)){ %>
-                                                    <a onclick="cancelOrder('<%=orderDetails._id%>')">
-                                                        <span id="cancelBtn" class="d-inline text-danger" style="font-size: medium;">
-                                                            Cancel
-                                                        </span></a>
-                                                    <%}else if(orderDetails.status == 'Delivered'){%>
-                                                        <a onclick="returnOrder('<%=orderDetails._id%>')">
-                                                        <span id="returnBtn" class="d-inline text-danger">
-                                                            Return
-                                                        </span></a>
-                                                    <%}%>
-                                        </p>
-                                        <a href="#">Download info</a>
-                                    </div>
-                                </article>
-                            </div>
-                            <div class="col-md-4">
-                                <article class="icontext align-items-start">
-                                    <span class="icon icon-sm rounded-circle bg-primary-light">
-                                        <i class="text-primary material-icons md-place"></i>
-                                    </span>
-                                    <div class="text">
-                                        <h6 class="mb-1">Deliver to</h6>
-                                        <% if(orderDetails){ %>
-                                            <p class="mb-1">
-                                                Name: <%=orderDetails.address.name%> <br>
-                                                    Address: <%=orderDetails.address.address %>, <br>
-                                                        Pincode: <%=orderDetails.address.pincode %> <br>
-                                                            District: <%=orderDetails.address.district %> <br>
-                                                                State: <%=orderDetails.address.state %>
-                                            </p>
-                                            <% } %>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
-                        <div class="row">
-                                <div class="col-lg-7">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th width="40%">Product</th>
-                                                    <th width="20%">Unit Price</th>
-                                                    <th width="20%">Quantity</th>
-                                                    <th width="20%" class="text-end">Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if(orderDetails){ %>
-                                                    <% orderDetails.products.forEach((item)=>{ %>
-                                                        <tr>
-                                                            <td>
-                                                                <a class="itemside" href="/product/<%=item.productId%>">
-                                                                    <div class="left">
-                                                                        <img src="/uploads/<%=item.image %>" width="40"
-                                                                            height="40" class="img-xs" alt="Item">
-                                                                    </div>
-                                                                    <div class="info">
-                                                                        <%=item.category %> <br>
-                                                                            <%=item.size %> size
-                                                                    </div>
-                                                                </a>
-                                                            </td>
-                                                            <td>Rs <%=item.proPrice %>
-                                                            </td>
-                                                            <td>
-                                                                <%=item.quantity %>
-                                                            </td>
-                                                            <td class="text-end">Rs <%=item.subTotalPrice %>
-                                                            </td>
-                                                        </tr>
-                                                        <% }) %>
-                                                            <% } %>
-                                                                <tr>
-                                                                    <td colspan="4">
-                                                                        <article class="float-end">
-                                                                            <dl class="dlist">
-                                                                                <dt>Subtotal:</dt>
-                                                                                <dd>Rs
-                                                                                    <%=orderDetails?orderDetails.products[0].subTotalPrice:0%>
-                                                                                </dd>
-                                                                            </dl>
-                                                                            <% if(orderDetails.couponDiscountAmount){%>
-                                                                                <dl class="dlist">
-                                                                                    <dt>Coupon discount</dt>
-                                                                                    <dd>Rs <%=orderDetails.couponDiscountAmount%></dd>
-                                                                                    <%}%>
-                                                                                </dl>
-                                                                            <dl class="dlist">
-                                                                                <dt>Shipping cost:</dt>
-                                                                                <dd>Free</dd>
-                                                                            </dl>
-                                                                            <dl class="dlist">
-                                                                                <dt>Grand total:</dt>
-                                                                                <dd> <b class="h5">Rs
-                                                                                        <%=orderDetails?orderDetails.totalPrice:0
-                                                                                            %>
-                                                                                    </b> </dd>
-                                                                            </dl>
-                                                                            <dl class="dlist">
-                                                                                <dt class="text-muted">Status:</dt>
-                                                                                <dd>
-                                                                                    <span
-                                                                                        class="badge rounded-pill alert-success text-success">Payment done
-                                                                                    </span>
-                                                                                </dd>
-                                                                            </dl>
-                                                                        </article>
-                                                                    </td>
-                                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div> <!-- table-responsive// -->
-                                </div> <!-- col// -->
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-4">
-                                    <div class="box shadow-sm bg-light">
-                                        <h6 class="mb-15">Payment info</h6>
-                                        <p>
-                                            <img src="/public/adminAssets/assets/imgs/card-brands/2.png" class="border"
-                                                height="20"> Master Card **** **** 4768 <br>
-                                            Business name: Grand Market LLC <br>
-                                            Phone: +1 (800) 555-154-52
-                                        </p>
-                                    </div>
-                                    <div class="h-25 pt-4">
-                                        <div class="mb-3">
-                                            <label>Notes</label>
-                                            <textarea class="form-control" name="notes" id="notes"
-                                                placeholder="Type some note"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary">Save note</button>
-                                    </div>
-                                </div> 
-                            </div>
-                    </div>
-                </div>
+    <script>
+        const statusTitle = document.getElementById('statusTitleId');
+        const statusId = document.getElementById('statusId');
+        async function cancelOrder(orderId) {
+            const cancelBtn = document.getElementById('cancelBtn');
+            try {
+                const result = await Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, cancel it!"
+                });
 
-            </section>
-
-        </main>
-
-        <script>
-            const statusTitle = document.getElementById('statusTitleId');
-            const statusId = document.getElementById('statusId');
-            async function cancelOrder(orderId) {
-                const cancelBtn = document.getElementById('cancelBtn');
-                try {
-                    const result = await Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, cancel it!"
+                if (result.isConfirmed) {
+                    await Swal.fire({
+                        title: "Cancelled!",
+                        text: "Your order has been cancelled.",
                     });
 
-                    if (result.isConfirmed) {
-                        await Swal.fire({
-                            title: "Cancelled!",
-                            text: "Your order has been cancelled.",
-                        });
+                    const response = await fetch('/user_account/orderDetails/cancelOrder', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId })
+                    });
 
-                        const response = await fetch('/user_account/orderDetails/cancelOrder', {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ orderId })
-                        });
+                    const res = await response.json();
 
-                        const res = await response.json();
-
-                        if (res.success) {
-                            statusTitle.innerText = 'Order Cancelled';
-                            statusId.innerText = 'Cancelled';
-                            cancelBtn.style.setProperty('display', 'none', 'important')
-                        }
+                    if (res.success) {
+                        statusTitle.innerText = 'Order Cancelled';
+                        statusId.innerText = 'Cancelled';
+                        cancelBtn.style.setProperty('display', 'none', 'important')
                     }
-                } catch (error) {
-                    console.log(error);
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function returnOrder(orderId) {
+            const returnBtn = document.getElementById('returnBtn');
+            try {
+                const result = await Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, proceed!"
+                });
+                if (result.isConfirmed) {
+                    await Swal.fire({
+                        title: "Returned!",
+                        text: "Your order has been requested to return.",
+                    });
+                    const response = await fetch('/user_account/orderDetails/returnOrder', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId })
+                    })
+                    const res = response.json()
+                    console.log("response:", res);
+                    if (res) {
+                        statusTitle.innerText = 'Order Returned';
+                        statusId.innerText = 'Returned';
+                        returnBtn.style.setProperty('display', 'none', 'important')
+                    }
+                }
+            } catch (error) {
+                console.log(error);
             }
 
-            async function returnOrder(orderId){
-                const returnBtn = document.getElementById('returnBtn');
-                try {
-                    const result = await Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, proceed!"
+        }
+
+        async function retryPayment(orderId) {
+            console.log('orderId=', orderId);
+            fetch(`/user_account/orderDetails/retryPayment?orderId=${orderId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(res => res.json())
+                .then((res) => {
+                    razorPayment(res)
+                })
+        }
+
+        function razorPayment(paymentOrder) {
+            var options = {
+                "key": "rzp_test_m0dRXZ082qPP0X", // Enter the Key ID generated from the Dashboard
+                "amount": paymentOrder.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Sleek Style", //your business name
+                "description": "Order payment",
+
+                "order_id": paymentOrder.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                "handler": async function (response) {
+                    console.log('entry');
+                    verifyRetryPayment(response, paymentOrder.order)
+                },
+                "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                    "name": paymentOrder.address.name, //your customer's name
+                    "email": paymentOrder.email,
+                    "contact": paymentOrder.address.mobile //Provide the customer's phone number for better conversion rates 
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#00000"
+                }
+            };
+            const rzp = new Razorpay(options)
+            rzp.on('payment.failed', async function (response) {
+                if (response) {
+                    Swal.fire({
+                        title: "Failed!",
+                        text: "Payment failed!",
+                        icon: "error"
                     });
-                    if(result.isConfirmed){
-                        await Swal.fire({
-                            title: "Returned!",
-                            text: "Your order has been requested to return.",
-                        });
-                        const response = await fetch('/user_account/orderDetails/returnOrder',{
-                            method:'PUT',
-                            headers:{
-                                'Content-Type':'application/json'
-                            },
-                            body:JSON.stringify({orderId})
+                }
+            });
+            rzp.open()
+        }
+
+        async function verifyRetryPayment(payment, order) {
+            fetch('/user_account/orderDetails/retryPayment/success', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ payment, order })
+            })
+                .then(res => res.json())
+                .then((res) => {
+                    if (res.success) {
+                        Swal.fire({
+                            title: "Successfull!",
+                            text: "Payment success!",
+                            // icon: "success"
                         })
-                        const res = response.json()
-                        console.log("response:",res);
-                        if(res){
-                            statusTitle.innerText = 'Order Returned';
-                            statusId.innerText = 'Returned';
-                            cancelBtn.style.display = 'none'
-                        }
+                        .then((res)=>{
+                            window.location.reload()
+                            document.getElementById('retryPaymentId').style.display = 'none'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Failed!",
+                            text: res.message,
+                            icon: "error"
+                        });
                     }
-                } catch (error) {
-                    console.log(error);
-                }
-
-            }
-        </script>
-        <%-include('../foot') %>
+                })
+        }
+    </script>
+    <%-include('../foot') %>

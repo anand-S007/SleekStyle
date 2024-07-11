@@ -266,8 +266,8 @@
                                             <th scope="col">Remove</th>
                                         </tr>
                                     </thead>
+                                    <% if(cartData){ %>
                                     <tbody>
-                                        <% if(cartData){ %>
                                             <% cartData.items.forEach((item,i)=>{ %>
                                                 <tr>
                                                     <td class="image product-thumbnail"><img
@@ -314,20 +314,17 @@
                                                     </td>
                                                 </tr>
                                                 <% }) %>
-                                                    <% } %>
-                                                        <tr>
-                                                            <td colspan="7" class="text-end">
-                                                                <a href="#" class="text-muted">
-                                                                    <i class="fi-rs-cross-small"></i>
-                                                                    Clear Cart</a>
-                                                            </td>
-                                                        </tr>
-                                    </tbody>
+                                            </tbody>
+                                            <% }%>
                                 </table>
+                                <% if(!cartData){ %>
+                                    <hr>
+                                    <h4 class="d-flex justify-content-center">CART IS EMPTY!</h4>
+                                    <% } %>
                             </div>
                             <div class="cart-action text-end">
-                                <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update
-                                    Cart</a>
+                                <!-- <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update
+                                    Cart</a> -->
                                 <a href="/shop" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue
                                     Shopping</a>
                             </div>
@@ -335,7 +332,7 @@
                             <div class="row mb-50">
                                 <div class="col-lg-6 col-md-12">
 
-                                    <div class="mb-30 mt-50">
+                                    <!-- <div class="mb-30 mt-50">
                                         <div class="heading_s1 mb-3">
                                             <h4>Apply Coupon</h4>
                                         </div>
@@ -357,7 +354,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-lg-6 col-md-12">
                                     <div class="border p-md-4 p-30 border-radius cart-totals">
@@ -589,6 +586,24 @@
                                 window.alert(res.outOfStock)
                             } else if (res.limit) {
                                 Swal.fire(res.limit);
+                            }else if(res.error2){
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'centre',
+                                    iconColor: 'red',
+                                    customClass: {
+                                        popup: 'colored-toast',
+                                    },
+                                    showConfirmButton: false,
+                                    timer: 1900,
+                                    timerProgressBar: false,
+                                })
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Product stock limit exceeded!',
+                                })
+                            }else{
+                                window.aler(res)
                             }
                         })
                 }
@@ -613,6 +628,26 @@
                                 window.alert(res.outOfStock)
                             } else if (res.limit) {
                                 Swal.fire(res.limit);
+                            }else if(res.error2){
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'centre',
+                                    iconColor: 'red',
+                                    customClass: {
+                                        popup: 'colored-toast',
+                                    },
+                                    showConfirmButton: false,
+                                    timer: 1900,
+                                    timerProgressBar: false,
+                                })
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Product stock limit exceeded!',
+                                }).then((res)=>{
+                                    window.location.href = '/viewcart'
+                                })
+                            }else{
+                                window.aler(res)
                             }
                         })
                 }

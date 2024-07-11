@@ -8,10 +8,15 @@ const catFormBtn = document.getElementById('catFormBtn')
 async function nameValidate(){
     try {
         const catnameVal = catName.value 
+        const catNamePattern = /^[a-zA-Z]+$/
         if(catnameVal.trim()==''){
             nameError.style.display = 'block'
             nameError.innerHTML = '*Field must not be empty'
-        }else{
+        }else if(!catNamePattern.test(catnameVal)){
+            nameError.style.display = 'block'
+            nameError.innerHTML = '*Only alphabets allowed'
+        }
+        else{
             nameError.style.display = 'none'
             nameError.innerHTML = ''
         }
@@ -22,9 +27,13 @@ async function nameValidate(){
 
 async function descriptionValidate(){
     catDescriptionVal = catDescription.value
+    catDescriptionPattern = /^[a-zA-Z]+$/
     if(catDescriptionVal.trim()==''){
         descriptionError.style.display = 'block'
         descriptionError.innerHTML = '*Field must not be empty'
+    }else if(!catDescriptionPattern.test(catDescriptionVal)){
+        descriptionError.style.display = 'block'
+        descriptionError.innerHTML = '*Only alphabets allowed'
     }else{
         descriptionError.style.display = 'none'
         descriptionError.innerHTML = ''
@@ -34,11 +43,4 @@ async function descriptionValidate(){
 catName.addEventListener('blur',nameValidate)
 catDescription.addEventListener('blur',descriptionValidate)
 
-catFormBtn.addEventListener('click',(e)=>{
-    nameValidate()
-    descriptionValidate()
-    if(nameError.innerHTML=='' ||
-    descriptionError.innerHTML==''){
-        e.preventDefault()
-    }
-})
+

@@ -157,7 +157,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#couponModal">Show
                                                 Coupons</button>
                                             <button id="removeCouponBtnId" style="display: none;" class="btn btn-md"
-                                                type="button" onclick="removeCoupon()">Remove coupon</button>
+                                                type="button" onclick="window.location.reload()">Remove coupon</button>
                                         </div>
                                     </form>
                                 </div>
@@ -176,28 +176,35 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="coupon-list">
-                                        <% coupons.forEach((item)=>{ %>
-                                            <% if(item.expiryDate>= Date.now()){ %>
-                                                <div class="coupon-item d-flex justify-content-between">
-                                                    <p>Coupon Code: <span class="coupon-code">
-                                                            <%=item.code %>
-                                                        </span></p>
-                                                    <button style="background:none;border: none;" class="copy-btn"
-                                                        data-coupon="<%=item.code %>">Copy</button>
-                                                </div>
-                                                <% } %>
-                                                    <% }) %>
-
-                                                        <!-- Add more coupons as needed -->
+                                        <% let hasValidCoupons=coupons.some(item=> item.expiryDate >= Date.now());
+                                            if (hasValidCoupons) {
+                                            %>
+                                            <% coupons.forEach((item)=> { %>
+                                                <% if (item.expiryDate>= Date.now()) { %>
+                                                    <div class="coupon-item d-flex justify-content-between">
+                                                        <p>Coupon Code: <span class="coupon-code">
+                                                                <%= item.code %>
+                                                            </span></p>
+                                                        <button style="background:none; border: none;" class="copy-btn"
+                                                            data-coupon="<%= item.code %>">Copy</button>
+                                                    </div>
+                                                    <% } %>
+                                                        <% }); %>
+                                                            <% } else { %>
+                                                                <h4 class="d-flex justify-content-center">No coupons
+                                                                    available</h4>
+                                                                <% } %>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-12">
                             <div class="divider mt-50 mb-50"></div>
@@ -297,7 +304,7 @@
                                         <tbody>
                                             <% if(cartData){ %>
                                                 <% cartData.items.forEach((data)=>{ %>
-                                                    <tr>
+                                                    <tr id="product<%=data.productId._id %>">
                                                         <td class="image product-thumbnail"><img
                                                                 src="/uploads/<%=data.productId.image[0] %>" alt="#">
                                                         </td>
@@ -350,11 +357,13 @@
                                             <label class="form-check-label" for="exampleRadios4"
                                                 data-bs-toggle="collapse" data-target="#checkPayment"
                                                 aria-controls="checkPayment">Cash on delivery(COD)</label>
+
                                             <div class="form-group collapse in" id="checkPayment">
                                                 <p class="text-muted mt-5">Please send your cheque to Store Name, Store
                                                     Street, Store Town, Store State / County, Store Postcode. </p>
                                             </div>
                                         </div>
+
                                         <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio"
                                                 onclick="handlePaymentMethod(this,'razorpay')" name="payment_option"
@@ -364,11 +373,25 @@
                                                 aria-controls="paypal">Razorpay</label>
                                             <div class="form-group collapse in" id="paypal">
                                                 <p class="text-muted mt-5">Pay via Razorpay; you can pay with your
-                                                    credit
-                                                    card if you don't have a Razorpay account.</p>
+                                                    credit card if you don't have a Razorpay account.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="custome-radio">
+                                            <input class="form-check-input" required="" type="radio"
+                                                onclick="handlePaymentMethod(this,'wallet')" name="payment_option"
+                                                id="exampleRadios6" value="wallet">
+                                            <label class="form-check-label" for="exampleRadios6"
+                                                data-bs-toggle="collapse" data-target="#walletPayment"
+                                                aria-controls="walletPayment">Wallet</label>
+
+                                            <div class="form-group collapse in" id="walletPayment">
+                                                <p class="text-muted mt-5">Please send your cheque to Store Name, Store
+                                                    Street, Store Town, Store State / County, Store Postcode. </p>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <a onclick="placeOrder('<%=cartData?cartData._id:null%>')"
                                     class="btn btn-fill-out btn-block mt-30">Place Order</a>
@@ -573,6 +596,7 @@
                     if (checkbox.checked) {
                         paymentMethod = payMethod
                     }
+                    console.log('paymentMethod=', payMethod);
                 } catch (error) {
                     console.log(error);
                 }
@@ -645,17 +669,26 @@
                 }
             }
 
-            // Remove coupon
-            async function removeCoupon() {
-                try {
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
             // Place order 
             async function placeOrder(cartId) {
                 const couponPriceRowId = document.getElementById('couponPriceRowId')
+                if(!selectedAddressId){
+                    const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'centre',
+                                    iconColor: 'red',
+                                    customClass: {
+                                        popup: 'colored-toast',
+                                    },
+                                    showConfirmButton: false,
+                                    timer: 1900,
+                                    timerProgressBar: false,
+                                })
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Address is not selected',
+                                })
+                }
                 fetch('/checkout', {
                     method: 'POST',
                     headers: {
@@ -673,58 +706,101 @@
                     .then((res) => {
                         return res.json()
                     })
-                    .then((res) => {
-                        if (res.success == false) {
-                            window.location.href = '/viewcart'
-                        } else if (res.success) {
-                            let timerInterval;
-                            Swal.fire({
-                                title: "Processing",
-                                html: " <b></b> ",
-                                timer: 2000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                    Swal.showLoading();
-                                    const timer = Swal.getPopup().querySelector("b");
-                                    timerInterval = setInterval(() => {
-                                        timer.textContent = `${Swal.getTimerLeft()}`;
-                                    }, 100);
-                                },
-                                willClose: () => {
-                                    clearInterval(timerInterval);
-                                }
-                            }).then((result) => {
-                                if (result.dismiss === Swal.DismissReason.timer) {
-                                    window.location.href = '/checkout/orderSuccess'
-                                }
-                            });
-                        } else if (res.status == 'razorpay') {
-                            console.log('response:',res);
-                            razorPayment(res)
-                        }
-                        else {
-                            throw new error('Error while order placing in cash on delivery')
-                        }
-                    })
+                    .then(async (res) => {
+    try {
+        if (res.success == false) {
+            window.location.href = '/viewcart';
+        } 
+        else if (res.outOfStock) {
+            console.log(res);
+            const proRowId = document.getElementById('product' + res.proId);
+            await Swal.fire({
+                title: 'Product out of stock',
+                text: `${res.message} is out of stock. Remove it from the cart. Click OK to continue.`,
+                icon: 'info',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/viewcart';
+                }
+            });
+        } 
+        else if (res.success) {
+            let timerInterval;
+            Swal.fire({
+                title: "Processing",
+                html: "<b></b>",
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.href = '/checkout/orderSuccess';
+                }
+            });
+        } 
+        else if (res.status == 'razorpay') {
+            razorPayment(res);
+        } 
+        else if (!res.wallet) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'center',
+                iconColor: 'red',
+                customClass: {
+                    popup: 'colored-toast',
+                },
+                showConfirmButton: false,
+                timer: 1900,
+                timerProgressBar: false,
+            });
+            Toast.fire({
+                icon: 'warning',
+                title: res.message,
+            });
+        } 
+        else {
+            throw new Error('Error while placing order in cash on delivery');
+        }
+    } catch (error) {
+        console.error(error);
+        await Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while processing your request.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+});
+
             }
 
-            function razorPayment(order) {
+            function razorPayment(paymentOrder) {
                 var options = {
                     "key": "rzp_test_m0dRXZ082qPP0X", // Enter the Key ID generated from the Dashboard
-                    "amount": order.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "amount": paymentOrder.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                     "currency": "INR",
                     "name": "Sleek Style", //your business name
                     "description": "Order payment",
 
-                    "order_id": order.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "order_id": paymentOrder.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
-                    "handler": async function(response){
-                        alert(response)
+                    "handler": async function (response) {
+                        await verifyPayment(response, paymentOrder.order, paymentOrder.cartData, paymentOrder)
                     },
                     "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-                        "name": order.address.name, //your customer's name
-                        "email": "gaurav.kumar@example.com",
-                        "contact": order.address.mobile //Provide the customer's phone number for better conversion rates 
+                        "name": paymentOrder.address.name, //your customer's name
+                        "email": paymentOrder.email,
+                        "contact": paymentOrder.address.mobile //Provide the customer's phone number for better conversion rates 
                     },
                     "notes": {
                         "address": "Razorpay Corporate Office"
@@ -734,7 +810,61 @@
                     }
                 };
                 const rzp = new Razorpay(options)
+                rzp.on('payment.failed', async function (response) {
+                    if (response) {
+                        fetch('/checkout/paymentFailed', {
+                            method: 'put',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ response, order: paymentOrder.order, cartData: paymentOrder.cartData, paymentOrder })
+                        })
+                            .then(res => res.json())
+                            .then((res) => {
+                                Swal.fire({
+                                    title: "Payment failed!",
+                                    text: "Order has been successfully placed!",
+                                    icon: "error",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#088178",
+                                    confirmButtonText: "Ok"
+                                }).then((result) => {
+                                    if (result) {
+                                        window.location.href = "/checkout/orderSuccess";
+                                    }
+                                });
+                            })
+                    }
+                });
                 rzp.open()
+            }
+
+            function verifyPayment(payment, order, cartData, paymentOrder) {
+                fetch('/verify-payment', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ payment, order, cartData, paymentOrder })
+                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        if (res.paymentSuccess) {
+                            Swal.fire({
+                                title: "Payment success!",
+                                text: "Order has been successfully placed!",
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#088178",
+                                confirmButtonText: "Ok"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = "/checkout/orderSuccess";
+                                }
+                            });
+                        }
+
+                    })
             }
         </script>
 
@@ -744,7 +874,7 @@
                 const copyButtons = document.querySelectorAll('.copy-btn');
                 copyButtons.forEach(button => {
                     button.addEventListener('click', function () {
-                        console.log('copyBtn:',copyButtons);
+                        console.log('copyBtn:', copyButtons);
                         const couponCode = this.getAttribute('data-coupon');
                         navigator.clipboard.writeText(couponCode).then(() => {
                             alert(`Coupon code ${couponCode} copied to clipboard`);
@@ -756,7 +886,7 @@
             });
         </script>
 
-        
+
         <!-- Vendor JS-->
         <script src="/public/userAssets/assets/js/vendor/modernizr-3.6.0.min.js"></script>
         <script src="/public/userAssets/assets/js/vendor/jquery-3.6.0.min.js"></script>

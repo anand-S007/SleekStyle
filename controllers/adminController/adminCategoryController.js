@@ -89,7 +89,7 @@ const viewCategoryOffer = async (req, res) => {
         const admin = req.session.admin
         const category = await Category.find()
         const offerCategory = await Category.find({ offer: { $exists: true } })
-        res.render('admin/offerManagement/admin_categoryOfferPage', { admin, offerCategory: offerCategory ? offerCategory : null, category })
+        res.render('admin/categoreyManagement/admin_categoryOfferPage', { admin, offerCategory: offerCategory ? offerCategory : null, category })
     } catch (error) {
         console.log(error);
     }
@@ -115,10 +115,13 @@ const createCategoryOffer = async (req, res) => {
             const productsInSelectedCat = await products.find({ category: selectedCategory })
             for (let item of productsInSelectedCat) {
                 let discountAmount = Math.floor((item.price.regularPrice * discountPercent) / 100);
-                let offerPrice = item.price.regularPrice - discountAmount
-                if (offerPrice < item.price.offerPrice) {
-                    item.price.offerPrice = offerPrice;
-                    await item.save();
+
+                if(item.price.regularPrice > discountAmount){
+                    let offerPrice = item.price.regularPrice - discountAmount
+                    if (offerPrice < item.price.offerPrice) {
+                        item.price.offerPrice = offerPrice;
+                        await item.save();
+                    }
                 }
             }
             res.json({ success: true })
