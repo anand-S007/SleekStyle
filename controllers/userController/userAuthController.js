@@ -11,8 +11,8 @@ const googleStrategy = require('passport-google-oidc').Strategy
 const viewUserLogin = async (req, res) => {
     try {
         let user
-        req.session.user?user = req.session.user:null
-        res.render('user/userAuthPages/page-login-register',{user})
+        req.session.user ? user = req.session.user : null
+        res.render('user/userAuthPages/page-login-register', { user })
     } catch (error) {
         console.error(error, 'error found at view login');
     }
@@ -38,10 +38,10 @@ const forgotPass = async (req, res) => {
                 upperCaseAlphabets: false,
                 specialChars: false
             })
-            console.log('otp is:',otp);
+            console.log('otp is:', otp);
             req.session.forgPassOtp = otp
             setTimeout(() => {
-                delete req.session.forgPassOtp 
+                delete req.session.forgPassOtp
             }, 30000)
             const otpSend = await sendOtpMail(email, otp)
             if (otpSend) {
@@ -58,7 +58,7 @@ const forgotPass = async (req, res) => {
 // view otp page of forgot password
 const viewForgPassOtpVerify = async (req, res) => {
     try {
-        if(req.session.forgPass_email){
+        if (req.session.forgPass_email) {
             res.render('user/userAuthPages/page-otpForgPass')
         }
     } catch (error) {
@@ -69,41 +69,41 @@ const forgotPassOtpVerify = async (req, res) => {
     try {
         const otp = req.body.verifyOtp
         const forgPassOtp = req.session.forgPassOtp
-        console.log('otp=',otp,'forgpassotp=',forgPassOtp);
+        console.log('otp=', otp, 'forgpassotp=', forgPassOtp);
         if (otp == forgPassOtp) {
-            res.json({success:true,message:'Verified successfully!'})
-        }else{
-            res.json({error:true,message:'Otp is not valid/expired!'})
+            res.json({ success: true, message: 'Verified successfully!' })
+        } else {
+            res.json({ error: true, message: 'Otp is not valid/expired!' })
         }
     } catch (error) {
         console.log(error);
     }
 }
 // view confirm forgot password 
-const viewForgConfirmPass = async(req,res)=>{
+const viewForgConfirmPass = async (req, res) => {
     try {
-        if(req.session.forgPass_email){
+        if (req.session.forgPass_email) {
             res.render('user/userAuthPages/page-forgConfirmPass')
-        }else{
+        } else {
             console.error('error found');
         }
     } catch (error) {
         console.log(error);
     }
 }
-const changePassword = async(req,res)=>{
+const changePassword = async (req, res) => {
     try {
         const newPassword = req.body.newPassword
-        const userData = await User.findOne({email:req.session.forgPass_email})
-        if(userData){
+        const userData = await User.findOne({ email: req.session.forgPass_email })
+        if (userData) {
             const hashedPassword = await createHashPassword(newPassword)
             userData.password = hashedPassword
             await userData.save()
             delete req.session.forgPass_email
             delete req.session.forgPassOtp
-            return res.json({success:true})
-        }else{
-            res.json({success:false,message:'*User not found!'})
+            return res.json({ success: true })
+        } else {
+            res.json({ success: false, message: '*User not found!' })
         }
 
     } catch (error) {
@@ -141,7 +141,7 @@ const userGoogleLogin = passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-  });
+});
 
 // user logout 
 const logout = async (req, res) => {
@@ -199,7 +199,7 @@ const signup = async (req, res) => {
                     upperCaseAlphabets: false,
                     specialChars: false
                 })
-                console.log('otp is:' ,otp);
+                console.log('otp is:', otp);
                 req.session.otp = otp;
                 setTimeout(() => {
                     req.session.otp = null
@@ -261,8 +261,8 @@ const otpVerification = async (req, res) => {
             const result = await user.save()
             if (result) {
                 await User.findOneAndUpdate({ _id: result._id }, { isVerified: true })
-                req.session.otp = null
-                req.session.tempSaveUser = null
+                delete req.session.otp
+                delete req.session.tempSaveUser
                 res.status(200).json({ message: 'Otp verified' })
             }
         } else {
@@ -270,7 +270,7 @@ const otpVerification = async (req, res) => {
             res.status(404).json({ error: '*OTP is expired/not valid' })
         }
     } catch (error) {
-            console.log('error found while verifying otp', error);
+        console.log('error found while verifying otp', error);
     }
 }
 

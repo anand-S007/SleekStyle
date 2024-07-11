@@ -128,12 +128,14 @@
                                     <div class="form-group">
                                         <label for="newPassword">New password</label>
                                         <input required type="password" name="newPassword" placeholder="New password"
-                                            id="newPassword" class="form-control">
+                                            id="newPassword" class="form-control" onblur="pwdValidate()">
+                                            <div id="newPwdErr" style="display: none;" class="text-danger"></div>
                                     </div>
                                     <div class="form-group">
                                         <label for="confirmPassword">Confirm password</label>
                                         <input required type="password" name="confirmPassword"
-                                            placeholder="Confirm password" id="confirmPassword" class="form-control">
+                                            placeholder="Confirm password" id="confirmPassword" class="form-control" onblur="cPwdValidate()">
+                                            <div id="cPwdErr" style="display: none;" class="text-danger"></div>
                                     </div>
                                     <div class="form-group d-flex justify-content-end">
                                         <button type="button" class="btn btn-block hover-up" id="submit_btn"
@@ -150,8 +152,21 @@
     </main>
 
     <script>
+
+        const newPassword = document.getElementById('newPassword').value
+        const newPasswordErr = document.getElementById('newPwdErr')
+        const confirmPassword = document.getElementById('confirmPassword').value
+        const cPasswordErr = document.getElementById('cPwdErr')
+            
+
+
         async function changePassword(e) {
             e.preventDefault()
+            pwdValidate()
+            cPwdValidate()
+            if(newPasswordErr.style.display == 'block'|| cPasswordErr.style.display == 'block'){
+                return
+            }
             const newPassword = document.getElementById('newPassword').value
             const confirmPassword = document.getElementById('confirmPassword').value
             if (newPassword == confirmPassword) {
@@ -167,9 +182,9 @@
                     .then((res) => {
                         if (res.success) {
                             Swal.fire({
-                                position: "top-end",
+                                position: "centre",
                                 icon: "success",
-                                title: "Password changed",
+                                title: "Password updated successfully!",
                                 showConfirmButton: false,
                                 timer: 1500
                             })
@@ -184,6 +199,28 @@
                 passwordErr.innerText = '*Password not matched!'
                 passwordErr.style.display = 'block'
                 passwordErr.style.color = 'red'
+            }
+        }
+
+        function pwdValidate(){
+            
+            if(newPassword.trim() == ''){
+                newPasswordErr.style.display = 'block'
+                newPasswordErr.innerText = '*Field must not be empty'
+            }else{
+                newPasswordErr.style.display = 'none'
+                newPasswordErr.innerText = ''
+            }
+        }
+
+        function cPwdValidate(){
+            
+            if(confirmPassword.trim() == ''){
+                cPasswordErr.style.display = 'block'
+                cPasswordErr.innerText = '*Field must not be empty'
+            }else{
+                cPasswordErr.style.display = 'none'
+                cPasswordErr.innerText = ''
             }
         }
     </script>
