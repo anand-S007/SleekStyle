@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
-const connectMoongoose = async()=>{
+const connectMongodb = async()=>{
     try {
-        await mongoose.connect('mongodb://localhost:27017/sleekStyleDB');
+        console.log('entry');
+        mongoose.connect(process.env.MONGODB_URI);
         mongoose.connection.on('connected',()=>{
         console.log('mongodb connected');
         })
@@ -15,8 +17,8 @@ const connectMoongoose = async()=>{
     } catch (error) {
         console.log('Error found in mongodb cofig settings',error);
     }
-}
+} 
+ 
+ 
 
-
-
-module.exports = {connectMoongoose,mongoose}
+module.exports = connectMongodb

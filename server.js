@@ -10,7 +10,7 @@ const uuid = uuidv4()
 const passport = require('passport')
 require('dotenv').config()
 require('./config/passport')
-const mongodbconfig = require('./config/mongodbConfig')
+const connectMongodb = require('./config/mongodbConfig')
 const nocache = require('nocache');
 
 
@@ -38,6 +38,6 @@ app.use('/', userRoute)
 
 
 app.listen(PORT, () => {
-    mongodbconfig.connectMoongoose()
+    connectMongodb() 
     console.log(`http://localhost:${PORT}`);
-})
+})  
