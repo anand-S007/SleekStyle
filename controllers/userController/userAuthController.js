@@ -4,7 +4,6 @@ const otpGenerator = require('otp-generator')
 require('dotenv').config()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
-const googleStrategy = require('passport-google-oidc').Strategy
 
 
 // view user login page
@@ -155,7 +154,9 @@ const logout = async (req, res) => {
 
 // view user signup page
 const viewUserSignup = (req, res) => {
-    res.render('user/userAuthPages/signup-page.ejs')
+    let user
+    req.session.user ? user = req.session.user : null
+    res.render('user/userAuthPages/signup-page.ejs',{user})
 }
 
 // function for Create hashed password
