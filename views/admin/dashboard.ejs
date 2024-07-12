@@ -35,6 +35,21 @@
                         <div class="col-lg-3">
                             <div class="card card-body mb-4">
                                 <article class="icontext">
+                                    <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                            class="text-primary material-icons md-monetization_on"></i></span>
+                                    <div class="text">
+                                        <h6 class="mb-1 card-title">Monthly revenue</h6>
+                                        <span>Rs <%=avgMonthRevenue %></span>
+                                        <span class="text-sm">
+                                            Shipping fees are not included
+                                        </span>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card card-body mb-4">
+                                <article class="icontext">
                                     <span class="icon icon-sm rounded-circle bg-success-light"><i
                                             class="text-success material-icons md-local_shipping"></i></span>
                                     <div class="text">
@@ -64,6 +79,7 @@
                                 </article>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col-xl-8 col-lg-12">
@@ -135,6 +151,48 @@
                                 </div>
                         </div>
                     </div>
+
+                    <!-----Top products----->
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <h4 class="card-title">Top 5 selling products</h4>
+                        </header>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="align-middle" scope="col">Image</th>
+                                                <th class="align-middle" scope="col">Name</th>
+                                                <th class="align-middle" scope="col">Category</th>
+                                                <th class="align-middle" scope="col">Total revenue</th>
+                                                <th class="align-middle" scope="col">Total orders</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% topProducts.forEach((data)=>{ %>
+                                                <tr>
+                                                    <td><a href="#" class="fw-bold"><img src="/uploads/<%=data.productDetails[0].image[0] %>"
+                                                        class="img-sm img-thumbnail" alt="Item"></a> </td>
+                                                    <td  style="vertical-align: middle;"><%=data.productDetails[0].title %></td>
+                                                    <td  style="vertical-align: middle;"><%=data.category %></td>
+                                                    <td style="vertical-align: middle;">
+                                                        Rs <%=data.revenue %>
+                                                    </td>
+                                                    <td style="vertical-align: middle;"> <%=data.count %></td>
+                                                </tr>
+                                                <% }) %>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- table-responsive end// -->
+                        </div>
+                    </div>
+
+                    <!---Latest orders -->
                     <div class="card mb-4">
                         <header class="card-header">
                             <h4 class="card-title">Latest orders</h4>

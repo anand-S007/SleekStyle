@@ -19,7 +19,7 @@ const viewDashBoard = async (req, res) => {
         return acc + curr.orders.totalPrice
     }, 0)
     const totalProducts = products.length
-
+    const avgMonthRevenue = Math.ceil(totalRevenue / 12)
     const topProducts = await orderModel.aggregate([
         { $unwind: '$orders' },
         { $unwind: '$orders.products' },
@@ -27,7 +27,9 @@ const viewDashBoard = async (req, res) => {
         {
             $group: {
                 _id: '$orders.products.productId',
-                count: { $sum: 1 }
+                count: { $sum: 1 },
+                revenue:{$sum:'$orders.products.subTotalPrice'},
+                category:{$first:'$orders.products.category'},
             }
         },
         { $sort: { count: -1 } },
@@ -42,6 +44,8 @@ const viewDashBoard = async (req, res) => {
         }
     ])
 
+
+
     const latestOrders = await orderModel.aggregate([
         { $unwind: '$orders' },
         { $sort: { 'orders.createdAt': -1 } },
@@ -55,9 +59,11 @@ const viewDashBoard = async (req, res) => {
         topProducts,
         totalProducts,
         newUsers,
-        latestOrders
+        latestOrders,
+        avgMonthRevenue
     })
 }
+
 
 const chartData = async (req, res) => {
     try {
@@ -86,11 +92,11 @@ const chartData = async (req, res) => {
         const countsOfCatInOrders = await orderModel.aggregate([
             { $unwind: '$orders' },
             { $unwind: '$orders.products' },
-            {$match:{'orders.status':'Delivered'}},
+            { $match: { 'orders.status': 'Delivered' } },
             {
                 $group: {
-                    _id: '$orders.products.category', 
-                    count: { $sum: '$orders.products.quantity' } 
+                    _id: '$orders.products.category',
+                    count: { $sum: '$orders.products.quantity' }
                 }
             }
         ]);
@@ -113,7 +119,6 @@ const chartData = async (req, res) => {
             return categoriesCounts[catName]
         })
 
-        console.log('categoryData', categoryData, 'categoryNames= ', categoryNames);
         return res.json({ monthlySales, yearlySales, categoryNames, categoryData })
     } catch (error) {
         console.log(error);
