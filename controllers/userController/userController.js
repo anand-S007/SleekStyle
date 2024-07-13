@@ -1,9 +1,7 @@
 const products = require('../../models/admin/productSchema')
 const categories = require('../../models/admin/category')
-const wishlist = require('../../models/user/wishlistModel')
 const walletModel = require('../../models/user/walletModel')
 const { ObjectId } = require('mongodb')
-const { logout } = require('./userAuthController')
 
 
 // view user Home page
@@ -25,37 +23,6 @@ const viewUserAccount = (req, res) => {
     res.render('user/accountPage/userDashboard', { user: req.session.user })
 }
 
-// Shopping page sort products
-// const viewShopPage = async(req,res)=>{
-//     const category = await categories.find({})
-//     const sort = req.query.sort
-//     const search = req.query.search
-//     console.log(search);
-//     if(search){
-//         const searchProducts = await products.find({
-//             $text: {$search: search}
-//         })
-//         console.log('searchProducts',searchProducts);
-//     }
-//     switch (sort) {
-//         case "lowToHigh":
-//             productData = await products.find({isBlocked:false}).sort({"price.offerPrice":1})
-//             break;
-//         case "highToLow":
-//             productData = await products.find({isBlocked:false}).sort({"price.offerPrice":-1})
-//             break;
-//         case 'aA-zZ':
-//             productData = await products.find({isBlocked:false}).sort({title:1})
-//             break;
-//         case 'zZ-aA':
-//             productData = await products.find({isBlocked:false}).sort({title:-1})
-//             break;
-//         default:
-//             productData = await products.find({isBlocked:false})
-//             break;
-//     }
-//     res.render('user/page_shop',{products:productData,user:req.session.user,category})
-// }
 
 const viewShopPage = async (req, res) => {
     try {

@@ -45,7 +45,7 @@
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
-                        <form >
+                        <form>
                             <select class="select-active">
                                 <option>All Categories</option>
                                 <option>Shirts</option>
@@ -55,7 +55,7 @@
                                 <option>Underwear</option>
                                 <option> Shorts</option>
                             </select>
-                            <input type="text" class="searchBtn" placeholder="Search for items...">
+                            <input type="text" class="searchInput" placeholder="Search for items...">
                             <a class="btn" onclick="searchBtn()">Search</a>
                         </form>
                     </div>
@@ -79,7 +79,7 @@
                                     <img alt="Evara" src="/public/userAssets/assets/imgs/theme/icons/icon-cart.svg">
                                     <!-- <span class="pro-count blue">2</span> -->
                                 </a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -126,13 +126,11 @@
                         <div class="header-action-icon-2">
                             <a href="shop-wishlist.html">
                                 <img alt="Evara" src="/public/userAssets/assets/imgs/theme/icons/icon-heart.svg">
-                                <span class="pro-count white">4</span>
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="/cart">
                                 <img alt="Evara" src="/public/userAssets/assets/imgs/theme/icons/icon-cart.svg">
-                                <span class="pro-count white">2</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                 <ul>
@@ -204,38 +202,21 @@
         </div>
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
-                <form >
-                    <input type="text" class="searchBtn" placeholder="Search for items…">
-                    <button type="button"onclick="searchBtn()"><i class="fi-rs-search"></i></button>
+                <form>
+                    <input type="text" class="searchInput" placeholder="Search for items…">
+                    <button type="button" onclick="searchBtn()"><i class="fi-rs-search"></i></button>
                 </form>
             </div>
             <div class="mobile-menu-wrap mobile-header-border">
-                <div class="main-categori-wrap mobile-header-border">
-                    <a class="categori-button-active-2" href="#">
-                        <span class="fi-rs-apps"></span> Browse Categories
-                    </a>
-                    <div class="categori-dropdown-wrap categori-dropdown-active-small">
-                        <ul>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
-                            <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
-                            <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
-                        </ul>
-                    </div>
-                </div>
+                
                 <!-- mobile menu start -->
                 <nav>
                     <ul class="mobile-menu">
 
-                                <li><a href="/shop">Shop</a></li>
-                                <li><a href="/wishlist">Wishlist</a></li>
-                                <li><a href="/viewcart">Cart</a></li>
-                                <li><a href="/user_account/dashboard">Account</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/viewcart">Cart</a></li>
+                        <li><a href="/user_account/dashboard">Account</a></li>
                     </ul>
                 </nav>
                 <!-- mobile menu end -->
@@ -244,12 +225,12 @@
                 <div class="single-mobile-header-info">
                     <%if(user){ %>
                         <li style="list-style: none;"><a href="/logout">Logout</a></li>
-                    <%}else{ %>
-                        <li><a href="/login">login/register</a></li>
-                    <%} %>
+                        <%}else{ %>
+                            <li style="list-style: none;"><a href="/login">login/register</a></li>
+                            <%} %>
                 </div>
                 <div class="single-mobile-header-info">
-                    <a >+91 9746009347 </a>
+                    <a>+91 9746009347 </a>
                 </div>
             </div>
         </div>
@@ -259,10 +240,9 @@
 <script>
 
     async function searchBtn() {
-        console.log('entry');
-        const searchId = document.getElementsByClassName('searchId')
-        const searchVal = searchId.value
-        console.log('search  ', searchVal);
+        const searchInputs = document.querySelectorAll('.searchInput');
+        const searchVals = Array.from(searchInputs).map(item => item.value).filter(value => value);
+        const searchVal = searchVals[0];
         window.location.href = `/shop?search=${searchVal}`
     }   
 </script>

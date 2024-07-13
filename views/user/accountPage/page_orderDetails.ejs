@@ -8,6 +8,35 @@
 
     <!-------Header section-- -->
     <%-include('../header') %>
+    <style>
+        .carddiv{
+            padding: 8rem;
+        }
+        .carddiv td{
+            border: none;
+            text-align: center;
+        }
+        @media screen and (max-width:640px) {
+            .carddiv{
+                padding: 2rem;
+            }
+        }
+        @media (max-width:480px) {
+            
+            .carddiv td{
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            text-align: center !important;
+            }
+            .carddiv td a{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    </style>
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
@@ -44,7 +73,7 @@
 
                         </div>
                 </header> <!-- card-header end// -->
-                <div class="card-body" style="margin: 0px 70px;">
+                <div class="card-body carddiv">
                     <div class="row mb-50 mt-20 order-info-wrap">
                         <div class="col-md-4">
                             <article class="icontext align-items-start">
