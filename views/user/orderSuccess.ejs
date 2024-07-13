@@ -1,70 +1,51 @@
-<html>
-  <head>
-    <title>Sleek style Men's fashion store</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/public/userAssets/assets/css/maind134.css?v=3.4">
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      body {
-        text-align: center;
-        padding: 40px 0;
-        background: #EBF0F5;
-
-      }
-        h1 {
-          color: #88B04B;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-weight: 900;
-          font-size: 40px;
-          margin-bottom: 10px;
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
         }
-        p {
-          color: #404F5E;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-size:20px;
-          margin: 0;
+        .card {
+            text-align: center;
+            border: none;
+            background: none;
         }
-      i {
-        color: #9ABC66;
-        font-size: 100px;
-        line-height: 200px;
-        margin-left:-15px;
-      }
-      .card {
-        background: white;
-        padding: 60px;
-        border-radius: 4px;
-        box-shadow: 0 2px 3px #C8D0D8;
-        display: inline-block;
-        margin: 0 auto;
-      }
-      #primary-btn:hover{
-        background-color: #0d6efd;
-
-      }
-      .btns{
-        /* min-width: 60px !important; */
-        width: 250px;
-      }
-
+        .checkmark {
+            font-size: 100px;
+            line-height: 200px;
+            color: green;
+        }
+        .btns {
+            width: 100%;
+        }
     </style>
-    <body style="padding: 0;margin: 0;">
-      <div class="card col-12" style="width: 100%;height: 100%;">
-      <!-- <div class="col-12" style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;"> -->
-        <div class="col-12" style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
-      </div>
-        <h1>Success</h1> 
-        <p>Order has been successfully placed;<br/> </p>
+</head>
+<body>
+    <div class="card col-12 col-md-6">
+        <div class="col-12" style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin: 0 auto;">
+            <i class="checkmark">✓</i>
+        </div>
+        <h1>Success</h1>
+        <p>Order has been successfully placed;<br/></p>
         <p style="height: 100px;"></p>
-        <div style="display: flex;
-                    justify-content: center;
-                    gap: 80px;" id="btn-group"> 
-                <a href="/shop"><button  type="button" class="btn btn-success btns">Continue shopping</button></a>
-                <a href="/user_account/orderList"><button type="button" class="btn btn-primary btns" >Order details</button></a>
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2" id="btn-group">
+            <a href="/shop" class="btn btn-success btns mb-2 mb-md-0 mx-md-2">Continue shopping</a>
+            <a href="/user_account/orderList" class="btn btn-primary btns mx-md-2">Order details</a>
+        </div>
+    </div>
 
-                <!-- <button type="button" id="primary-btn" class="btn" style="background-color: var(--bs-primary);">Primary</button> -->
-        </div>  
-      </div>
-    </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
