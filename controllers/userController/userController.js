@@ -33,7 +33,7 @@ const viewShopPage = async (req, res) => {
 
         const page = req.query.page || 1
         const limit = 8
-        const skip = (page-1)*limit
+        const skip = (page - 1) * limit
 
         let query = { isBlocked: false };
 
@@ -42,7 +42,7 @@ const viewShopPage = async (req, res) => {
         }
         const allProducts = await products.find(query)
         const totalProducts = allProducts.length
-        const totalPages = Math.ceil(totalProducts/limit)
+        const totalPages = Math.ceil(totalProducts / limit)
 
         let sortCriteria = {};
 
@@ -63,13 +63,13 @@ const viewShopPage = async (req, res) => {
                 break;
         }
 
-        const productData = await products.find(query).sort(sortCriteria).skip(skip).limit(limit)
+        const productData = await products.find(query).sort(sortCriteria).skip(skip).limit(limit).populate('category')
 
-        res.render('user/page_shop', { 
-            products: productData, 
-            user: req.session.user, 
+        res.render('user/page_shop', {
+            products: productData,
+            user: req.session.user,
             category,
-            currentPage:page,
+            currentPage: page,
             totalPages,
             sort,
             search,
@@ -83,7 +83,7 @@ const viewShopPage = async (req, res) => {
 
 
 const viewCategoryPage = async (req, res) => {
-    const catFilter = req.query.filterCat 
+    const catFilter = req.query.filterCat
     const sort = req.query.sort
     const category = await categories.find({})
     const page = req.query.page ? parseInt(req.query.page) : 1
@@ -113,12 +113,12 @@ const viewCategoryPage = async (req, res) => {
             break;
     }
 
-    res.render('user/page_category', { 
-        user: req.session.user, 
-        catFilter, 
-        filterProducts, 
-        category, 
-        currentPage: page, 
+    res.render('user/page_category', {
+        user: req.session.user,
+        catFilter,
+        filterProducts,
+        category,
+        currentPage: page,
         totalPages,
         totalProducts,
     })
@@ -132,11 +132,11 @@ const viewWallet = async (req, res) => {
         const page = req.query.page || 1
         const skip = (page - 1) * limit
         const walletTransactions = await walletModel.findOne({ userId: userId })
-        if(!walletTransactions){
-            return res.render('user/accountPage/wallet',{
+        if (!walletTransactions) {
+            return res.render('user/accountPage/wallet', {
                 walletData: null,
                 user,
-                totalPages:1,
+                totalPages: 1,
                 currentPage: page
             })
         }
@@ -152,12 +152,12 @@ const viewWallet = async (req, res) => {
                 $group: {
                     _id: '$_id',
                     userId: { $first: '$userId' },
-                    balance:{$first:'$balance'},
+                    balance: { $first: '$balance' },
                     transactions: { $push: '$transactions' }
                 }
             }
         ]);
-        console.log('walletData',walletData);
+        console.log('walletData', walletData);
         if (walletData) {
             res.render('user/accountPage/wallet', {
                 walletData: walletData[0],

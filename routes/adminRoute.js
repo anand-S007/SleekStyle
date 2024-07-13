@@ -11,9 +11,9 @@ const adminOrderController = require('../controllers/adminController/adminOrderC
 const adminCouponController = require('../controllers/adminController/adminCouponController')
 const adminSalesController = require('../controllers/adminController/adminSalesController')
 
-routes.get('/', sessionMiddlewares.isLogin, dashboardController.viewDashBoard)
-routes.get('/dashboard/chartData',sessionMiddlewares.isLogin, dashboardController.chartData)
 
+routes.get('/', sessionMiddlewares.isLogin, dashboardController.viewDashBoard)
+routes.get('/dashboard/chartData', sessionMiddlewares.isLogin, dashboardController.chartData)
 
 // Authentication route
 routes.get('/login', sessionMiddlewares.isLogout, adminAuthController.viewLogin)
