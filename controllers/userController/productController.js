@@ -10,11 +10,10 @@ const viewProductDetails = async (req, res) => {
         console.log(data);
         if (data) {
             return res.render('user/productDetails', { data, user })
-        } else {
-            return res.render('user/404_page')
-        }
+        } 
     } catch (error) {
         console.log('Erro at viewing product details page', error);
+        return res.render('user/404_page')
     }
 }
 

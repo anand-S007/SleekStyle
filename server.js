@@ -36,7 +36,6 @@ app.use(passport.session())
 app.use('/admin', adminRoute)
 app.use('/', userRoute)
 
-
 app.listen(PORT, () => {
     connectMongodb() 
     console.log(`http://localhost:${PORT}`);
