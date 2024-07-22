@@ -21,7 +21,8 @@ const viewUserLogin = async (req, res) => {
 //Forgot password
 const viewForgotPass = async (req, res) => {
     try {
-        res.render('user/userAuthPages/page-forgotPassword')
+        const user = req.session.user
+        res.render('user/userAuthPages/page-forgotPassword',{user})
     } catch (error) {
         console.log(error);
     }
@@ -82,7 +83,8 @@ const forgotPassOtpVerify = async (req, res) => {
 const viewForgConfirmPass = async (req, res) => {
     try {
         if (req.session.forgPass_email) {
-            res.render('user/userAuthPages/page-forgConfirmPass')
+            const user = req.session.user
+            res.render('user/userAuthPages/page-forgConfirmPass',{user})
         } else {
             console.error('error found');
         }
@@ -204,7 +206,7 @@ const signup = async (req, res) => {
                 req.session.otp = otp;
                 setTimeout(() => {
                     req.session.otp = null
-                }, 60000)
+                }, 600000)
                 const otpSend = await sendOtpMail(signupData.email, otp)
                 if (otpSend) {
                     res.status(200).json({ message: 'Registered Successfully' })
@@ -223,11 +225,12 @@ const signup = async (req, res) => {
 // Function to send otp to mail
 const sendOtpMail = async function (email, otp) {
     try {
-        const otpTransporter = nodemailer.createTransport({
+        const a = process.env.password
+        const otpTransporter =  nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.email,
-                pass: process.env.password,
+                user:process.env.email,
+                pass: process.env.email_password,
             }
         })
         const mailOptions = {
@@ -245,7 +248,8 @@ const sendOtpMail = async function (email, otp) {
 // view otp page 
 const viewOtpVarify = async (req, res) => {
     try {
-        res.render('user/userAuthPages/otp-verify.ejs')
+        const user = req.session.user
+        res.render('user/userAuthPages/otp-verify.ejs',{user})
     } catch (error) {
         console.log(error);
     }
@@ -303,7 +307,6 @@ const resendOtp = async (req, res) => {
 module.exports = {
     viewUserLogin,
     userLogin,
-    userGoogleLogin,
     logout,
     viewUserSignup,
     signup,
